@@ -1,0 +1,8 @@
+{
+  "drone_detector": {
+    "Overview": "/",
+    "core": "core.html",
+    "Preprocessing": "preprocessing.html",
+    "Title": "detectors.html"
+  }
+}

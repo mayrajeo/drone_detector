@@ -16,7 +16,6 @@ from tqdm import tqdm
 from fastcore.basics import *
 from .core import *
 import json
-from torchvision.ops import nms
 
 # Cell
 
@@ -74,7 +73,7 @@ def untile_vector(path_to_targets:str, outpath:str, non_max_suppression_thresh:f
     if non_max_suppression_thresh != 0:
         np_bounding_boxes = np.array([b.bounds for b in gdf.geometry])
         idxs = non_max_suppression_fast(np_bounding_boxes, overlap_thresh = non_max_suppression_thresh)
-    gdf = gdf.iloc[idxs]
+        gdf = gdf.iloc[idxs]
     print(f'{len(gdf)} polygons after non-max suppression')
     gdf.to_file(outpath)
     return
@@ -136,10 +135,20 @@ class COCOProcessor():
             cats = []
             polys = []
             for a in anns_in_image:
-                cats.append(a['category_id'])
-                xy_coords = [(a['segmentation'][0][i], a['segmentation'][0][i+1]) for i in range(0,len(a['segmentation'][0]),2)]
-                xy_coords.append(xy_coords[-1])
-                polys.append(Polygon(xy_coords))
+                # Single polygon
+                if len(a['segmentation']) == 1:
+                    cats.append(a['category_id'])
+                    xy_coords = [(a['segmentation'][0][i], a['segmentation'][0][i+1]) for i in range(0,len(a['segmentation'][0]),2)]
+                    xy_coords.append(xy_coords[-1])
+                    polys.append(Polygon(xy_coords))
+                # Multipolygon TODO handle better
+                else:
+                    for p in rangeof(a['segmentation']):
+                        cats.append(a['category_id'])
+                        xy_coords = [(a['segmentation'][p][i], a['segmentation'][p][i+1])
+                                     for i in range(0,len(a['segmentation'][p]),2)]
+                        xy_coords.append(xy_coords[-1])
+                        polys.append(Polygon(xy_coords))
             gdf = gpd.GeoDataFrame({'label':cats, 'geometry':polys})
             tfmd_gdf = georegister_px_df(gdf, f'{self.raster_path}/{i["file_name"]}')
             tfmd_gdf.to_file(f'{self.outpath}/{outdir}/{i["file_name"][:-4]}.shp')
@@ -150,7 +159,6 @@ def _process_shp_to_coco(image_id, category_id, ann_id, poly:Polygon):
     ann_dict = {
         'segmentation': [],
         'area': None,
-        'iscrowd': None,
         'bbox': [],
         'category_id': category_id,
         'id' : ann_id,

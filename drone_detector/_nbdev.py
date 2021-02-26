@@ -2,21 +2,29 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"rangeof": "00_core.ipynb",
-         "make_grid": "00_core.ipynb",
-         "convert_poly_coords": "00_core.ipynb",
-         "affine_transform_gdf": "00_core.ipynb",
-         "gdf_to_px": "00_core.ipynb",
-         "georegister_px_df": "00_core.ipynb",
-         "non_max_suppression_fast": "00_core.ipynb",
-         "cone_v": "00_core.ipynb",
-         "cut_cone_v": "00_core.ipynb",
-         "Tiler": "01_preprocessing.ipynb",
-         "untile_vector": "01_preprocessing.ipynb",
-         "COCOProcessor": "01_preprocessing.ipynb"}
+index = {"rangeof": "00_utils.ipynb",
+         "non_max_suppression_fast": "00_utils.ipynb",
+         "cone_v": "00_utils.ipynb",
+         "cut_cone_v": "00_utils.ipynb",
+         "make_grid": "01_tiling.ipynb",
+         "Tiler": "01_tiling.ipynb",
+         "untile_vector": "01_tiling.ipynb",
+         "convert_poly_coords": "02_coordinates.ipynb",
+         "affine_transform_gdf": "02_coordinates.ipynb",
+         "gdf_to_px": "02_coordinates.ipynb",
+         "georegister_px_df": "02_coordinates.ipynb",
+         "resize_binary_mask": "03_coco.ipynb",
+         "close_contour": "03_coco.ipynb",
+         "binary_mask_to_polygon": "03_coco.ipynb",
+         "COCOProcessor": "03_coco.ipynb",
+         "poly_IoU": "04_postprocessing.ipynb",
+         "poly_intersection_over_area": "04_postprocessing.ipynb"}
 
-modules = ["core.py",
-           "preprocessing.py"]
+modules = ["utils.py",
+           "tiling.py",
+           "coordinates.py",
+           "coco.py",
+           "postproc.py"]
 
 doc_url = "https://jaeeolma.github.io/drone_detector/"
 

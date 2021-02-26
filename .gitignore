@@ -144,3 +144,6 @@ checklink/cookies.txt
 analyses/
 models/
 data/
+
+# qgis aux files
+*.tif.aux.xml

@@ -1,8 +1,10 @@
 {
   "drone_detector": {
     "Overview": "/",
-    "core": "core.html",
-    "Preprocessing": "preprocessing.html",
-    "Title": "detectors.html"
+    "utils": "utils.html",
+    "Tiling": "tiling.html",
+    "Coordinate transformations for vector data": "coordinates.html",
+    "COCO utilities": "coco.html",
+    "Postprocessing": "postprocessing.html"
   }
 }

@@ -10,14 +10,20 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: core
-      url: core.html
+      title: utils
+      url: utils.html
     - output: web,pdf
-      title: Preprocessing
-      url: preprocessing.html
+      title: Tiling
+      url: tiling.html
     - output: web,pdf
-      title: Title
-      url: detectors.html
+      title: Coordinate transformations for vector data
+      url: coordinates.html
+    - output: web,pdf
+      title: COCO utilities
+      url: coco.html
+    - output: web,pdf
+      title: Postprocessing
+      url: postprocessing.html
     output: web
     title: drone_detector
   output: web

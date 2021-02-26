@@ -24,6 +24,9 @@ entries:
     - output: web,pdf
       title: Postprocessing
       url: postprocessing.html
+    - output: web,pdf
+      title: Visualizations
+      url: visualizations.html
     output: web
     title: drone_detector
   output: web

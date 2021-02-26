@@ -5,6 +5,7 @@
     "Tiling": "tiling.html",
     "Coordinate transformations for vector data": "coordinates.html",
     "COCO utilities": "coco.html",
-    "Postprocessing": "postprocessing.html"
+    "Postprocessing": "postprocessing.html",
+    "Visualizations": "visualizations.html"
   }
 }

@@ -141,7 +141,7 @@ checklink/cookies.txt
 .gitconfig
 
 # analysis work
-analyses/
+
 models/
 data/
 

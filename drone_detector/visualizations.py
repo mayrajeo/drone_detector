@@ -5,6 +5,9 @@ __all__ = ['show_im_mask_pred', 'plot_grid_preds_actuals_raws', 'show_raw_mask_p
 # Cell
 
 from icevision.all import *
+from fastcore.dispatch import *
+from fastai.data.all import *
+from fastai.vision.all import *
 
 # Cell
 
@@ -15,14 +18,14 @@ def show_results(x:TensorImage, y:TensorMask, samples, outs, ctxs, max_n=6,
     if ctxs is None: ctxs = get_grid(min(len(samples), max_n), nrows=nrows, ncols=ncols, add_vert=1, figsize=figsize,
                                      double=False, title='Image/Target/Prediction')
 
-    for i in range(3):
-        ctxs[::3] = [b.show(ctx=c, **kwargs) for b,c,_ in zip(samples.itemgot(i), ctxs[::3],range(3*max_n))]
+    for i in range(2):
+        ctxs[::3] = [b.show(ctx=c, **kwargs) for b,c,_ in zip(samples.itemgot(0), ctxs[::3],range(3*max_n))]
+        ctxs[1::3] = [b.show(ctx=c, **kwargs) for b,c,_ in zip(samples.itemgot(i), ctxs[1::3],range(2*max_n))]
 
     for o in [samples,outs]:
-        ctxs[1::2] = [b.show(ctx=c, **kwargs) for b,c,_ in zip(o.itemgot(0),ctxs[1::2], range(3*max_n))]
+        ctxs[2::3] = [b.show(ctx=c, **kwargs) for b,c,_ in zip(o.itemgot(0),ctxs[2::3], range(2*max_n))]
 
     return ctxs
-
 
 # Cell
 

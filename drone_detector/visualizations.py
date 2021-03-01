@@ -8,6 +8,24 @@ from icevision.all import *
 
 # Cell
 
+@typedispatch
+def show_results(x:TensorImage, y:TensorMask, samples, outs, ctxs, max_n=6,
+                 nrows=None, ncols=3, figsize=None, **kwargs):
+    "Patch `show_results` to show segmentation results in three columns (no-mask, ground truth, prediction)"
+    if ctxs is None: ctxs = get_grid(min(len(samples), max_n), nrows=nrows, ncols=ncols, add_vert=1, figsize=figsize,
+                                     double=False, title='Image/Target/Prediction')
+
+    for i in range(3):
+        ctxs[::3] = [b.show(ctx=c, **kwargs) for b,c,_ in zip(samples.itemgot(i), ctxs[::3],range(3*max_n))]
+
+    for o in [samples,outs]:
+        ctxs[1::2] = [b.show(ctx=c, **kwargs) for b,c,_ in zip(o.itemgot(0),ctxs[1::2], range(3*max_n))]
+
+    return ctxs
+
+
+# Cell
+
 def show_im_mask_pred(preds, max_n=4):
     """
     Preds is a list of predictions acquired with `learn.get_preds(with_input=True, with_decoded=True)

@@ -3,23 +3,14 @@
 __all__ = ['resize_binary_mask', 'close_contour', 'binary_mask_to_polygon', 'COCOProcessor']
 
 # Cell
-from pathlib import Path
-import os
-import geopandas as gpd
-import pandas as pd
-from osgeo import gdal
-from shapely.geometry import Point, Polygon, box
-import numpy as np
-from itertools import product, groupby
-from typing import Tuple
-from tqdm import tqdm
-from fastcore.basics import *
-import json
+from .imports import *
+from .utils import *
+from .coordinates import *
 
+# Cell
 from .coordinates import *
 from .utils import *
 
-import re
 import datetime
 from skimage import measure
 from PIL import Image

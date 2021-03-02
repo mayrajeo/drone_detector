@@ -1,0 +1,74 @@
+# Singularity definition file for machine and deep learning analyses for remote sensing
+BootStrap: docker
+From: nvidia/cuda:11.1.1-base-ubuntu20.04
+
+# Define environment variables TODO exports
+%environment
+    export LANG=C.UTF-8
+    export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64
+    export SHELL=/bin/bash
+    export PATH=$PATH:/opt/conda/bin
+
+# Install software, tools, dependencies and environmental variables
+%post
+    # Set environmental variables for build
+    export SHELL=/bin/bash    
+    export PATH=$PATH:/opt/conda/bin
+    export LANG=C.UTF-8
+    export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64
+
+    # Install software and tools
+    echo 'install software and tools'
+    apt-get -y update
+    apt-get -y install --no-install-recommends build-essential ca-certificates \
+            git nano zip unzip curl graphviz
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+    
+    # Install miniconda
+    echo 'starting to install miniconda'
+    curl -o ~/miniconda.sh -O \
+        https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    
+    echo 'downloaded miniconda'
+    
+    chmod +x ~/miniconda.sh \
+        && ~/miniconda.sh -b -p /opt/conda \
+        && rm ~/miniconda.sh 
+
+    # Install environment
+    # TODO get rid of conda
+    conda update conda
+    conda install -c pytorch -c fastai -c conda-forge fastai=2.1.4
+    conda install -c fastai nbdev
+    conda install -c conda-forge jupyter notebook
+    conda install -c conda-forge gdal geopandas rasterio 
+    conda install -c pyviz bokeh holoviews hvplot
+    conda install -c conda-forge xarray 
+    conda install -c conda-forge jupyter_contrib_nbextensions
+    pip install opencv-python scikit-image albumentations nbdev pyarrow wandb tensorboard captum laspy
+    pip install shap fastinference fastinference[interp]
+    pip install xlrd
+    pip install torchsummary
+    pip install jedi==0.17.2
+    pip install icevision
+ 
+    # Test that libraries (read: gdal) work
+    gdal_translate --version
+    
+    # Shared locations
+    mkdir -p /projappl /scratch /users/mayrajan
+    
+    # Enable jupyter extensions
+    jupyter nbextension enable codefolding/main
+    jupyter nbextension enable toc2/main
+    jupyter nbextension enable execute_time/ExecuteTime
+    jupyter nbextension enable toggle_all_line_numbers/main
+    jupyter nbextension enable --py widgetsnbextension
+
+# Start script: what to run on startup
+#%startscript
+
+%labels
+    ABOUT Singularity container for geospatial ml/dl analysis with jupyter notebooks in Puhti
+    AUTHOR Janne Mäyrä

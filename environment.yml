@@ -1,10 +1,7 @@
 # run: conda env crete --file environment.yml
 name: dronedetector
 channels:
-  - fastai
-  - pytorch
   - defaults
-  - conda-forge
 dependencies: 
   - pip
   - pytorch:pytorch>=1.7.0,<1.8
@@ -12,6 +9,7 @@ dependencies:
   - fastai:fastai=2.1.4
   - fastai:nbdev
   - conda-forge:gdal=3.1.2
+  - conda-forge:rtree
   - conda-forge:geopandas
   - conda-forge:rasterio
   - conda-forge:xarray

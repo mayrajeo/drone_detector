@@ -9,11 +9,11 @@ jobs:
       with:
         python-version: '3.8'
         architecture: 'x64'
-    - name: Install the library
+    - name: Install dependencies
       run: |
         pip install --upgrade pip
         pip install torch torchvision
-        pip install fastai=2.1.4
+        pip install fastai==2.1.4
         sudo add-apt-repository ppa:ubuntugis/ppa
         sudo apt-get update
         sudo apt-get install python-numpy gdal-bin libgdal-dev
@@ -25,6 +25,8 @@ jobs:
         pip install opencv-python scikit-image albumentations nbdev pyarrow wandb tensorboard captum laspy 
         pip install shap fastinference fastinference[interp] torchsummary
         pip install icevision
+    - name: Install the library
+      run: |
         pip install -e .
     - name: Read all notebooks
       run: |

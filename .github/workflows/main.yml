@@ -5,8 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: install deps 
+      run: |
+        sudo apt-get update
+        sudo apt-get install libspatialindex-dev
     - uses: conda-incubator/setup-miniconda@v2
       with:
+        miniconda-version: "latest"
         activate-environment: dronedetector
         environment-file: environment.yml
         python-version: 3.8

@@ -11,6 +11,7 @@ dependencies:
   - conda-forge::gdal=3.1.2
   - conda-forge::geopandas
   - conda-forge::rtree
+  - conda-forge::libspatialindex
   - conda-forge::rasterio
   - conda-forge::xarray
   - pip:

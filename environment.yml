@@ -4,12 +4,14 @@ channels:
   - fastai
   - pytorch
   - defaults
+  - conda-forge
 dependencies: 
+  - pip
   - pytorch:pytorch>=1.7.0,<1.8
   - torchvision>=0.7,<0.9
   - fastai:fastai=2.1.4
   - fastai:nbdev
-  - conda-forge:gdal
+  - conda-forge:gdal=3.1.2
   - conda-forge:geopandas
   - conda-forge:rasterio
   - conda-forge:xarray

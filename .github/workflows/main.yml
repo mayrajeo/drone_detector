@@ -10,7 +10,7 @@ jobs:
         activate-environment: dronedetector
         environment-file: environment.yml
         python-version: 3.8
-        auto-activate base: false
+        auto-activate-base: false
     - name: Install the library 
       run: |
         pip install -e .

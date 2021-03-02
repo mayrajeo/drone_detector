@@ -4,28 +4,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-python@v1
+    - uses: actions/checkout@v2
+      uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: '3.8'
-        architecture: 'x64'
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install torch torchvision
-        pip install fastai==2.1.4
-        sudo add-apt-repository ppa:ubuntugis/ppa
-        sudo apt-get update
-        sudo apt-get install python-numpy gdal-bin libgdal-dev
-        pip install rasterio
-        pip install fiona
-        pip install pyproj shapely
-        pip install geopandas
-        gdal_translate --version
-        pip install opencv-python scikit-image albumentations nbdev pyarrow wandb tensorboard captum laspy 
-        pip install shap fastinference fastinference[interp] torchsummary
-        pip install icevision
-    - name: Install the library
+        activate-environment: dronedetector
+        environment-file: environment.yml
+        python-version: 3.8
+        auto-activate base: false
+    - name: Install the library 
       run: |
         pip install -e .
     - name: Read all notebooks

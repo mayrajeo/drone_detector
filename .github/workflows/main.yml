@@ -11,8 +11,8 @@ jobs:
     - uses: conda-incubator/setup-miniconda@v2
       with:
         miniconda-version: "latest"
-        activate-environment: dronedetector
-        environment-file: environment.yml
+        activate-environment: test
+        environment-file: ci/test_environment.yml
         python-version: 3.7
         auto-activate-base: false
     - shell: bash -l {0}

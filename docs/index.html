@@ -6,8 +6,8 @@ title: Automatic deadwood detection from RGB UAV imagery
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Summary description here."
-description: "Summary description here."
+
+
 nb_path: "nbs/index.ipynb"
 ---
 <!--
@@ -31,33 +31,59 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This file will become your README and also the index of your documentation.</p>
+<p><code>drone_detector</code>is a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It utilizes <a href="https://airctic.com">IceVision</a> for object detection and instance segmentation, and <a href="https://docs.fast.ai">fastai</a> for semantic segmentation.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Install">Install<a class="anchor-link" href="#Install"> </a></h2>
+<h2 id="Installation">Installation<a class="anchor-link" href="#Installation"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>pip install your_project_name</code></p>
+<p>Use <code>conda</code> to create environment from <code>environment.yml</code> with</p>
+
+<pre><code>conda env create -f environment.yml</code></pre>
+<p>This will install all otherwise difficult to install dependencies like gdal. At the moment <code>rtree</code> conda installation doesn't work properly with python 3.8 or newer, but if you wish to use that then you need to manually install <code>libspatialindex-dev</code> to your machine.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="How-to-use">How to use<a class="anchor-link" href="#How-to-use"> </a></h2>
+<h3 id="Running-with-Singularity">Running with Singularity<a class="anchor-link" href="#Running-with-Singularity"> </a></h3><p>Use provided <code>dronecontainer.def</code> definition file to build Singularity container. Follow instructions on <a href="https://cloud.sylabs.io/builder">https://cloud.sylabs.io/builder</a> and build the image with</p>
+
+<pre><code> singularity build --remote dronecontainer.sif dronecontainer.der</code></pre>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Fill me in please! Don't forget code examples:</p>
+<h3 id="Running-with-Docker">Running with Docker<a class="anchor-link" href="#Running-with-Docker"> </a></h3><p>TODO</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Usage">Usage<a class="anchor-link" href="#Usage"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>drone_detector</code> provides several utilities, like tiling raster and vector files into smaller patches with overlap, and untiling them back to a larger tiles.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Examples are added as the package develops.</p>
 
 </div>
 </div>

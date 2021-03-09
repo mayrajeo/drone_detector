@@ -6,6 +6,10 @@
     "Coordinate transformations for vector data": "coordinates.html",
     "COCO utilities": "coco.html",
     "Postprocessing": "postprocessing.html",
-    "Visualizations": "visualizations.html"
+    "Visualizations": "visualizations.html",
+    "Training object detection models": "detection.html",
+    "Training semantic segmentation models": "segmentation.html",
+    "CLI for using pretrained models to process new images": "predict.html",
+    "Augmentations": "augmentations.html"
   }
 }

@@ -18,18 +18,33 @@ index = {"rangeof": "00_utils.ipynb",
          "close_contour": "03_coco.ipynb",
          "binary_mask_to_polygon": "03_coco.ipynb",
          "COCOProcessor": "03_coco.ipynb",
+         "mask_preds_to_coco_anns": "03_coco.ipynb",
+         "bbox_preds_to_coco_anns": "03_coco.ipynb",
          "poly_IoU": "04_postprocessing.ipynb",
          "poly_intersection_over_area": "04_postprocessing.ipynb",
          "show_im_mask_pred": "05_visualizations.ipynb",
          "plot_grid_preds_actuals_raws": "05_visualizations.ipynb",
-         "show_raw_mask_pred": "05_visualizations.ipynb"}
+         "show_raw_mask_pred": "05_visualizations.ipynb",
+         "DetectionModel": "06_detection.ipynb",
+         "SegmentationModel": "07_segmentation.ipynb",
+         "AllDataParser": "08_predict.ipynb",
+         "predict_bboxes": "08_predict.ipynb",
+         "predict_instance_masks": "08_predict.ipynb",
+         "predict_segmentation": "08_predict.ipynb",
+         "AlbumentationsTransform": "09_augmentations.ipynb",
+         "SegmentationAlbumentationsTransform": "09_augmentations.ipynb",
+         "segmentation_aug_tfms_fastai": "09_augmentations.ipynb"}
 
 modules = ["utils.py",
            "tiling.py",
            "coordinates.py",
            "coco.py",
            "postproc.py",
-           "visualizations.py"]
+           "visualizations.py",
+           "detection.py",
+           "segmentation.py",
+           "predict.py",
+           "augmentations.py"]
 
 doc_url = "https://jaeeolma.github.io/drone_detector/"
 

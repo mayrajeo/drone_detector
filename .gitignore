@@ -147,3 +147,10 @@ data/
 
 # qgis aux files
 *.tif.aux.xml
+
+# streamlit app
+streamlit_app/
+
+# temp
+
+temp/

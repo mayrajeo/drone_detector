@@ -27,6 +27,21 @@ entries:
     - output: web,pdf
       title: Visualizations
       url: visualizations.html
+    - output: web,pdf
+      title: Training object detection models
+      url: detection.html
+    - output: web,pdf
+      title: Training semantic segmentation models
+      url: segmentation.html
+    - output: web,pdf
+      title: CLI for using pretrained models to process new images
+      url: predict.html
+    - output: web,pdf
+      title: Augmentations
+      url: augmentations.html
+    - output: web,pdf
+      title: Metrics for segmentation
+      url: metrics.html
     output: web
     title: drone_detector
   output: web

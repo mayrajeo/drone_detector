@@ -1,0 +1,29 @@
+# run: conda env create --file environment.yml
+name: test
+channels:
+  - defaults
+dependencies: 
+  - pip
+  - python=3.7.10
+  - pytorch::pytorch>=1.7.0,<1.8
+  - pytorch::cpuonly
+  - pytorch::torchvision>=0.7,<0.9
+  - fastai::fastai=2.1.4
+  - fastai::nbdev
+  - conda-forge::gdal=3.1.2
+  - conda-forge::geopandas
+  - conda-forge::rasterio
+  - conda-forge::rtree
+  - conda-forge::xarray
+  - pip:
+    - opencv-python 
+    - scikit-image 
+    - albumentations
+    - pyarrow
+    - wandb
+    - tensorboard
+    - captum
+    - laspy
+    - xlrd
+    - jedi==0.17.2
+    - icevision

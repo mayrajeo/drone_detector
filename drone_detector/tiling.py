@@ -57,7 +57,7 @@ def make_grid(path, gridsize_x:int=640, gridsize_y:int=480,
 
 class Tiler():
     "Similar functions than ´solaris.tile.raster_tile' but with more recent dependencies"
-    def __init__(self, outpath, gridsize_x:int=640, gridsize_y:int=480,
+    def __init__(self, outpath, gridsize_x:int=400, gridsize_y:int=400,
                  overlap:Tuple[int, int]=(100, 100)):
         store_attr()
         self.grid = None

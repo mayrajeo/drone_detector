@@ -4,19 +4,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.6'
-        architecture: 'x64'
-    - name: Install the library
+    - uses: actions/checkout@v2
+    - name: install deps 
       run: |
-        pip install nbdev jupyter
+        sudo apt-get update
+    - uses: conda-incubator/setup-miniconda@v2
+      with:
+        miniconda-version: "latest"
+        activate-environment: test
+        environment-file: ci/test_environment.yml
+        python-version: 3.7
+        auto-activate-base: false
+    - shell: bash -l {0}
+      run: |
         pip install -e .
     - name: Read all notebooks
+      shell: bash -l {0}
       run: |
         nbdev_read_nbs
     - name: Check if all notebooks are cleaned
+      shell: bash -l {0}
       run: |
         echo "Check we are starting with clean git checkout"
         if [ -n "$(git status -uno -s)" ]; then echo "git status is not clean"; false; fi
@@ -26,8 +33,10 @@ jobs:
         git status -s # display the status to see which nbs need cleaning up
         if [ -n "$(git status -uno -s)" ]; then echo -e "!!! Detected unstripped out notebooks\n!!!Remember to run nbdev_install_git_hooks"; false; fi
     - name: Check if there is no diff library/notebooks
+      shell: bash -l {0}
       run: |
         if [ -n "$(nbdev_diff_nbs)" ]; then echo -e "!!! Detected difference between the notebooks and the library"; false; fi
     - name: Run tests
+      shell: bash -l {0}
       run: |
         nbdev_test_nbs

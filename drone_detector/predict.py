@@ -196,6 +196,7 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
 
     # Check whether is possible to use gpu
     cpu = True if not torch.cuda.is_available() else False
+    def label_func(fn): return f'../data/analysis_data/rasterized_vector_tiles/{fn.stem}{fn.suffix}'
 
     # Loading pretrained model
 

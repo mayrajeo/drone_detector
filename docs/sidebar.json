@@ -10,6 +10,7 @@
     "Training object detection models": "detection.html",
     "Training semantic segmentation models": "segmentation.html",
     "CLI for using pretrained models to process new images": "predict.html",
-    "Augmentations": "augmentations.html"
+    "Augmentations": "augmentations.html",
+    "Metrics for segmentation": "metrics.html"
   }
 }

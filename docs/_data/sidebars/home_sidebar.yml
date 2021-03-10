@@ -39,6 +39,9 @@ entries:
     - output: web,pdf
       title: Augmentations
       url: augmentations.html
+    - output: web,pdf
+      title: Metrics for segmentation
+      url: metrics.html
     output: web
     title: drone_detector
   output: web

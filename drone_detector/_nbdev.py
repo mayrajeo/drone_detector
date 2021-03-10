@@ -33,7 +33,8 @@ index = {"rangeof": "00_utils.ipynb",
          "predict_segmentation": "08_predict.ipynb",
          "AlbumentationsTransform": "09_augmentations.ipynb",
          "SegmentationAlbumentationsTransform": "09_augmentations.ipynb",
-         "segmentation_aug_tfms_fastai": "09_augmentations.ipynb"}
+         "segmentation_aug_tfms_fastai": "09_augmentations.ipynb",
+         "DiceMulti": "10_metrics.ipynb"}
 
 modules = ["utils.py",
            "tiling.py",
@@ -44,7 +45,8 @@ modules = ["utils.py",
            "detection.py",
            "segmentation.py",
            "predict.py",
-           "augmentations.py"]
+           "augmentations.py",
+           "metrics.py"]
 
 doc_url = "https://jaeeolma.github.io/drone_detector/"
 

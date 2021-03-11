@@ -32,7 +32,7 @@ nb_path: "nbs/08_predict.ipynb"
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/mayrajeo/miniconda3/envs/enveco/lib/python3.8/site-packages/torch/cuda/__init__.py:52: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /opt/conda/conda-bld/pytorch_1603729062494/work/c10/cuda/CUDAFunctions.cpp:100.)
+<pre>/home/mayrajeo/miniconda3/envs/dronedetector/lib/python3.7/site-packages/torch/cuda/__init__.py:52: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /opt/conda/conda-bld/pytorch_1603729047590/work/c10/cuda/CUDAFunctions.cpp:100.)
   return torch._C._cuda_getDeviceCount() &gt; 0
 </pre>
 </div>
@@ -62,7 +62,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AllDataParser" class="doc_header"><code>class</code> <code>AllDataParser</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L25" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AllDataParser</code>(<strong><code>data_dir</code></strong>) :: <code>Parser</code></p>
+<h2 id="AllDataParser" class="doc_header"><code>class</code> <code>AllDataParser</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L28" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AllDataParser</code>(<strong><code>data_dir</code></strong>) :: <code>Parser</code></p>
 </blockquote>
 <p>Read all image files from data_dir. Useful for inference</p>
 
@@ -94,7 +94,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_bboxes" class="doc_header"><code>predict_bboxes</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L50" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_bboxes</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>, <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2"=<em><code>2</code></em>)</p>
+<h4 id="predict_bboxes" class="doc_header"><code>predict_bboxes</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L53" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_bboxes</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>, <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2"=<em><code>2</code></em>)</p>
 </blockquote>
 <p>Detect bounding boxes from a new image using a pretrained model</p>
 
@@ -126,7 +126,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_instance_masks" class="doc_header"><code>predict_instance_masks</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L114" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_instance_masks</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>, <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2"=<em><code>2</code></em>)</p>
+<h4 id="predict_instance_masks" class="doc_header"><code>predict_instance_masks</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L117" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_instance_masks</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>, <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2"=<em><code>2</code></em>)</p>
 </blockquote>
 <p>Segment instance masks from a new image using a pretrained model</p>
 
@@ -150,6 +150,23 @@ nb_path: "nbs/08_predict.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">??</span>untile_raster
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 <div class="output_wrapper">
 <div class="output">
@@ -158,7 +175,66 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_segmentation" class="doc_header"><code>predict_segmentation</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L178" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_segmentation</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>)</p>
+<h2 id="UnetDS" class="doc_header"><code>class</code> <code>UnetDS</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L181" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>UnetDS</code>(<strong>*<code>args</code></strong>, <strong>**<code>kwds</code></strong>) :: <code>Dataset</code></p>
+</blockquote>
+<p>An abstract class representing a :class:<code>Dataset</code>.</p>
+<p>All datasets that represent a map from keys to data samples should subclass
+it. All subclasses should overwrite :meth:<code>__getitem__</code>, supporting fetching a
+data sample for a given key. Subclasses could also optionally overwrite
+:meth:<code>__len__</code>, which is expected to return the size of the dataset by many
+:class:<code>~torch.utils.data.Sampler</code> implementations and the default options
+of :class:<code>~torch.utils.data.DataLoader</code>.</p>
+<p>.. note::
+  :class:<code>~torch.utils.data.DataLoader</code> by default constructs a index
+  sampler that yields integral indices.  To make it work with a map-style
+  dataset with non-integral indices/keys, a custom sampler must be provided.</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="jit_predict" class="doc_header"><code>jit_predict</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L200" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>jit_predict</code>(<strong><code>model</code></strong>, <strong><code>dl</code></strong>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="predict_segmentation" class="doc_header"><code>predict_segmentation</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L210" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_segmentation</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>)</p>
 </blockquote>
 <p>Segment image into land cover classes with a pretrained models
 TODO save also information about label and class</p>

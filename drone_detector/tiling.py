@@ -132,12 +132,9 @@ class Tiler():
 
         return
 
-def untile_raster(path_to_targets:str, outpath:str):
+def untile_raster(path_to_targets:str, outfile:str):
     """Create a single raster file from a directory of predicted rasters, based on the grid generated in
     `self.tile_raster`"""
-
-    if not os.path.exists(outpath):
-        os.makedirs(outpath)
 
     rasters = [f'{path_to_targets}/{f}' for f in os.listdir(path_to_targets) if f.endswith('.tif')]
 
@@ -156,7 +153,7 @@ def untile_raster(path_to_targets:str, outpath:str):
                      'transform': out_tfm,
                      'crs': src.crs})
 
-    with rio.open(f'{outpath}/mosaic.tif', 'w', **out_meta) as dest: dest.write(mosaic)
+    with rio.open(outfile, 'w', **out_meta) as dest: dest.write(mosaic)
 
 
 def untile_vector(path_to_targets:str, outpath:str, non_max_suppression_thresh:float=0.0):

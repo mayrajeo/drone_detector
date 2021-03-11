@@ -25,4 +25,4 @@ dependencies:
     - laspy
     - xlrd
     - jedi==0.17.2
-    - icevision
+    - icevision[all]

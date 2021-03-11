@@ -21,7 +21,7 @@ from shutil import rmtree
 # Cell
 
 class AllDataParser(parsers.Parser, parsers.FilepathMixin, parsers.LabelsMixin, parsers.BBoxesMixin):
-    "Read all image files from data_dir. Useful for inference"
+    "Read all image files from data_dir, used with IceVision models"
     def __init__(self, data_dir):
         self.image_filepaths = get_image_files(data_dir)
 
@@ -55,7 +55,6 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
                    num_classes:Param("Number of classes to predict. Default 2", type=int)=2
     ):
     "Detect bounding boxes from a new image using a pretrained model"
-    "Segment instance fasters from a new image using a pretrained model"
     if os.path.exists(processing_dir):
         print('Processing folder exists')
         return
@@ -208,13 +207,10 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
     # fastai learn.export()
     elif path_to_model.endswith('.pkl'):
         learn = load_learner(path_to_model, cpu=cpu)
-        #model = jit.load(path_to_model)
         test_files = get_image_files(f'{processing_dir}/raster_tiles')
-        #print('Starting prediction')
+        print('Starting prediction')
         test_dl = learn.dls.test_dl(test_files, num_workers=0, bs=1)
         preds = learn.get_preds(dl=test_dl)[0]
-        #dl = DataLoader(UnetDS(test_files, imagenet_stats, 400), batch_size=1, num_workers=2)
-        #preds = jit_predict(model, dl)#_faster_get_preds(learn, test_files)
         os.makedirs(f'{processing_dir}/predicted_rasters')
 
         print('Rasterizing predictions')

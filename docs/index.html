@@ -48,6 +48,7 @@ nb_path: "nbs/index.ipynb"
 
 <pre><code>conda env create -f environment.yml</code></pre>
 <p>This will install all otherwise difficult to install dependencies like gdal. At the moment <code>rtree</code> conda installation doesn't work properly with python 3.8 or newer, but if you wish to use that then you need to manually install <code>libspatialindex-dev</code> to your machine.</p>
+<p>After that change directory to <code>drone_detector</code> and run <code>pip install -e .</code> to get CLI commands to work.</p>
 
 </div>
 </div>
@@ -77,13 +78,15 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><code>drone_detector</code> provides several utilities, like tiling raster and vector files into smaller patches with overlap, and untiling them back to a larger tiles.</p>
+<p>CLI commands <a href="/drone_detector/predict.html#predict_bboxes"><code>predict_bboxes</code></a>, <a href="/drone_detector/predict.html#predict_instance_masks"><code>predict_instance_masks</code></a> and <a href="/drone_detector/predict.html#predict_segmentation"><code>predict_segmentation</code></a> work similarly, with <code>--path_to_model</code>, <code>--path_to_image</code>, <code>--outfile</code>, <code>--processing_dir</code>, <code>--tile_size</code> and <code>--tile_overlap</code> flags. <a href="/drone_detector/predict.html#predict_bboxes"><code>predict_bboxes</code></a> and <a href="/drone_detector/predict.html#predict_instance_masks"><code>predict_instance_masks</code></a> have additional flag <code>--num_classes</code>.</p>
+<p><a href="/drone_detector/predict.html#predict_bboxes"><code>predict_bboxes</code></a> and <a href="/drone_detector/predict.html#predict_instance_masks"><code>predict_instance_masks</code></a> utilize IceVision for Faster RCNN and Mask RCNN, whereas <a href="/drone_detector/predict.html#predict_segmentation"><code>predict_segmentation</code></a> utilizes fast.ai U-Net</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Examples are added as the package develops.</p>
+<h3 id="Bounding-box-detection">Bounding box detection<a class="anchor-link" href="#Bounding-box-detection"> </a></h3><p><a href="/drone_detector/predict.html#predict_bboxes"><code>predict_bboxes</code></a></p>
 
 </div>
 </div>

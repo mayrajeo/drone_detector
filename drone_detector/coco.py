@@ -117,7 +117,8 @@ class COCOProcessor():
                 # No segmentations, only bounding boxes
                 if a['segmentation'] is None:
                     cats.append(a['category_id'])
-                    polys.append(box(*a['bbox']))
+                    # Bbox has format xmin, ymin, xdelta, ydelta
+                    polys.append(box(a['bbox'][0], a['bbox'][1], a['bbox'][2] + a['bbox'][0], a['bbox'][3]+a['bbox'][1]))
 
                 # Single polygon
                 elif len(a['segmentation']) == 1:

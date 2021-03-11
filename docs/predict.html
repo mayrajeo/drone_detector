@@ -64,7 +64,7 @@ nb_path: "nbs/08_predict.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="AllDataParser" class="doc_header"><code>class</code> <code>AllDataParser</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L23" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AllDataParser</code>(<strong><code>data_dir</code></strong>) :: <code>Parser</code></p>
 </blockquote>
-<p>Read all image files from data_dir. Useful for inference</p>
+<p>Read all image files from data_dir, used with IceVision models</p>
 
 </div>
 
@@ -126,7 +126,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_instance_masks" class="doc_header"><code>predict_instance_masks</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L113" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_instance_masks</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>, <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2"=<em><code>2</code></em>)</p>
+<h4 id="predict_instance_masks" class="doc_header"><code>predict_instance_masks</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L112" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_instance_masks</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>, <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2"=<em><code>2</code></em>)</p>
 </blockquote>
 <p>Segment instance masks from a new image using a pretrained model</p>
 
@@ -158,7 +158,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_segmentation" class="doc_header"><code>predict_segmentation</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L178" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_segmentation</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>)</p>
+<h4 id="predict_segmentation" class="doc_header"><code>predict_segmentation</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L177" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_segmentation</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>)</p>
 </blockquote>
 <p>Segment image into land cover classes with a pretrained models
 TODO save also information about label and class</p>

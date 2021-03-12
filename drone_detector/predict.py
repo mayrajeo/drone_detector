@@ -65,7 +65,7 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
     tiler.tile_raster(path_to_image)
 
     # Check whether is possible to use gpu
-    device = torch.device('cpu') if not torch.cuda.is_available() else None
+    device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device}'
 
     # Loading pretrained model
     print('Loading model')
@@ -79,7 +79,7 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
     infer_parser = AllDataParser(data_dir=f'{processing_dir}/raster_tiles')
     infer_set = infer_parser.parse(data_splitter=SingleSplitSplitter(), autofix=False)[0]
     infer_ds = Dataset(infer_set, infer_tfms)
-    infer_dl = faster_rcnn.infer_dl(infer_ds, batch_size=1, shuffle=False)
+    infer_dl = faster_rcnn.infer_dl(infer_ds, batch_size=16, shuffle=False)
     samples, preds = faster_rcnn.predict_dl(model=model, infer_dl=infer_dl)
 
     preds_coco = bbox_preds_to_coco_anns(samples, preds)
@@ -130,7 +130,7 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     tiler.tile_raster(path_to_image)
 
     # Check whether is possible to use gpu
-    device = torch.device('cpu') if not torch.cuda.is_available() else None
+    device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device}'
 
     # Loading pretrained model
     print('Loading model')
@@ -144,7 +144,7 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     infer_parser = AllDataParser(data_dir=f'{processing_dir}/raster_tiles')
     infer_set = infer_parser.parse(data_splitter=SingleSplitSplitter(), autofix=False)[0]
     infer_ds = Dataset(infer_set, infer_tfms)
-    infer_dl = mask_rcnn.infer_dl(infer_ds, batch_size=1, shuffle=False)
+    infer_dl = mask_rcnn.infer_dl(infer_ds, batch_size=16, shuffle=False)
     samples, preds = mask_rcnn.predict_dl(model=model, infer_dl=infer_dl)
 
     preds_coco = mask_preds_to_coco_anns(samples, preds)

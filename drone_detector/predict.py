@@ -209,10 +209,10 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
         learn = load_learner(path_to_model, cpu=cpu)
         test_files = get_image_files(f'{processing_dir}/raster_tiles')
         print('Starting prediction')
+        os.makedirs(f'{processing_dir}/predicted_rasters')
         for chunk in range(0, len(test_files), 100):
             test_dl = learn.dls.test_dl(test_files[chunk:chunk+100], num_workers=0, bs=1)
             preds = learn.get_preds(dl=test_dl)[0]
-            os.makedirs(f'{processing_dir}/predicted_rasters')
 
             print('Rasterizing predictions')
             for f, p in tqdm(zip(test_files[chunk:chunk+100], preds)):

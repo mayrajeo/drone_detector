@@ -65,7 +65,7 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
     tiler.tile_raster(path_to_image)
 
     # Check whether is possible to use gpu
-    device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device}'
+    device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device()}'
 
     # Loading pretrained model
     print('Loading model')
@@ -130,7 +130,7 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     tiler.tile_raster(path_to_image)
 
     # Check whether is possible to use gpu
-    device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device}'
+    device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device()}'
 
     # Loading pretrained model
     print('Loading model')

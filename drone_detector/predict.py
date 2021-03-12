@@ -209,24 +209,25 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
         learn = load_learner(path_to_model, cpu=cpu)
         test_files = get_image_files(f'{processing_dir}/raster_tiles')
         print('Starting prediction')
-        test_dl = learn.dls.test_dl(test_files, num_workers=0, bs=1)
-        preds = learn.get_preds(dl=test_dl)[0]
-        os.makedirs(f'{processing_dir}/predicted_rasters')
+        for chunk in range(0, len(test_files), 100):
+            test_dl = learn.dls.test_dl(test_files[chunk:chunk+100], num_workers=0, bs=1)
+            preds = learn.get_preds(dl=test_dl)[0]
+            os.makedirs(f'{processing_dir}/predicted_rasters')
 
-        print('Rasterizing predictions')
-        for f, p in tqdm(zip(test_files, preds)):
-            ds = gdal.Open(str(f))
-            out_raster = gdal.GetDriverByName('gtiff').Create(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}',
-                                                              ds.RasterXSize,
-                                                              ds.RasterYSize,
-                                                              1, gdal.GDT_Int16)
-            out_raster.SetProjection(ds.GetProjectionRef())
-            out_raster.SetGeoTransform(ds.GetGeoTransform())
-            np_pred = p.numpy().argmax(axis=0)
-            band = out_raster.GetRasterBand(1).WriteArray(np_pred)
-            band = None
-            out_raster = None
-            ds = None
+            print('Rasterizing predictions')
+            for f, p in tqdm(zip(test_files[chunk:chunk+100], preds)):
+                ds = gdal.Open(str(f))
+                out_raster = gdal.GetDriverByName('gtiff').Create(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}',
+                                                                  ds.RasterXSize,
+                                                                  ds.RasterYSize,
+                                                                  1, gdal.GDT_Int16)
+                out_raster.SetProjection(ds.GetProjectionRef())
+                out_raster.SetGeoTransform(ds.GetGeoTransform())
+                np_pred = p.numpy().argmax(axis=0)
+                band = out_raster.GetRasterBand(1).WriteArray(np_pred)
+                band = None
+                out_raster = None
+                ds = None
 
     print('Merging predictions')
     untile_raster(f'{processing_dir}/predicted_rasters', outfile=outfile)

@@ -73,6 +73,7 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
     state_dict = torch.load(path_to_model, map_location=device)
     model = faster_rcnn.model(num_classes=len(class_map))
     model.load_state_dict(state_dict)
+    if device != 'cpu': model.to(torch.device('cuda'))
     infer_tfms = tfms.A.Adapter([tfms.A.Normalize()])
 
     print('Starting predictions')
@@ -138,6 +139,7 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     state_dict = torch.load(path_to_model, map_location=device)
     model = mask_rcnn.model(num_classes=len(class_map))
     model.load_state_dict(state_dict)
+    if device != 'cpu': model.to(torch.device('cuda'))
     infer_tfms = tfms.A.Adapter([tfms.A.Normalize()])
 
     print('Starting predictions')

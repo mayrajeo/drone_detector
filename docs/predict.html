@@ -126,7 +126,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_instance_masks" class="doc_header"><code>predict_instance_masks</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L112" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_instance_masks</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>, <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2"=<em><code>2</code></em>)</p>
+<h4 id="predict_instance_masks" class="doc_header"><code>predict_instance_masks</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L113" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_instance_masks</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>, <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2"=<em><code>2</code></em>)</p>
 </blockquote>
 <p>Segment instance masks from a new image using a pretrained model</p>
 
@@ -158,7 +158,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_segmentation" class="doc_header"><code>predict_segmentation</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L177" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_segmentation</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>)</p>
+<h4 id="predict_segmentation" class="doc_header"><code>predict_segmentation</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L179" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_segmentation</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file"=<em><code>None</code></em>, <strong><code>path_to_image</code></strong>:"Path to image to annotate"=<em><code>None</code></em>, <strong><code>outfile</code></strong>:"Path and filename for output raster"=<em><code>None</code></em>, <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use"=<em><code>'temp'</code></em>, <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles"=<em><code>400</code></em>, <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px"=<em><code>100</code></em>)</p>
 </blockquote>
 <p>Segment image into land cover classes with a pretrained models
 TODO save also information about label and class</p>
@@ -176,88 +176,6 @@ TODO save also information about label and class</p>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>git status
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>On branch master
-Your branch is up to date with &#39;origin/master&#39;.
-
-Changes not staged for commit:
-  (use &#34;git add &lt;file&gt;...&#34; to update what will be committed)
-  (use &#34;git checkout -- &lt;file&gt;...&#34; to discard changes in working directory)
-
-	<span class="ansi-red-fg">modified:   ../drone_detector/predict.py</span>
-
-no changes added to commit (use &#34;git add&#34; and/or &#34;git commit -a&#34;)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>git add --all
-<span class="o">!</span>git commit -m <span class="s1">&#39;fix bs&#39;</span>
-<span class="o">!</span>git push origin master
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[master ded2933] fix bs
- 1 file changed, 4 insertions(+), 4 deletions(-)
-Counting objects: 4, done.
-Delta compression using up to 8 threads.
-Compressing objects: 100% (4/4), done.
-Writing objects: 100% (4/4), 431 bytes | 431.00 KiB/s, done.
-Total 4 (delta 3), reused 0 (delta 0)
-remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
-To github.com:jaeeolma/drone_detector.git
-   297a3c6..ded2933  master -&gt; master
-</pre>
-</div>
-</div>
-
-</div>
-</div>
 
 </div>
     {% endraw %}

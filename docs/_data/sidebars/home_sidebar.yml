@@ -42,6 +42,9 @@ entries:
     - output: web,pdf
       title: Metrics for segmentation
       url: metrics.html
+    - output: web,pdf
+      title: Multichannel extensions for fastai image classification tasks
+      url: multichannel.html
     output: web
     title: drone_detector
   output: web

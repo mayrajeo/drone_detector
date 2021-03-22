@@ -35,7 +35,28 @@ index = {"rangeof": "00_utils.ipynb",
          "AlbumentationsTransform": "09_augmentations.ipynb",
          "SegmentationAlbumentationsTransform": "09_augmentations.ipynb",
          "segmentation_aug_tfms_fastai": "09_augmentations.ipynb",
-         "DiceMulti": "10_metrics.ipynb"}
+         "DiceMulti": "10_metrics.ipynb",
+         "open_npy": "11_multichannel.ipynb",
+         "open_geotiff": "11_multichannel.ipynb",
+         "MultiChannelTensorImage": "11_multichannel.ipynb",
+         "MultiChannelTensorImage.create": "11_multichannel.ipynb",
+         "show_composite": "11_multichannel.ipynb",
+         "show_single_channel": "11_multichannel.ipynb",
+         "show_normalized_spectral_index": "11_multichannel.ipynb",
+         "show_mean_spectra": "11_multichannel.ipynb",
+         "norm": "11_multichannel.ipynb",
+         "MultiChannelImageBlock": "11_multichannel.ipynb",
+         "using_attr": "11_multichannel.ipynb",
+         "MultiChannelImageDataLoaders": "11_multichannel.ipynb",
+         "MultiChannelImageDataLoaders.from_csv": "11_multichannel.ipynb",
+         "MultiChannelImageDataLoaders.from_shapefile": "11_multichannel.ipynb",
+         "MultiChannelImageDataLoaders.from_name_func": "11_multichannel.ipynb",
+         "MultiChannelImageDataLoaders.from_path_re": "11_multichannel.ipynb",
+         "MultiChannelImageDataLoaders.from_name_re": "11_multichannel.ipynb",
+         "TifSegmentationDataLoaders": "11_multichannel.ipynb",
+         "RegressionMask": "11_multichannel.ipynb",
+         "RegressionMaskBlock": "11_multichannel.ipynb",
+         "RegressionMask.create": "11_multichannel.ipynb"}
 
 modules = ["utils.py",
            "tiling.py",
@@ -47,7 +68,8 @@ modules = ["utils.py",
            "segmentation.py",
            "predict.py",
            "augmentations.py",
-           "metrics.py"]
+           "metrics.py",
+           "multichannel.py"]
 
 doc_url = "https://jaeeolma.github.io/drone_detector/"
 

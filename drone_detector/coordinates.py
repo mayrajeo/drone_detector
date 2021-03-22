@@ -7,24 +7,6 @@ from .imports import *
 from .utils import *
 
 # Cell
-from pathlib import Path
-import os
-import geopandas as gpd
-import pandas as pd
-from osgeo import gdal
-import shapely
-from shapely.geometry import Point, Polygon, box, shape
-import numpy as np
-from itertools import product
-from typing import Tuple
-from tqdm import tqdm
-import affine
-import rasterio as rio
-import matplotlib.pyplot as plt
-
-from .utils import *
-
-# Cell
 
 def convert_poly_coords(geom:shape, raster_src:str=None, affine_obj:affine.Affine=None,
                         inverse:bool=False, precision=None) -> shape:

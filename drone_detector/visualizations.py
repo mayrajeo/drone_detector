@@ -15,7 +15,8 @@ from fastai.vision.all import *
 def show_results(x:TensorImage, y:TensorMask, samples, outs, ctxs, max_n=6,
                  nrows=None, ncols=3, figsize=None, **kwargs):
     "Patch `show_results` to show segmentation results in three columns (no-mask, ground truth, prediction)"
-    if ctxs is None: ctxs = get_grid(min(len(samples), max_n), nrows=nrows, ncols=ncols, add_vert=1, figsize=figsize,
+
+    if ctxs is None: ctxs = get_grid(min(len(samples), max_n*3), nrows=nrows, ncols=ncols, add_vert=1, figsize=figsize,
                                      double=False, title='Image/Target/Prediction')
 
     for i in range(2):

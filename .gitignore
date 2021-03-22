@@ -148,8 +148,9 @@ data/
 # qgis aux files
 *.tif.aux.xml
 
-# streamlit app
+# apps
 streamlit_app/
+gradio/
 
 # temp
 

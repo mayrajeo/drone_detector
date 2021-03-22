@@ -8,25 +8,6 @@ from .imports import *
 from .utils import *
 
 # Cell
-from pathlib import Path
-import os
-import geopandas as gpd
-import pandas as pd
-from osgeo import ogr, gdal
-from shapely.geometry import Point, Polygon, box
-import numpy as np
-from itertools import product
-from typing import Tuple
-from tqdm import tqdm
-from fastcore.basics import *
-from .utils import *
-import json
-from rasterio.merge import merge as rio_merge
-import rasterio as rio
-
-# TODO fix imports
-
-# Cell
 
 def make_grid(path, gridsize_x:int=640, gridsize_y:int=480,
               overlap:Tuple[int, int]=(100,100)) -> gpd.GeoDataFrame:

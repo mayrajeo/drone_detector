@@ -27,3 +27,4 @@ dependencies:
     - xlrd
     - jedi==0.17.2
     - icevision
+    - ipywidgets

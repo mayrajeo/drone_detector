@@ -7,11 +7,9 @@
     "COCO utilities": "coco.html",
     "Postprocessing": "postprocessing.html",
     "Visualizations": "visualizations.html",
-    "Training object detection models": "detection.html",
-    "Training semantic segmentation models": "segmentation.html",
     "CLI for using pretrained models to process new images": "predict.html",
     "Augmentations": "augmentations.html",
-    "Metrics for segmentation": "metrics.html",
-    "Multichannel extensions for fastai image classification tasks": "multichannel.html"
+    "Custom losses and metrics": "metrics.html",
+    "Custom data used in remote sensing": "data.html"
   }
 }

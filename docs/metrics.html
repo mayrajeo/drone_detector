@@ -1,6 +1,6 @@
 ---
 
-title: Metrics for segmentation
+title: Custom losses and metrics
 
 
 keywords: fastai
@@ -62,7 +62,7 @@ nb_path: "nbs/10_metrics.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DiceMulti" class="doc_header"><code>class</code> <code>DiceMulti</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L12" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DiceMulti</code>(<strong><code>axis</code></strong>=<em><code>1</code></em>) :: <code>Metric</code></p>
+<h2 id="DiceMulti" class="doc_header"><code>class</code> <code>DiceMulti</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L15" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DiceMulti</code>(<strong><code>axis</code></strong>=<em><code>1</code></em>) :: <code>Metric</code></p>
 </blockquote>
 <p>Averaged Dice metric (Macro F1) for multiclass target in segmentation. Newer fastai-version has this implemented</p>
 
@@ -72,6 +72,59 @@ nb_path: "nbs/10_metrics.ipynb"
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="adjusted_R2Score" class="doc_header"><code>adjusted_R2Score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L42" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>adjusted_R2Score</code>(<strong><code>r2_score</code></strong>, <strong><code>n</code></strong>, <strong><code>k</code></strong>)</p>
+</blockquote>
+<p>Calculates adjusted_R2Score based on r2_score, number of observations (n) and number of predictor variables(k)</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}

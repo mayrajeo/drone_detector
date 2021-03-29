@@ -31,7 +31,7 @@ class AlbumentationsTransform(RandTransform):
         if self.idx == 0:
             aug_img = self.train_aug(image=np.array(img).transpose(1,2,0))['image'].transpose(2,0,1)
         else:
-            if valid_aug is None: aug_img = self.valid_aug(image=np.array(img).transpose(1,2,0))['image'].transpose(2,0,1)
+            if valid_aug is not None: aug_img = self.valid_aug(image=np.array(img).transpose(1,2,0))['image'].transpose(2,0,1)
             else: return aug_img
         return MultiChannelTensorImage.create(aug_img)
 

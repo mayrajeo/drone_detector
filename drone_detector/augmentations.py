@@ -23,8 +23,8 @@ class AlbumentationsTransform(RandTransform):
         if self.idx == 0:
             aug_img = self.train_aug(image=np.array(img))['image']
         else:
-            if valid_aug is None: aug_img = self.valid_aug(image=np.array(img))['image']
-            else: return aug_img
+            if valid_aug is not None: aug_img = self.valid_aug(image=np.array(img))['image']
+            else: return img
         return PILImage.create(aug_img)
 
     def encodes(self, img:MultiChannelTensorImage):
@@ -32,7 +32,7 @@ class AlbumentationsTransform(RandTransform):
             aug_img = self.train_aug(image=np.array(img).transpose(1,2,0))['image'].transpose(2,0,1)
         else:
             if valid_aug is not None: aug_img = self.valid_aug(image=np.array(img).transpose(1,2,0))['image'].transpose(2,0,1)
-            else: return aug_img
+            else: return img
         return MultiChannelTensorImage.create(aug_img)
 
 

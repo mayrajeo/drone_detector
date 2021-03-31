@@ -53,164 +53,6 @@ nb_path: "nbs/05_visualizations.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Custom-show-functions-for-MultiChannelTensorImage">Custom show functions for MultiChannelTensorImage<a class="anchor-link" href="#Custom-show-functions-for-MultiChannelTensorImage"> </a></h2>
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_composite" class="doc_header"><code>show_composite</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L17" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_composite</code>(<strong><code>img</code></strong>, <strong><code>channels</code></strong>, <strong><code>ax</code></strong>=<em><code>None</code></em>, <strong><code>figsize</code></strong>=<em><code>(3, 3)</code></em>, <strong><code>title</code></strong>=<em><code>None</code></em>, <strong><code>scale</code></strong>=<em><code>True</code></em>, <strong><code>ctx</code></strong>=<em><code>None</code></em>, <strong><code>norm_min</code></strong>=<em><code>None</code></em>, <strong><code>norm_max</code></strong>=<em><code>None</code></em>, <strong><code>scale_axis</code></strong>=<em><code>(0, 1)</code></em>, <strong>**<code>kwargs</code></strong>)</p>
-</blockquote>
-<p>Show three channel composite so that channels correspond to R, G and B</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_single_channel" class="doc_header"><code>show_single_channel</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L35" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_single_channel</code>(<strong><code>img</code></strong>, <strong><code>channel</code></strong>, <strong><code>ax</code></strong>=<em><code>None</code></em>, <strong><code>figsize</code></strong>=<em><code>(3, 3)</code></em>, <strong><code>ctx</code></strong>=<em><code>None</code></em>, <strong><code>title</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
-</blockquote>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_normalized_spectral_index" class="doc_header"><code>show_normalized_spectral_index</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_normalized_spectral_index</code>(<strong><code>img</code></strong>, <strong><code>channels</code></strong>, <strong><code>ax</code></strong>=<em><code>None</code></em>, <strong><code>figsize</code></strong>=<em><code>(3, 3)</code></em>, <strong><code>ctx</code></strong>=<em><code>None</code></em>, <strong><code>title</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
-</blockquote>
-<p>Show normalized spectral index such as NDVI</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_mean_spectra" class="doc_header"><code>show_mean_spectra</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L58" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_mean_spectra</code>(<strong><code>img</code></strong>, <strong><code>ax</code></strong>=<em><code>None</code></em>, <strong><code>figsize</code></strong>=<em><code>(3, 3)</code></em>, <strong><code>ctx</code></strong>=<em><code>None</code></em>, <strong><code>title</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
-</blockquote>
-<p>Show average spectra graph</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="norm" class="doc_header"><code>norm</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L69" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>norm</code>(<strong><code>vals</code></strong>, <strong><code>norm_min</code></strong>=<em><code>None</code></em>, <strong><code>norm_max</code></strong>=<em><code>None</code></em>, <strong><code>axis</code></strong>=<em><code>(0, 1)</code></em>)</p>
-</blockquote>
-<p>For visualization purposes scale image with `(vals-norm_min)/(norm_max-norm_min),
-with norm_min and norm_max either specified or within 0.01 and 0.99 quantiles of all values</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Semantic-segmentation-(fastai)">Semantic segmentation (fastai)<a class="anchor-link" href="#Semantic-segmentation-(fastai)"> </a></h2>
-</div>
-</div>
-</div>
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Object-detection/instance-segmentation-(IceVision)">Object detection/instance segmentation (IceVision)<a class="anchor-link" href="#Object-detection/instance-segmentation-(IceVision)"> </a></h2><blockquote><p>Modified icevision functions to do what we want to.</p>
 </blockquote>
 
@@ -228,7 +70,7 @@ with norm_min and norm_max either specified or within 0.01 and 0.99 quantiles of
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="plot_grid_preds_actuals_raws" class="doc_header"><code>plot_grid_preds_actuals_raws</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L124" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>plot_grid_preds_actuals_raws</code>(<strong><code>raws</code></strong>, <strong><code>actuals</code></strong>, <strong><code>predictions</code></strong>, <strong><code>figsize</code></strong>=<em><code>None</code></em>, <strong><code>show</code></strong>=<em><code>False</code></em>, <strong><code>annotations</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
+<h4 id="plot_grid_preds_actuals_raws" class="doc_header"><code>plot_grid_preds_actuals_raws</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L16" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>plot_grid_preds_actuals_raws</code>(<strong><code>raws</code></strong>, <strong><code>actuals</code></strong>, <strong><code>predictions</code></strong>, <strong><code>figsize</code></strong>=<em><code>None</code></em>, <strong><code>show</code></strong>=<em><code>False</code></em>, <strong><code>annotations</code></strong>=<em><code>None</code></em>, <strong>**<code>kwargs</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -252,7 +94,7 @@ with norm_min and norm_max either specified or within 0.01 and 0.99 quantiles of
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="show_raw_mask_pred" class="doc_header"><code>show_raw_mask_pred</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L165" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_raw_mask_pred</code>(<strong><code>samples</code></strong>:<code>Union</code>[<code>Sequence</code>[<code>ndarray</code>], <code>Sequence</code>[<code>dict</code>]], <strong><code>preds</code></strong>:<code>Sequence</code>[<code>dict</code>], <strong><code>class_map</code></strong>:<code>Optional</code>[<code>ClassMap</code>]=<em><code>None</code></em>, <strong><code>denormalize_fn</code></strong>:<code>Optional</code>[<code>callable</code>]=<em><code>denormalize_imagenet</code></em>, <strong><code>display_label</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>display_bbox</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>display_mask</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>ncols</code></strong>:<code>int</code>=<em><code>1</code></em>, <strong><code>figsize</code></strong>=<em><code>None</code></em>, <strong><code>show</code></strong>=<em><code>False</code></em>, <strong><code>annotations</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="show_raw_mask_pred" class="doc_header"><code>show_raw_mask_pred</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/visualizations.py#L57" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>show_raw_mask_pred</code>(<strong><code>samples</code></strong>:<code>Union</code>[<code>Sequence</code>[<code>ndarray</code>], <code>Sequence</code>[<code>dict</code>]], <strong><code>preds</code></strong>:<code>Sequence</code>[<code>dict</code>], <strong><code>class_map</code></strong>:<code>Optional</code>[<code>ClassMap</code>]=<em><code>None</code></em>, <strong><code>denormalize_fn</code></strong>:<code>Optional</code>[<code>callable</code>]=<em><code>denormalize_imagenet</code></em>, <strong><code>display_label</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>display_bbox</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>display_mask</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>ncols</code></strong>:<code>int</code>=<em><code>1</code></em>, <strong><code>figsize</code></strong>=<em><code>None</code></em>, <strong><code>show</code></strong>=<em><code>False</code></em>, <strong><code>annotations</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>

@@ -53,6 +53,44 @@ nb_path: "nbs/09_augmentations.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Patching-for-drone_detector.data-classes">Patching for drone_detector.data classes<a class="anchor-link" href="#Patching-for-drone_detector.data-classes"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="RegressionMask.affine_coord" class="doc_header"><code>RegressionMask.affine_coord</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/augmentations.py#L14" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>RegressionMask.affine_coord</code>(<strong><code>x</code></strong>:<a href="/drone_detector/data.html#RegressionMask"><code>RegressionMask</code></a>, <strong><code>mat</code></strong>=<em><code>None</code></em>, <strong><code>coord_tfm</code></strong>=<em><code>None</code></em>, <strong><code>sz</code></strong>=<em><code>None</code></em>, <strong><code>mode</code></strong>=<em><code>'nearest'</code></em>, <strong><code>pad_mode</code></strong>=<em><code>'reflection'</code></em>, <strong><code>align_corners</code></strong>=<em><code>True</code></em>)</p>
+</blockquote>
+<p>RegressionMask can't be <code>long</code> type</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="AlbumentationsTransform">AlbumentationsTransform<a class="anchor-link" href="#AlbumentationsTransform"> </a></h2>
 </div>
 </div>
@@ -68,7 +106,7 @@ nb_path: "nbs/09_augmentations.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AlbumentationsTransform" class="doc_header"><code>class</code> <code>AlbumentationsTransform</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/augmentations.py#L14" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AlbumentationsTransform</code>(<strong><code>train_aug</code></strong>, <strong><code>valid_aug</code></strong>=<em><code>None</code></em>) :: <code>RandTransform</code></p>
+<h2 id="AlbumentationsTransform" class="doc_header"><code>class</code> <code>AlbumentationsTransform</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/augmentations.py#L26" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AlbumentationsTransform</code>(<strong><code>train_aug</code></strong>, <strong><code>valid_aug</code></strong>=<em><code>None</code></em>) :: <code>RandTransform</code></p>
 </blockquote>
 <p>A transform handler for multiple <code>Albumentation</code> transforms in simple classification or regression tasks.</p>
 
@@ -106,7 +144,7 @@ nb_path: "nbs/09_augmentations.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="SegmentationAlbumentationsTransform" class="doc_header"><code>class</code> <code>SegmentationAlbumentationsTransform</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/augmentations.py#L41" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SegmentationAlbumentationsTransform</code>(<strong><code>aug</code></strong>) :: <code>ItemTransform</code></p>
+<h2 id="SegmentationAlbumentationsTransform" class="doc_header"><code>class</code> <code>SegmentationAlbumentationsTransform</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/augmentations.py#L53" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SegmentationAlbumentationsTransform</code>(<strong><code>aug</code></strong>) :: <code>ItemTransform</code></p>
 </blockquote>
 <p>A transform handler for <code>Albumentation</code> transforms for segmentation tasks.</p>
 
@@ -359,7 +397,7 @@ nb_path: "nbs/09_augmentations.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="segmentation_aug_tfms_fastai" class="doc_header"><code>segmentation_aug_tfms_fastai</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/augmentations.py#L88" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>segmentation_aug_tfms_fastai</code>(<strong><code>size</code></strong>=<em><code>160</code></em>)</p>
+<h4 id="segmentation_aug_tfms_fastai" class="doc_header"><code>segmentation_aug_tfms_fastai</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/augmentations.py#L100" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>segmentation_aug_tfms_fastai</code>(<strong><code>size</code></strong>=<em><code>160</code></em>)</p>
 </blockquote>
 <p>Utilize <code>tfms.A.aug_tfms</code> with fastai and SegmentationDataloaders</p>
 

@@ -11,6 +11,18 @@ from .data import *
 
 # Cell
 
+@patch
+def affine_coord(x: RegressionMask, mat=None, coord_tfm=None, sz=None, mode='nearest',
+                 pad_mode=PadMode.Reflection, align_corners=True):
+    "RegressionMask can't be `long` type"
+    add_dim = (x.ndim==3)
+    if add_dim: x = x[:,None]
+    res = TensorImage.affine_coord(x.float(), mat, coord_tfm, sz, mode, pad_mode, align_corners)
+    if add_dim: res = res[:,0]
+    return RegressionMask(res)
+
+# Cell
+
 class AlbumentationsTransform(RandTransform):
     "A transform handler for multiple `Albumentation` transforms in simple classification or regression tasks."
     split_idx, order = None, 2

@@ -277,13 +277,13 @@ def get_last(t):
 class MultiChannelImageDataLoaders(DataLoaders):
     @classmethod
     @delegates(DataLoaders.from_dblock)
-    def from_folder(cls, path, chans=None, extensions=['.tif'],
+    def from_folder(cls, path, chans=None, max_val=None, extensions=['.tif'],
                     train='train', valid='valid', valid_pct=None, seed=None,
                     vocab=None, item_tfms=None, batch_tfms=None, **kwargs):
         """Create from imagenet style dataset in `path` with `train`, `valid`, `test` subfolders (or provide `valid_pct`).
         Optionally list the channels to use."""
         splitter = GrandparentSplitter(train_name=train, valid_name=valid) if valid_pct is None else RandomSplitter(valid_pct, seed=seed)
-        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans), CategoryBlock(vocab=vocab)),
+        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans, max_val=max_val), CategoryBlock(vocab=vocab)),
                            get_items=partial(get_files, extensions=extensions),
                            splitter=splitter,
                            get_y=parent_label,
@@ -293,12 +293,12 @@ class MultiChannelImageDataLoaders(DataLoaders):
 
     @classmethod
     @delegates(DataLoaders.from_dblock)
-    def from_path_func(cls, path, fnames, label_func,chans=None, extensions=['.tif'],
+    def from_path_func(cls, path, fnames, label_func,chans=None, max_val=None, extensions=['.tif'],
                        valid_pct=0.2, seed=None, item_tfms=None, batch_tfms=None, **kwargs):
         """Create from list of `fnames` in `path`s with `label_func`.
         Optionally list the channels to use."""
 
-        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans), CategoryBlock(vocab=vocab)),
+        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans, max_val=max_val), CategoryBlock(vocab=vocab)),
                            splitter=RandomSplitter(valid_pct, seed=seed),
                            get_y=label_func,
                            item_tfms=item_tfms,
@@ -307,28 +307,28 @@ class MultiChannelImageDataLoaders(DataLoaders):
 
     @classmethod
     def from_name_func(cls, path, fnames, label_func,
-                       chans=None, extensions=['.tif'], **kwargs):
+                       chans=None, max_val=None, extensions=['.tif'], **kwargs):
         """Create from name attrs in list of `fnames` in `path`s with `label_func`.
         Optionally list the channels to use."""
         f = using_attr(label_func, 'name')
-        return cls.from_path_func(path, fnames, f, chans=chans, **kwargs)
+        return cls.from_path_func(path, fnames, f, chans=chans, max_val=max_val, **kwargs)
 
     @classmethod
-    def from_path_re(cls, path, fnames, pat, chans=None, extensions=['.tif'], **kwargs):
+    def from_path_re(cls, path, fnames, pat, chans=None, max_val=None, extensions=['.tif'], **kwargs):
         """Create from list of `fnames` in `path`s with re expression `pat`.
            Optionally list the channels to use."""
-        return cls.from_path_func(path, fnames, RegexLabeller(pat), chans=chans, **kwargs)
+        return cls.from_path_func(path, fnames, RegexLabeller(pat), chans=chans, max_val=None, **kwargs)
 
     @classmethod
     @delegates(DataLoaders.from_dblock)
-    def from_name_re(cls, path, fnames, pat, chans=None, extensions=['.tif'],**kwargs):
+    def from_name_re(cls, path, fnames, pat, chans=None, max_val=None, extensions=['.tif'],**kwargs):
         """Create from name attrs in list of `fnames` in `path`s with re expression `pat`.
            Optionally list the channels to use"""
-        return cls.from_name_func(path, fnames, RegexLabeller(pat), chans=chans, **kwargs)
+        return cls.from_name_func(path, fnames, RegexLabeller(pat), chans=chans, max_val=max_val **kwargs)
 
     @classmethod
     @delegates(DataLoaders.from_dblock)
-    def from_df(cls, df, path='.', chans=None, valid_pct=0.2, seed=None,
+    def from_df(cls, df, path='.', chans=None, max_val=None, valid_pct=0.2, seed=None,
                 fn_col=0, folder=None, suff='', label_col=1, label_delim=None,
                 y_block=None, valid_col=None, item_tfms=None, batch_tfms=None, **kwargs):
         pref = f'{Path(path) if folder is None else Path(path)/folder}{os.path.sep}'
@@ -336,7 +336,7 @@ class MultiChannelImageDataLoaders(DataLoaders):
             is_multi = (is_listy(label_col) and len(label_col) > 1) or label_delim is not None
             y_block = MultiCategoryBlock if is_multi else CategoryBlock
         splitter = RandomSplitter(valid_pct, seed=seed) if valid_col is None else ColSplitter(valid_col)
-        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans), y_block),
+        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans, max_val=max_val), y_block),
                            get_x=ColReader(fn_col, pref=pref, suff=suff),
                            get_y=ColReader(label_col, label_delim=label_delim),
                            splitter=splitter,
@@ -345,23 +345,23 @@ class MultiChannelImageDataLoaders(DataLoaders):
         return cls.from_dblock(dblock, df, path=path, **kwargs)
 
     @classmethod
-    def from_shapefile(cls, path, chans=None, shp_fname='labels.shp', **kwargs):
+    def from_shapefile(cls, path, chans=None, max_val=None, shp_fname='labels.shp', **kwargs):
         """Create from shapefile `shp_fname` in `path` readable with geopandas.
         Optionally list the channels to use."""
         df = gpd.read_file(str(Path(path)/shp_fname))
         # Shapefiles don't support boolean columns
         if 'valid_col' in kwargs.keys(): df[kwargs['valid_col']] = df[kwargs['valid_col']].astype(bool)
-        return cls.from_df(df, path=path, chans=chans, **kwargs)
+        return cls.from_df(df, path=path, chans=chans, max_val=None, **kwargs)
 
     @classmethod
-    def from_csv(cls, path,  chans=None, csv_fname='labels.csv',
+    def from_csv(cls, path,  chans=None, .max_val=None, csv_fname='labels.csv',
                  header='infer', delimiter=None, **kwargs):
         df = pd.read_csv(Path(path)/csv_fname, header=header, delimiter=delimiter)
-        return cls.from_df(df, path=path, chans=chans, **kwargs)
+        return cls.from_df(df, path=path, chans=chans, max_val=None, **kwargs)
 
     @classmethod
     @delegates(DataLoaders.from_dblock)
-    def from_lists(cls, path, fnames, labels,chans=None, valid_pct=0.2,
+    def from_lists(cls, path, fnames, labels, chans=None, max_val=None, valid_pct=0.2,
                    seed:int=None, y_block=None, item_tfms=None, batch_tfms=None,
                    **kwargs):
         """Create from list of `fnames` in `path`.
@@ -369,7 +369,7 @@ class MultiChannelImageDataLoaders(DataLoaders):
         if y_block is None:
             y_block = MultiCategoryBlock if is_listy(labels[0]) and len(labels[0]) > 1 else (
                 RegressionBlock if isinstance(labels[0], float) else CategoryBlock)
-        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans), y_block),
+        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans, max_val=max_val), y_block),
                            splitter=RandomSplitter(valid_pct, seed=seed),
                            item_tfms=item_tfms,
                            batch_tfms=batch_tfms)
@@ -386,11 +386,11 @@ class TifSegmentationDataLoaders(DataLoaders):
     "Needs a better name"
     @classmethod
     @delegates(DataLoaders.from_dblock)
-    def from_label_func(cls, path, fnames, label_func, y_block=MaskBlock, chans=None,
+    def from_label_func(cls, path, fnames, label_func, y_block=MaskBlock, chans=None, max_val=None,
                          extensions=['.tif'], valid_pct=0.2, seed=None,
                          codes=None, item_tfms=None, batch_tfms=None, **kwargs):
         "Create from list of `fnames` in `path`s with `label_func`."
-        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans),
+        dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans, max_val=max_val),
                                    y_block(codes=codes)),
                            splitter=RandomSplitter(valid_pct, seed=seed),
                            get_y=label_func,

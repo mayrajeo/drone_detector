@@ -354,7 +354,7 @@ class MultiChannelImageDataLoaders(DataLoaders):
         return cls.from_df(df, path=path, chans=chans, max_val=None, **kwargs)
 
     @classmethod
-    def from_csv(cls, path,  chans=None, ,max_val=None, csv_fname='labels.csv',
+    def from_csv(cls, path,  chans=None, max_val=None, csv_fname='labels.csv',
                  header='infer', delimiter=None, **kwargs):
         df = pd.read_csv(Path(path)/csv_fname, header=header, delimiter=delimiter)
         return cls.from_df(df, path=path, chans=chans, max_val=None, **kwargs)

@@ -18,18 +18,19 @@ from matplotlib.cm import ScalarMappable
 
 # Cell
 
-def open_npy(fn, chans=None):
+def open_npy(fn, chans=None, max_val=None):
     im = torch.from_numpy(np.load(str(fn)))
     if chans is not None: im = im[chans]
+    if max_val is not None: im = np.clip(im, 0, max_val)
     return im
 
-def open_geotiff(fn, chans=None, maxval=None):
+def open_geotiff(fn, chans=None, max_val=None):
     with rio.open(str(fn)) as f:
         data = f.read()
         data = data.astype(np.float32)
     im = torch.from_numpy(data)
     if chans is not None: im = im[chans]
-    if maxval is not None: im = np.clip(im, 0, maxval)
+    if max_val is not None: im = np.clip(im, 0, max_val)
     return im
 
 # Cell
@@ -187,24 +188,24 @@ class MultiChannelTensorImage(TensorImage):
                                        **{**self._show_args, **kwargs})
 
     @classmethod
-    def create(cls, fn:(Path,str,ndarray), chans=None,  **kwargs) ->None:
+    def create(cls, fn:(Path,str,ndarray), chans=None,  max_val=None, **kwargs) ->None:
         if isinstance(fn, Tensor): fn = fn.numpy()
         if isinstance(fn, ndarray):
             im = torch.from_numpy(fn)
             if chans is not None: im = im[chans]
             return cls(im)
         if isinstance(fn, Path) or isinstance(fn, str):
-            if str(fn).endswith('npy'): return cls(open_npy(fn=fn, chans=chans))
-            elif str(fn).endswith('.tif'): return cls(open_geotiff(fn=fn, chans=chans))
+            if str(fn).endswith('npy'): return cls(open_npy(fn=fn, chans=chans, max_val=max_val))
+            elif str(fn).endswith('.tif'): return cls(open_geotiff(fn=fn, chans=chans, max_val=max_val))
 
     def __repr__(self): return f'{self.__class__.__name__} size={"x".join([str(d) for d in self.shape])}'
 
 MultiChannelTensorImage.create = Transform(MultiChannelTensorImage.create)
 
 # Cell
-def MultiChannelImageBlock(cls=MultiChannelTensorImage, chans=None, maxval=None):
+def MultiChannelImageBlock(cls=MultiChannelTensorImage, chans=None, max_val=None):
     "Default behaviour: use all channels"
-    return TransformBlock(partial(cls.create, chans=chans, maxval=maxval))
+    return TransformBlock(partial(cls.create, chans=chans, maxval=max_val))
 
 # Cell
 def _using_attr(f, attr, x):
@@ -234,17 +235,17 @@ class MultiChannelTensorImageTuple(fastuple):
                                        **{**self._show_args, **kwargs})
 
     @classmethod
-    def create(cls, fns, chans=None,  **kwargs) ->None:
-        return cls(tuple(MultiChannelTensorImage.create(f) for f in fns))
+    def create(cls, fns, chans=None, max_val=None, **kwargs) ->None:
+        return cls(tuple(MultiChannelTensorImage.create(f, chans, max_val) for f in fns))
 
     def __repr__(self): return f'{self.__class__.__name__} of {len(self)} images'
 
 MultiChannelTensorImageTuple.create = Transform(MultiChannelTensorImageTuple.create)
 
 # Cell
-def MultiChannelImageTupleBlock(cls=MultiChannelTensorImageTuple, chans=None, maxval=None):
+def MultiChannelImageTupleBlock(cls=MultiChannelTensorImageTuple, chans=None, max_val=None):
     "Default behaviour: use all channels"
-    return TransformBlock(partial(cls.create, chans=chans, maxval=maxval))
+    return TransformBlock(partial(cls.create, chans=chans, max_val=max_val))
 
 # Cell
 

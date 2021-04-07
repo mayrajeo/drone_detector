@@ -113,7 +113,7 @@ class Tiler():
 
         return
 
-def untile_raster(path_to_targets:str, outfile:str):
+def untile_raster(path_to_targets:str, outfile:str, merge_method:str='first'):
     """Create a single raster file from a directory of predicted rasters, based on the grid generated in
     `self.tile_raster`"""
 
@@ -125,7 +125,7 @@ def untile_raster(path_to_targets:str, outfile:str):
         src = rio.open(f)
         files_to_mosaic.append(src)
 
-    mosaic, out_tfm = rio_merge(files_to_mosaic)
+    mosaic, out_tfm = rio_merge(files_to_mosaic, method=method)
 
     out_meta = src.meta.copy()
     out_meta.update({'driver': 'GTiff',

@@ -236,7 +236,7 @@ class MultiChannelTensorImageTuple(fastuple):
 
     @classmethod
     def create(cls, fns, chans=None, max_val=None, **kwargs) ->None:
-        return cls(tuple(MultiChannelTensorImage.create(f, chans, max_val) for f in fns))
+        return cls(tuple(MultiChannelTensorImage.create(f, chans=chans, max_val=max_val) for f in fns))
 
     def __repr__(self): return f'{self.__class__.__name__} of {len(self)} images'
 
@@ -388,9 +388,10 @@ class TifSegmentationDataLoaders(DataLoaders):
     @classmethod
     @delegates(DataLoaders.from_dblock)
     def from_label_func(cls, path, fnames, label_func, y_block=MaskBlock, chans=None, max_val=None,
-                         extensions=['.tif'], valid_pct=0.2, seed=None,
+                         extensions=['.tif'], valid_pct=0.2, seed=None, splitter=None,
                          codes=None, item_tfms=None, batch_tfms=None, **kwargs):
         "Create from list of `fnames` in `path`s with `label_func`."
+        splitter = RandomSplitter(valid_pct, seed=seed) if splitter is None else splitter
         dblock = DataBlock(blocks=(MultiChannelImageBlock(chans=chans, max_val=max_val),
                                    y_block(codes=codes)),
                            splitter=RandomSplitter(valid_pct, seed=seed),

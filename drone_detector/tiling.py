@@ -113,7 +113,7 @@ class Tiler():
 
         return
 
-def untile_raster(path_to_targets:str, outfile:str, merge_method:str='first'):
+def untile_raster(path_to_targets:str, outfile:str, method:str='first'):
     """Create a single raster file from a directory of predicted rasters, based on the grid generated in
     `self.tile_raster`"""
 

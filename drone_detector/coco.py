@@ -141,57 +141,59 @@ class COCOProcessor():
             tfmd_gdf.to_file(f'{self.outpath}/{outdir}/{i["file_name"][:-4]}.shp')
         return
 
-def mask_preds_to_coco_anns(samples:list, preds:list) -> dict:
+def mask_preds_to_coco_anns(preds:list) -> dict:
     """Process list of IceVision `samples` and `preds` to COCO-annotation polygon format.
-    Returns a dict with Coco-style `images` and `annotations`"""
+    Returns a dict with Coco-style `images` and `annotations`
+
+    TODO replace these with functions from icevision somehow"""
     outdict = {}
     outdict['annotations'] = []
-    outdict['images'] = [{'file_name': str(s['filepath'].name), 'id': s['imageid']} for s in samples]
-
+    outdict['images'] = [{'file_name': str(f'{p.ground_truth.filepath.stem}{p.ground_truth.filepath.suffix}'), 'id': p.record_id} for p in preds]
     anns = []
-    for i, (s, p) in tqdm(enumerate(zip(samples,preds))):
-        for j in rangeof(p['masks']):
+    for i, p in tqdm(enumerate(preds)):
+        for j in rangeof(p.detection.masks):
             anns = []
             ann_dict = {
-                'segmentation': binary_mask_to_polygon(p['masks'].to_mask(s['height'],s['width']).data[j]),
+                'segmentation': binary_mask_to_polygon(p.detection.masks.to_mask(p.height,p.width).data[j]),
                 'area': None,
                 'iscrowd': 0,
-                'category_id': p['labels'][j].item(),
+                'category_id': p.detection.label_ids[j].item(),
                 'id': i,
-                'image_id': s['imageid'],
-                'bbox': [p['bboxes'][j].xmin.item(),
-                         p['bboxes'][j].ymin.item(),
-                         p['bboxes'][j].xmax.item() - p['bboxes'][j].xmin.item(),
-                         p['bboxes'][j].ymax.item() - p['bboxes'][j].ymin.item()]
+                'image_id': p.record_id,
+                'bbox': [p.detection.bboxes[j].xmin.item(),
+                         p.detection.bboxes[j].ymin.item(),
+                         p.detection.bboxes[j].xmax.item() - p.detection.bboxes[j].xmin.item(),
+                         p.detection.bboxes[j].ymax.item() - p.detection.bboxes[j].ymin.item()]
             }
+
 
             anns.append(ann_dict)
             outdict['annotations'].extend(anns)
 
     return outdict
 
-def bbox_preds_to_coco_anns(samples:list, preds:list) -> dict:
+def bbox_preds_to_coco_anns(preds:list) -> dict:
     """Process list of IceVision `samples` and `preds` to COCO-annotation polygon format.
     Returns a dict with Coco-style `images` and `annotations`"""
     outdict = {}
     outdict['annotations'] = []
-    outdict['images'] = [{'file_name': str(s['filepath'].name), 'id': s['imageid']} for s in samples]
+    outdict['images'] = [{'file_name': str(f'{p.ground_truth.filepath.stem}{p.ground_truth.filepath.suffix}'), 'id': p.record_id} for p in preds]
 
     anns = []
-    for i, (s, p) in tqdm(enumerate(zip(samples,preds))):
-        for j in rangeof(p['bboxes']):
+    for i, p in tqdm(enumerate(preds)):
+        for j in rangeof(p.detection.bboxes):
             anns = []
             ann_dict = {
                 'segmentation': None,
                 'area': None,
                 'iscrowd': 0,
-                'category_id': p['labels'][j].item(),
+                'category_id': p.detection.label_ids[j].item(),
                 'id': i,
-                'image_id': s['imageid'],
-                'bbox': [p['bboxes'][j].xmin.item(),
-                         p['bboxes'][j].ymin.item(),
-                         p['bboxes'][j].xmax.item() - p['bboxes'][j].xmin.item(),
-                         p['bboxes'][j].ymax.item() - p['bboxes'][j].ymin.item()]
+                'image_id': s.record_id,
+                'bbox': [p.detection.bboxes[j].xmin.item(),
+                         p.detection.bboxes[j].ymin.item(),
+                         p.detection.bboxes[j].xmax.item() - p.detection.bboxes[j].xmin.item(),
+                         p.detection.bboxes[j].ymax.item() - p.detection.bboxes[j].ymin.item()]
             }
 
             anns.append(ann_dict)

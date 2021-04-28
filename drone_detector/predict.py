@@ -17,31 +17,27 @@ from fastai.learner import load_learner, Learner
 from icevision.all import *
 
 from shutil import rmtree
+from icevision.data.convert_records_to_coco_style import coco_api_from_preds
 
 # Cell
 
-class AllDataParser(parsers.Parser, parsers.FilepathMixin, parsers.LabelsMixin, parsers.BBoxesMixin):
+class AllDataParser(parsers.Parser):
     "Read all image files from data_dir, used with IceVision models"
     def __init__(self, data_dir):
-        self.image_filepaths = get_image_files(data_dir)
+        super().__init__(template_record=ObjectDetectionRecord())
+        self.data_dir = data_dir
 
     def __iter__(self) -> Any:
-        yield from self.image_filepaths
+        yield from get_image_files(self.data_dir)
 
-    def imageid(self, o) -> Hashable:
-        return o.stem
+    def __len__(self) -> int:
+        return len(os.listdir(self.data_dir))
 
-    def filepath(self, o) -> Union[str, Path]:
-        return o
+    def record_id(self,o) -> Hashable: return o
 
-    def image_width_height(self, o) -> Tuple[int, int]:
-        return get_image_size(self.filepath(o))
-
-    def labels(self, o) -> List[int]:
-        return []
-
-    def bboxes(self, o) -> List[BBox]:
-        return []
+    def parse_fields(self, o, record, is_new):
+        record.set_img_size(get_img_size(o))
+        record.set_filepath(o)
 
 # Cell
 
@@ -81,9 +77,8 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
     infer_set = infer_parser.parse(data_splitter=SingleSplitSplitter(), autofix=False)[0]
     infer_ds = Dataset(infer_set, infer_tfms)
     infer_dl = faster_rcnn.infer_dl(infer_ds, batch_size=16, shuffle=False)
-    samples, preds = faster_rcnn.predict_dl(model=model, infer_dl=infer_dl)
-
-    preds_coco = bbox_preds_to_coco_anns(samples, preds)
+    preds = faster_rcnn.predict_from_dl(model=model, infer_dl=infer_dl, keep_images=True)
+    preds_coco = bbox_preds_to_coco_anns(preds)
 
     # TODO fix categories to not be hardcoded
     preds_coco['categories'] = [
@@ -147,9 +142,9 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     infer_set = infer_parser.parse(data_splitter=SingleSplitSplitter(), autofix=False)[0]
     infer_ds = Dataset(infer_set, infer_tfms)
     infer_dl = mask_rcnn.infer_dl(infer_ds, batch_size=16, shuffle=False)
-    samples, preds = mask_rcnn.predict_dl(model=model, infer_dl=infer_dl)
+    preds = mask_rcnn.predict_from_dl(model=model, infer_dl=infer_dl)
 
-    preds_coco = mask_preds_to_coco_anns(samples, preds)
+    preds_coco = mask_preds_to_coco_anns(preds)
 
     # TODO fix categories to not be hardcoded
     preds_coco['categories'] = [

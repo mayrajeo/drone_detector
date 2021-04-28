@@ -4,9 +4,10 @@ channels:
   - defaults
 dependencies: 
   - pip
-  - python=3.7.10
+  - python=3.8.5
   - pytorch::pytorch>=1.7.0,<1.8
   - pytorch::torchvision>=0.7,<0.9
+  - pytorch::cpuonly
   - fastai::fastai=2.1.4
   - fastai::nbdev
   - conda-forge::gdal=3.1.2
@@ -14,6 +15,7 @@ dependencies:
   - conda-forge::rasterio
   - conda-forge::rtree
   - conda-forge::xarray
+  - conda-forge::jupyter_contrib_nbextensions
   - pip:
     - opencv-python 
     - scikit-image 
@@ -26,3 +28,5 @@ dependencies:
     - xlrd
     - jedi==0.17.2
     - icevision[all]
+    - gradio
+    - torchsummary

@@ -8,6 +8,7 @@ from .imports import *
 from .utils import *
 from .tiling import *
 from .coco import *
+from .metrics import *
 
 from fastcore.foundation import *
 from fastcore.script import *

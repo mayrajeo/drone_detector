@@ -208,12 +208,12 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
         test_files = get_image_files(f'{processing_dir}/raster_tiles')
         print('Starting prediction')
         os.makedirs(f'{processing_dir}/predicted_rasters')
-        for chunk in range(0, len(test_files), 100):
-            test_dl = learn.dls.test_dl(test_files[chunk:chunk+100], num_workers=0, bs=1)
-            preds = learn.get_preds(dl=test_dl)[0]
+        for chunk in range(0, len(test_files), 300):
+            test_dl = learn.dls.test_dl(test_files[chunk:chunk+300], num_workers=0, bs=1)
+            preds = learn.get_preds(dl=test_dl, with_input=False, with_decoded=True)[-1]
 
             print('Rasterizing predictions')
-            for f, p in tqdm(zip(test_files[chunk:chunk+100], preds)):
+            for f, p in tqdm(zip(test_files[chunk:chunk+300], preds)):
                 ds = gdal.Open(str(f))
                 out_raster = gdal.GetDriverByName('gtiff').Create(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}',
                                                                   ds.RasterXSize,
@@ -221,7 +221,7 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
                                                                   1, gdal.GDT_Int16)
                 out_raster.SetProjection(ds.GetProjectionRef())
                 out_raster.SetGeoTransform(ds.GetGeoTransform())
-                np_pred = p.numpy().argmax(axis=0)
+                np_pred = p.numpy()#.argmax(axis=0)
                 band = out_raster.GetRasterBand(1).WriteArray(np_pred)
                 band = None
                 out_raster = None

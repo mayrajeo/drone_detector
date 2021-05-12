@@ -34,4 +34,4 @@ TODO
 
 CLI commands `predict_bboxes`, `predict_instance_masks` and `predict_segmentation` work similarly, with `--path_to_model`, `--path_to_image`, `--outfile`, `--processing_dir`, `--tile_size` and `--tile_overlap` flags. `predict_bboxes` and `predict_instance_masks` have additional flag `--num_classes`.
 
-`predict_bboxes` and `predict_instance_masks` utilize IceVision for Faster RCNN and Mask RCNN, whereas `predict_segmentation` utilizes fast.ai U-Net 
+`predict_bboxes` and `predict_instance_masks` utilize IceVision for Faster RCNN and Mask RCNN, whereas `predict_segmentation` utilizes fast.ai U-Net. 

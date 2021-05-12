@@ -214,6 +214,7 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
 
             print('Rasterizing predictions')
             for f, p in tqdm(zip(test_files[chunk:chunk+300], preds)):
+                if len(p.shape) == 3: p = p[0]
                 ds = gdal.Open(str(f))
                 out_raster = gdal.GetDriverByName('gtiff').Create(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}',
                                                                   ds.RasterXSize,

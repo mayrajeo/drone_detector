@@ -196,7 +196,7 @@ class LovaszSoftmax(Module):
 
     def forward(self, output, target):
 
-        if per_image:
+        if self.per_image:
             loss = mean(lovasz_softmax_flat(*flatten_probas(out.unsqueeze(0), targ.unsqueeze(0), self.ignore),
                                             classes=self.classes)
                         for out, targ in zip(output, target))

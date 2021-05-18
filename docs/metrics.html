@@ -26,21 +26,6 @@ nb_path: "nbs/10_metrics.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/mayrajeo/miniconda3/envs/dronedetector/lib/python3.7/site-packages/torch/cuda/__init__.py:52: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /opt/conda/conda-bld/pytorch_1603729047590/work/c10/cuda/CUDAFunctions.cpp:100.)
-  return torch._C._cuda_getDeviceCount() &gt; 0
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -69,39 +54,7 @@ nb_path: "nbs/10_metrics.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DiceMulti" class="doc_header"><code>class</code> <code>DiceMulti</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L21" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DiceMulti</code>(<strong><code>axis</code></strong>=<em><code>1</code></em>) :: <code>Metric</code></p>
-</blockquote>
-<p>Averaged Dice metric (Macro F1) for multiclass target in segmentation. Newer fastai-version has this implemented</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="adjusted_R2Score" class="doc_header"><code>adjusted_R2Score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L48" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>adjusted_R2Score</code>(<strong><code>r2_score</code></strong>, <strong><code>n</code></strong>, <strong><code>k</code></strong>)</p>
+<h4 id="adjusted_R2Score" class="doc_header"><code>adjusted_R2Score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L22" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>adjusted_R2Score</code>(<strong><code>r2_score</code></strong>, <strong><code>n</code></strong>, <strong><code>k</code></strong>)</p>
 </blockquote>
 <p>Calculates adjusted_R2Score based on r2_score, number of observations (n) and number of predictor variables(k)</p>
 
@@ -161,7 +114,7 @@ nb_path: "nbs/10_metrics.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="label_ranking_average_precision_score" class="doc_header"><code>label_ranking_average_precision_score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L82" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>label_ranking_average_precision_score</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="label_ranking_average_precision_score" class="doc_header"><code>label_ranking_average_precision_score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>label_ranking_average_precision_score</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Label ranking average precision (LRAP) is the average over each ground truth label assigned to each sample,
 of the ratio of true vs. total labels with lower score.</p>
@@ -194,7 +147,7 @@ of the ratio of true vs. total labels with lower score.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="label_ranking_loss" class="doc_header"><code>label_ranking_loss</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L91" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>label_ranking_loss</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="label_ranking_loss" class="doc_header"><code>label_ranking_loss</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L65" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>label_ranking_loss</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Compute the average number of label pairs that are incorrectly ordered given y_score
 weighted by the size of the label set and the number of labels not in the label set.</p>
@@ -234,7 +187,7 @@ weighted by the size of the label set and the number of labels not in the label 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="coverage_error" class="doc_header"><code>coverage_error</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L112" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>coverage_error</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="coverage_error" class="doc_header"><code>coverage_error</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L86" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>coverage_error</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Compute how far we need to go through the ranked scores to cover all true labels.
 The best value is equal to the average number of labels in y_true per sample.</p>

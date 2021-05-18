@@ -10,6 +10,7 @@
     "CLI for using pretrained models to process new images": "predict.html",
     "Augmentations": "augmentations.html",
     "Custom losses and metrics": "metrics.html",
-    "Custom data used in remote sensing": "data.html"
+    "Custom data used in remote sensing": "data.html",
+    "Custom losses for segmentation and object detection": "losses.html"
   }
 }

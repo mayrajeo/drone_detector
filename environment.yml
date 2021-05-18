@@ -5,11 +5,9 @@ channels:
 dependencies: 
   - pip
   - python=3.8.5
-  - pytorch::pytorch>=1.7.0,<1.8
-  - pytorch::torchvision>=0.7,<0.9
   - pytorch::cpuonly
-  - fastai::fastai=2.1.4
-  - fastai::nbdev
+  - fastchan::fastai
+  - fastchan::nbdev
   - conda-forge::gdal=3.1.2
   - conda-forge::geopandas
   - conda-forge::rasterio

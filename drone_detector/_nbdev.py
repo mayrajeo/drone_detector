@@ -32,7 +32,6 @@ index = {"rangeof": "00_utils.ipynb",
          "AlbumentationsTransform": "09_augmentations.ipynb",
          "SegmentationAlbumentationsTransform": "09_augmentations.ipynb",
          "segmentation_aug_tfms_fastai": "09_augmentations.ipynb",
-         "DiceMulti": "10_metrics.ipynb",
          "adjusted_R2Score": "10_metrics.ipynb",
          "rrmse": "10_metrics.ipynb",
          "rrmse.__doc__": "10_metrics.ipynb",
@@ -73,7 +72,18 @@ index = {"rangeof": "00_utils.ipynb",
          "MultiChannelImageDataLoaders.from_name_re": "11_data.ipynb",
          "TifSegmentationDataLoaders": "11_data.ipynb",
          "label_with_matching_fname": "11_data.ipynb",
-         "ScaleToFloatTensor": "11_data.ipynb"}
+         "ScaleToFloatTensor": "11_data.ipynb",
+         "lovasz_grad": "12_losses.ipynb",
+         "iou_binary": "12_losses.ipynb",
+         "iou": "12_losses.ipynb",
+         "isnan": "12_losses.ipynb",
+         "mean": "12_losses.ipynb",
+         "LovaszHinge": "12_losses.ipynb",
+         "lovasz_hinge_flat": "12_losses.ipynb",
+         "flatten_binary_scores": "12_losses.ipynb",
+         "LovaszSoftmax": "12_losses.ipynb",
+         "lovasz_softmax_flat": "12_losses.ipynb",
+         "flatten_probas": "12_losses.ipynb"}
 
 modules = ["utils.py",
            "tiling.py",
@@ -84,7 +94,8 @@ modules = ["utils.py",
            "predict.py",
            "augmentations.py",
            "metrics.py",
-           "data.py"]
+           "data.py",
+           "losses.py"]
 
 doc_url = "https://jaeeolma.github.io/drone_detector/"
 

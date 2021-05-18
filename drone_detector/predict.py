@@ -9,6 +9,7 @@ from .utils import *
 from .tiling import *
 from .coco import *
 from .metrics import *
+from .losses import *
 
 from fastcore.foundation import *
 from fastcore.script import *

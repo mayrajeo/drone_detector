@@ -270,7 +270,7 @@ class LovaszHingeLoss(Module):
 
     def forward(self, outputs, targets):
         if self.ignore is not None:
-            valid = (targets != ignore)
+            valid = (targets != self.ignore)
             outputs = outputs[valid]
             targets = targets[valid]
         if len(targets) == 0:
@@ -314,7 +314,7 @@ class LovaszSigmoidLoss(Module):
 
     def forward(self, outputs, targets):
         if self.ignore is not None:
-            valid = (targets != ignore)
+            valid = (targets != self.ignore)
             outputs = outputs[valid]
             targets = targets[valid]
         if len(targets) == 0:
@@ -353,6 +353,10 @@ class LovaszSoftmaxLoss(Module):
         store_attr()
 
     def forward(self, outputs, targets):
+        if self.ignore is not None:
+            valid = (targets != self.ignore)
+            outputs = outputs[valid]
+            targets = targets[valid]
         if outputs.numel() == 0:
             # only void pixels, the gradients should be 0
             return outputs * 0.

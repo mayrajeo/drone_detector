@@ -13,6 +13,8 @@ from fastcore.meta import *
 import sklearn.metrics as skm
 import torch
 import torch.nn.functional as F
+from torch.autograd import Variable
+
 
 # Cell
 

@@ -39,8 +39,8 @@ From: nvidia/cuda:11.1.1-base-ubuntu20.04
     # Install environment
     # TODO get rid of conda
     conda update conda
-    conda install -c pytorch -c fastai -c conda-forge fastai=2.1.4
-    conda install -c fastai nbdev
+    conda install -c fastchan fastai 
+    conda install -c fastchan nbdev
     conda install -c conda-forge jupyter notebook
     conda install -c conda-forge gdal geopandas rasterio 
     conda install -c conda-forge xarray 
@@ -51,7 +51,7 @@ From: nvidia/cuda:11.1.1-base-ubuntu20.04
     pip install torchsummary
     pip install jedi==0.17.2
     pip install icevision
- 
+
     # Test that libraries (read: gdal) work
     gdal_translate --version
     

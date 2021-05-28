@@ -123,11 +123,13 @@ def untile_raster(path_to_targets:str, outfile:str, method:str='first'):
 
     files_to_mosaic = []
 
-    for f in rasters:
-        src = rio.open(f)
-        files_to_mosaic.append(src)
+    mosaic = rio.open(rasters[0])
 
-    mosaic, out_tfm = rio_merge(files_to_mosaic, method=method)
+    for i in len(1,rasters-1):
+        src = rio.open(f)
+        #files_to_mosaic.append(src)
+
+        mosaic, out_tfm = rio_merge([mosaic, src], method=method)
 
     out_meta = src.meta.copy()
     out_meta.update({'driver': 'GTiff',

@@ -381,5 +381,5 @@ class LovaszSoftmaxLoss(Module):
             losses.append(torch.dot(errors_sorted, Variable(lovasz_grad(fg_sorted))))
         return mean(losses)
 
-    def activation(self, out): return F.softmax(out, dim=1)
-    def decodes(self, out): return out.argmax(dim=1)
+    def activation(self, out): return F.softmax(out, dim=-1)
+    def decodes(self, out): return out.argmax(dim=-1)

@@ -126,7 +126,7 @@ def untile_raster(path_to_targets:str, outfile:str, method:str='first'):
     mosaic = rio.open(rasters[0])
 
     for i in range(1,len(rasters)-1):
-        src = rio.open(f)
+        src = rio.open(rasters[i])
         #files_to_mosaic.append(src)
 
         mosaic, out_tfm = rio_merge([mosaic, src], method=method)

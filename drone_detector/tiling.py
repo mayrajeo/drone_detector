@@ -123,23 +123,20 @@ def untile_raster(path_to_targets:str, outfile:str, method:str='first'):
 
     files_to_mosaic = []
 
-    mosaic = rio.open(rasters[0])
+    for f in rasters:
+        src = rio.open(f)
+        files_to_mosaic.append(src)
 
-    for i in range(1,len(rasters)-1):
-        src = rio.open(rasters[i])
-        #files_to_mosaic.append(src)
+    mosaic, out_tfm = rio_merge(files_to_mosaic, method=method)
 
-        mosaic, out_tfm = rio_merge([mosaic, src], method=method)
+    out_meta = src.meta.copy()
+    out_meta.update({'driver': 'GTiff',
+                     'height': mosaic.shape[1],
+                     'width': mosaic.shape[2],
+                     'transform': out_tfm,
+                     'crs': src.crs})
 
-        out_meta = src.meta.copy()
-        out_meta.update({'driver': 'GTiff',
-                         'height': mosaic.shape[1],
-                         'width': mosaic.shape[2],
-                         'transform': out_tfm,
-                         'crs': src.crs})
-
-        with rio.open(outfile, 'w', **out_meta) as dest: dest.write(mosaic)
-        mosaic = rio.open(outfile)
+    with rio.open(outfile, 'w', **out_meta) as dest: dest.write(mosaic)
 
 def copy_sum(merged_data, new_data, merged_mask, new_mask, **kwargs):
     "Useful with prediction data"

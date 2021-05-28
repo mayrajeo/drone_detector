@@ -220,10 +220,13 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
                 out_raster = gdal.GetDriverByName('gtiff').Create(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}',
                                                                   ds.RasterXSize,
                                                                   ds.RasterYSize,
-                                                                  p.shape[0], gdal.GDT_Float32)
+                                                                  p.shape[0], gdal.GDT_Int16)
                 out_raster.SetProjection(ds.GetProjectionRef())
                 out_raster.SetGeoTransform(ds.GetGeoTransform())
                 np_pred = p.numpy()#.argmax(axis=0)
+                np_pred = np_pred.round(2)
+                np_pred *= 100
+                np_pred = np_pred.astype(np.int16)
                 for c in range(p.shape[0]):
                     band = out_raster.GetRasterBand(c+1).WriteArray(np_pred[c])
                     band = None

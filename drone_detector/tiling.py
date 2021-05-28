@@ -131,14 +131,15 @@ def untile_raster(path_to_targets:str, outfile:str, method:str='first'):
 
         mosaic, out_tfm = rio_merge([mosaic, src], method=method)
 
-    out_meta = src.meta.copy()
-    out_meta.update({'driver': 'GTiff',
-                     'height': mosaic.shape[1],
-                     'width': mosaic.shape[2],
-                     'transform': out_tfm,
-                     'crs': src.crs})
+        out_meta = src.meta.copy()
+        out_meta.update({'driver': 'GTiff',
+                         'height': mosaic.shape[1],
+                         'width': mosaic.shape[2],
+                         'transform': out_tfm,
+                         'crs': src.crs})
 
-    with rio.open(outfile, 'w', **out_meta) as dest: dest.write(mosaic)
+        with rio.open(outfile, 'w', **out_meta) as dest: dest.write(mosaic)
+        mosaic = rio.open(outfile)
 
 def copy_sum(merged_data, new_data, merged_mask, new_mask, **kwargs):
     "Useful with prediction data"

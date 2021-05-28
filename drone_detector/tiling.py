@@ -125,7 +125,7 @@ def untile_raster(path_to_targets:str, outfile:str, method:str='first'):
 
     mosaic = rio.open(rasters[0])
 
-    for i in len(1,rasters-1):
+    for i in range(1,len(rasters)-1):
         src = rio.open(f)
         #files_to_mosaic.append(src)
 

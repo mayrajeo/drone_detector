@@ -8,7 +8,8 @@ dependencies:
   - pip
   - python=3.8.5
   - pytorch::cpuonly
-  - fastchan::fastai
+  - fastchan::fastai==2.3.1
+  - fastchan::pillow=8.2.0
   - fastchan::nbdev
   - conda-forge::gdal=3.1.2
   - conda-forge::geopandas

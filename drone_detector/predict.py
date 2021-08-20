@@ -182,7 +182,8 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
                          tile_overlap:Param("Tile overlap to use. Default 100px", type=int)=100
     ):
     """Segment image into land cover classes with a pretrained models
-    TODO save also information about label and class"""
+    TODO save also information about label and class
+    TODO add test-time augmentations"""
     if os.path.exists(processing_dir):
         print('Processing folder exists')
         return
@@ -223,13 +224,14 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
                                                                   p.shape[0], gdal.GDT_Int16)
                 out_raster.SetProjection(ds.GetProjectionRef())
                 out_raster.SetGeoTransform(ds.GetGeoTransform())
-                np_pred = p.numpy()#.argmax(axis=0)
-                np_pred = np_pred.round(2)
-                np_pred *= 100
-                np_pred = np_pred.astype(np.int16)
-                for c in range(p.shape[0]):
-                    band = out_raster.GetRasterBand(c+1).WriteArray(np_pred[c])
-                    band = None
+                np_pred = p.numpy().argmax(axis=0)
+                #np_pred = np_pred.round(2)
+                #np_pred *= 100
+                #np_pred = np_pred.astype(np.int16)
+                #for c in range(p.shape[0]):
+                #    band = out_raster.GetRasterBand(c+1).WriteArray(np_pred[c])
+                #    band = None
+                band = out_raster.GetRasterBand(1).WriteArray(np_pred)
                 out_raster = None
                 ds = None
 

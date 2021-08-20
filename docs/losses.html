@@ -470,7 +470,7 @@ Remove labels equal to 'ignore'</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>TensorBase(1.4343)</pre>
+<pre>tensor(1.4331)</pre>
 </div>
 
 </div>
@@ -503,7 +503,7 @@ Remove labels equal to 'ignore'</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>tensor(1.4343)</pre>
+<pre>tensor(1.4331)</pre>
 </div>
 
 </div>
@@ -614,7 +614,7 @@ Remove labels equal to 'ignore'</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>TensorBase(0.5826)</pre>
+<pre>tensor(0.5823)</pre>
 </div>
 
 </div>
@@ -647,7 +647,7 @@ Remove labels equal to 'ignore'</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>tensor(0.5826)</pre>
+<pre>tensor(0.5823)</pre>
 </div>
 
 </div>
@@ -737,18 +737,10 @@ Remove labels equal to 'ignore'</p>
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>torch.Size([65536, 3])
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>TensorBase(0.7068)</pre>
+<pre>tensor(0.7045)</pre>
 </div>
 
 </div>
@@ -781,7 +773,7 @@ Remove labels equal to 'ignore'</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>tensor(0.7068)</pre>
+<pre>tensor(0.7045)</pre>
 </div>
 
 </div>
@@ -815,7 +807,7 @@ Remove labels equal to 'ignore'</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>TensorBase(0.7069)</pre>
+<pre>tensor(0.7039)</pre>
 </div>
 
 </div>
@@ -848,13 +840,52 @@ Remove labels equal to 'ignore'</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>tensor(0.7069)</pre>
+<pre>tensor(0.7039)</pre>
 </div>
 
 </div>
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We present a general Dice loss for segmentation tasks. It is commonly used together with CrossEntropyLoss or FocalLoss in kaggle competitions. This is very similar to the DiceMulti metric, but to be able to derivate through, we replace the argmax activation by a softmax and compare this with a one-hot encoded target mask. This function also adds a smooth parameter to help numerical stabilities in the intersection over union division.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="DiceLoss" class="doc_header"><code>class</code> <code>DiceLoss</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/losses.py#L389" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DiceLoss</code>(<strong><code>axis</code></strong>=<em><code>1</code></em>, <strong><code>smooth</code></strong>=<em><code>1</code></em>)</p>
+</blockquote>
+<p>Dice loss for segmentation. Already part of fastai 2.4 but due to icevision combatibilities copypasted here</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}

@@ -26,14 +26,186 @@ nb_path: "nbs/05_visualizations.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">icevision</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/mayrajeo/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/cuda/__init__.py:52: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /pytorch/c10/cuda/CUDAFunctions.cpp:100.)
-  return torch._C._cuda_getDeviceCount() &gt; 0
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">RuntimeError</span>                              Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-3-1ea2bd149c97&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">import</span> icevision
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/icevision/__init__.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>utils <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>core <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">from</span> icevision <span class="ansi-green-fg">import</span> parsers
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">from</span> icevision <span class="ansi-green-fg">import</span> tfms
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>data <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/icevision/utils/__init__.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>utils<span class="ansi-blue-fg">.</span>utils <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>utils<span class="ansi-blue-fg">.</span>torch_utils <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>utils<span class="ansi-blue-fg">.</span>imageio <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>utils<span class="ansi-blue-fg">.</span>get_files <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>utils<span class="ansi-blue-fg">.</span>download_utils <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/icevision/utils/utils.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     19</span> ]
+<span class="ansi-green-intense-fg ansi-bold">     20</span> 
+<span class="ansi-green-fg">---&gt; 21</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>imports <span class="ansi-green-fg">import</span> <span class="ansi-blue-fg">*</span>
+<span class="ansi-green-intense-fg ansi-bold">     22</span> 
+<span class="ansi-green-intense-fg ansi-bold">     23</span> 
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/icevision/imports.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     57</span> 
+<span class="ansi-green-intense-fg ansi-bold">     58</span> <span class="ansi-red-fg"># Soft imports</span>
+<span class="ansi-green-fg">---&gt; 59</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">from</span> icevision<span class="ansi-blue-fg">.</span>soft_dependencies <span class="ansi-green-fg">import</span> SoftDependencies
+<span class="ansi-green-intense-fg ansi-bold">     60</span> 
+<span class="ansi-green-intense-fg ansi-bold">     61</span> <span class="ansi-green-fg">if</span> SoftDependencies<span class="ansi-blue-fg">.</span>fastai<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/icevision/soft_dependencies.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     31</span> 
+<span class="ansi-green-intense-fg ansi-bold">     32</span> 
+<span class="ansi-green-fg">---&gt; 33</span><span class="ansi-red-fg"> </span>SoftDependencies <span class="ansi-blue-fg">=</span> _SoftDependencies<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/icevision/soft_dependencies.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">     20</span>         self<span class="ansi-blue-fg">.</span>pytorch_lightning <span class="ansi-blue-fg">=</span> soft_import<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;pytorch_lightning&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     21</span>         self<span class="ansi-blue-fg">.</span>albumentations <span class="ansi-blue-fg">=</span> soft_import<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;albumentations&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 22</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>effdet <span class="ansi-blue-fg">=</span> soft_import<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;effdet&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     23</span>         self<span class="ansi-blue-fg">.</span>wandb <span class="ansi-blue-fg">=</span> soft_import<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;wandb&#34;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     24</span>         self<span class="ansi-blue-fg">.</span>resnest <span class="ansi-blue-fg">=</span> soft_import<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;resnest&#34;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/icevision/soft_dependencies.py</span> in <span class="ansi-cyan-fg">soft_import</span><span class="ansi-blue-fg">(name)</span>
+<span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-green-fg">def</span> soft_import<span class="ansi-blue-fg">(</span>name<span class="ansi-blue-fg">:</span> str<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">      8</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">----&gt; 9</span><span class="ansi-red-fg">         </span>importlib<span class="ansi-blue-fg">.</span>import_module<span class="ansi-blue-fg">(</span>name<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     10</span>         <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">True</span>
+<span class="ansi-green-intense-fg ansi-bold">     11</span>     <span class="ansi-green-fg">except</span> ModuleNotFoundError <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/importlib/__init__.py</span> in <span class="ansi-cyan-fg">import_module</span><span class="ansi-blue-fg">(name, package)</span>
+<span class="ansi-green-intense-fg ansi-bold">    125</span>                 <span class="ansi-green-fg">break</span>
+<span class="ansi-green-intense-fg ansi-bold">    126</span>             level <span class="ansi-blue-fg">+=</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-fg">--&gt; 127</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> _bootstrap<span class="ansi-blue-fg">.</span>_gcd_import<span class="ansi-blue-fg">(</span>name<span class="ansi-blue-fg">[</span>level<span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> package<span class="ansi-blue-fg">,</span> level<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    128</span> 
+<span class="ansi-green-intense-fg ansi-bold">    129</span> 
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/effdet/__init__.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-green-fg">from</span> <span class="ansi-blue-fg">.</span>efficientdet <span class="ansi-green-fg">import</span> EfficientDet
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">from</span> <span class="ansi-blue-fg">.</span>bench <span class="ansi-green-fg">import</span> DetBenchPredict<span class="ansi-blue-fg">,</span> DetBenchTrain<span class="ansi-blue-fg">,</span> unwrap_bench
+<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-green-fg">from</span> <span class="ansi-blue-fg">.</span>data <span class="ansi-green-fg">import</span> create_dataset<span class="ansi-blue-fg">,</span> create_loader<span class="ansi-blue-fg">,</span> create_parser<span class="ansi-blue-fg">,</span> DetectionDatset<span class="ansi-blue-fg">,</span> SkipSubset
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">from</span> <span class="ansi-blue-fg">.</span>evaluator <span class="ansi-green-fg">import</span> CocoEvaluator<span class="ansi-blue-fg">,</span> PascalEvaluator<span class="ansi-blue-fg">,</span> OpenImagesEvaluator<span class="ansi-blue-fg">,</span> create_evaluator
+<span class="ansi-green-intense-fg ansi-bold">      5</span> <span class="ansi-green-fg">from</span> <span class="ansi-blue-fg">.</span>config <span class="ansi-green-fg">import</span> get_efficientdet_config<span class="ansi-blue-fg">,</span> default_detection_model_configs
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/effdet/bench.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">     58</span> 
+<span class="ansi-green-intense-fg ansi-bold">     59</span> <span class="ansi-blue-fg">@</span>torch<span class="ansi-blue-fg">.</span>jit<span class="ansi-blue-fg">.</span>script
+<span class="ansi-green-fg">---&gt; 60</span><span class="ansi-red-fg"> def _batch_detection(
+</span><span class="ansi-green-intense-fg ansi-bold">     61</span>         batch_size<span class="ansi-blue-fg">:</span> int<span class="ansi-blue-fg">,</span> class_out<span class="ansi-blue-fg">,</span> box_out<span class="ansi-blue-fg">,</span> anchor_boxes<span class="ansi-blue-fg">,</span> indices<span class="ansi-blue-fg">,</span> classes<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">     62</span>         img_scale<span class="ansi-blue-fg">:</span> Optional<span class="ansi-blue-fg">[</span>torch<span class="ansi-blue-fg">.</span>Tensor<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/jit/_script.py</span> in <span class="ansi-cyan-fg">script</span><span class="ansi-blue-fg">(obj, optimize, _frames_up, _rcb)</span>
+<span class="ansi-green-intense-fg ansi-bold">    937</span>         <span class="ansi-green-fg">if</span> _rcb <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    938</span>             _rcb <span class="ansi-blue-fg">=</span> _jit_internal<span class="ansi-blue-fg">.</span>createResolutionCallbackFromClosure<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 939</span><span class="ansi-red-fg">         fn = torch._C._jit_script_compile(
+</span><span class="ansi-green-intense-fg ansi-bold">    940</span>             qualified_name<span class="ansi-blue-fg">,</span> ast<span class="ansi-blue-fg">,</span> _rcb<span class="ansi-blue-fg">,</span> get_default_args<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    941</span>         )
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/jit/_recursive.py</span> in <span class="ansi-cyan-fg">try_compile_fn</span><span class="ansi-blue-fg">(fn, loc)</span>
+<span class="ansi-green-intense-fg ansi-bold">    659</span>     <span class="ansi-red-fg"># object</span>
+<span class="ansi-green-intense-fg ansi-bold">    660</span>     rcb <span class="ansi-blue-fg">=</span> _jit_internal<span class="ansi-blue-fg">.</span>createResolutionCallbackFromClosure<span class="ansi-blue-fg">(</span>fn<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 661</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> torch<span class="ansi-blue-fg">.</span>jit<span class="ansi-blue-fg">.</span>script<span class="ansi-blue-fg">(</span>fn<span class="ansi-blue-fg">,</span> _rcb<span class="ansi-blue-fg">=</span>rcb<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    662</span> 
+<span class="ansi-green-intense-fg ansi-bold">    663</span> <span class="ansi-green-fg">def</span> wrap_cpp_module<span class="ansi-blue-fg">(</span>cpp_module<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/jit/_script.py</span> in <span class="ansi-cyan-fg">script</span><span class="ansi-blue-fg">(obj, optimize, _frames_up, _rcb)</span>
+<span class="ansi-green-intense-fg ansi-bold">    937</span>         <span class="ansi-green-fg">if</span> _rcb <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    938</span>             _rcb <span class="ansi-blue-fg">=</span> _jit_internal<span class="ansi-blue-fg">.</span>createResolutionCallbackFromClosure<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 939</span><span class="ansi-red-fg">         fn = torch._C._jit_script_compile(
+</span><span class="ansi-green-intense-fg ansi-bold">    940</span>             qualified_name<span class="ansi-blue-fg">,</span> ast<span class="ansi-blue-fg">,</span> _rcb<span class="ansi-blue-fg">,</span> get_default_args<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    941</span>         )
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/jit/_recursive.py</span> in <span class="ansi-cyan-fg">try_compile_fn</span><span class="ansi-blue-fg">(fn, loc)</span>
+<span class="ansi-green-intense-fg ansi-bold">    659</span>     <span class="ansi-red-fg"># object</span>
+<span class="ansi-green-intense-fg ansi-bold">    660</span>     rcb <span class="ansi-blue-fg">=</span> _jit_internal<span class="ansi-blue-fg">.</span>createResolutionCallbackFromClosure<span class="ansi-blue-fg">(</span>fn<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 661</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> torch<span class="ansi-blue-fg">.</span>jit<span class="ansi-blue-fg">.</span>script<span class="ansi-blue-fg">(</span>fn<span class="ansi-blue-fg">,</span> _rcb<span class="ansi-blue-fg">=</span>rcb<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    662</span> 
+<span class="ansi-green-intense-fg ansi-bold">    663</span> <span class="ansi-green-fg">def</span> wrap_cpp_module<span class="ansi-blue-fg">(</span>cpp_module<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/jit/_script.py</span> in <span class="ansi-cyan-fg">script</span><span class="ansi-blue-fg">(obj, optimize, _frames_up, _rcb)</span>
+<span class="ansi-green-intense-fg ansi-bold">    937</span>         <span class="ansi-green-fg">if</span> _rcb <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    938</span>             _rcb <span class="ansi-blue-fg">=</span> _jit_internal<span class="ansi-blue-fg">.</span>createResolutionCallbackFromClosure<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 939</span><span class="ansi-red-fg">         fn = torch._C._jit_script_compile(
+</span><span class="ansi-green-intense-fg ansi-bold">    940</span>             qualified_name<span class="ansi-blue-fg">,</span> ast<span class="ansi-blue-fg">,</span> _rcb<span class="ansi-blue-fg">,</span> get_default_args<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    941</span>         )
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/jit/_recursive.py</span> in <span class="ansi-cyan-fg">try_compile_fn</span><span class="ansi-blue-fg">(fn, loc)</span>
+<span class="ansi-green-intense-fg ansi-bold">    659</span>     <span class="ansi-red-fg"># object</span>
+<span class="ansi-green-intense-fg ansi-bold">    660</span>     rcb <span class="ansi-blue-fg">=</span> _jit_internal<span class="ansi-blue-fg">.</span>createResolutionCallbackFromClosure<span class="ansi-blue-fg">(</span>fn<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 661</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> torch<span class="ansi-blue-fg">.</span>jit<span class="ansi-blue-fg">.</span>script<span class="ansi-blue-fg">(</span>fn<span class="ansi-blue-fg">,</span> _rcb<span class="ansi-blue-fg">=</span>rcb<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    662</span> 
+<span class="ansi-green-intense-fg ansi-bold">    663</span> <span class="ansi-green-fg">def</span> wrap_cpp_module<span class="ansi-blue-fg">(</span>cpp_module<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/jit/_script.py</span> in <span class="ansi-cyan-fg">script</span><span class="ansi-blue-fg">(obj, optimize, _frames_up, _rcb)</span>
+<span class="ansi-green-intense-fg ansi-bold">    937</span>         <span class="ansi-green-fg">if</span> _rcb <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    938</span>             _rcb <span class="ansi-blue-fg">=</span> _jit_internal<span class="ansi-blue-fg">.</span>createResolutionCallbackFromClosure<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 939</span><span class="ansi-red-fg">         fn = torch._C._jit_script_compile(
+</span><span class="ansi-green-intense-fg ansi-bold">    940</span>             qualified_name<span class="ansi-blue-fg">,</span> ast<span class="ansi-blue-fg">,</span> _rcb<span class="ansi-blue-fg">,</span> get_default_args<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    941</span>         )
+
+<span class="ansi-red-fg">RuntimeError</span>: 
+object has no attribute nms:
+  File &#34;/home/mayrajeo/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torchvision/ops/boxes.py&#34;, line 36
+    &#34;&#34;&#34;
+    _assert_has_ops()
+    return torch.ops.torchvision.nms(boxes, scores, iou_threshold)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~ &lt;--- HERE
+&#39;nms&#39; is being compiled since it was called from &#39;batched_nms&#39;
+  File &#34;/home/mayrajeo/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torchvision/ops/boxes.py&#34;, line 75
+        offsets = idxs.to(boxes) * (max_coordinate + torch.tensor(1).to(boxes))
+        boxes_for_nms = boxes + offsets[:, None]
+        keep = nms(boxes_for_nms, scores, iou_threshold)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ &lt;--- HERE
+        return keep
+&#39;batched_nms&#39; is being compiled since it was called from &#39;generate_detections&#39;
+  File &#34;/home/mayrajeo/miniconda3/envs/dronedetector/lib/python3.8/site-packages/effdet/anchors.py&#34;, line 142
+        scores[top_detection_idx] = soft_scores
+    else:
+        top_detection_idx = batched_nms(boxes, scores, classes, iou_threshold=0.5)
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ &lt;--- HERE
+
+    # keep only top max_det_per_image scoring predictions
+&#39;generate_detections&#39; is being compiled since it was called from &#39;_batch_detection&#39;
+  File &#34;/home/mayrajeo/miniconda3/envs/dronedetector/lib/python3.8/site-packages/effdet/bench.py&#34;, line 72
+        img_scale_i = None if img_scale is None else img_scale[i]
+        img_size_i = None if img_size is None else img_size[i]
+        detections = generate_detections(
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            class_out[i], box_out[i], anchor_boxes, indices[i], classes[i],
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            img_scale_i, img_size_i, max_det_per_image=max_det_per_image, soft_nms=soft_nms)
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ &lt;--- HERE
+        batch_detections.append(detections)
+    return torch.stack(batch_detections, dim=0)
 </pre>
 </div>
 </div>

@@ -76,7 +76,7 @@ def _one_error(inp, targ):
     faults = 0
     for i in range_of(max_ranks):
         faults += targ[i,max_ranks[i]]
-    return 1 - faults/len(max_ranks)
+    return 1 - torch.true_divide(faults, len(max_ranks))
 
 one_error = AccumMetric(_one_error, flatten=False)
 one_error.__doc__ = "Rate for which the top ranked label is not among ground truth"

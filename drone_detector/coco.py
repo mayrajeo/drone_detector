@@ -139,7 +139,7 @@ class COCOProcessor():
                         polys.append(Polygon(xy_coords))
                 # If we are working with predictions then save scores also
                 if 'score' in a.keys():
-                    scores.append[score]
+                    scores.append(a['score'])
             gdf = gpd.GeoDataFrame({'label':cats, 'geometry':polys})
             if len(scores) != 0: gdf['score'] = scores
             tfmd_gdf = georegister_px_df(gdf, f'{self.raster_path}/{i["file_name"]}')

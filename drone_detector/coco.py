@@ -113,6 +113,7 @@ class COCOProcessor():
             if len(anns_in_image) == 0: continue
             cats = []
             polys = []
+            scores = []
             for a in anns_in_image:
                 # No segmentations, only bounding boxes
                 if a['segmentation'] is None:
@@ -136,7 +137,11 @@ class COCOProcessor():
                                      for i in range(0,len(a['segmentation'][p]),2)]
                         xy_coords.append(xy_coords[-1])
                         polys.append(Polygon(xy_coords))
+                # If we are working with predictions then save scores also
+                if 'score' in anns_in_image.keys():
+                    scores.append[score]
             gdf = gpd.GeoDataFrame({'label':cats, 'geometry':polys})
+            if len(scores) != 0: gdf['score'] = scores
             tfmd_gdf = georegister_px_df(gdf, f'{self.raster_path}/{i["file_name"]}')
             tfmd_gdf.to_file(f'{self.outpath}/{outdir}/{i["file_name"][:-4]}.shp')
         return
@@ -163,7 +168,8 @@ def mask_preds_to_coco_anns(preds:list) -> dict:
                 'bbox': [p.detection.bboxes[j].xmin.item(),
                          p.detection.bboxes[j].ymin.item(),
                          p.detection.bboxes[j].xmax.item() - p.detection.bboxes[j].xmin.item(),
-                         p.detection.bboxes[j].ymax.item() - p.detection.bboxes[j].ymin.item()]
+                         p.detection.bboxes[j].ymax.item() - p.detection.bboxes[j].ymin.item()],
+                'score': p.detection.scores[j]
             }
 
 
@@ -193,7 +199,8 @@ def bbox_preds_to_coco_anns(preds:list) -> dict:
                 'bbox': [p.detection.bboxes[j].xmin.item(),
                          p.detection.bboxes[j].ymin.item(),
                          p.detection.bboxes[j].xmax.item() - p.detection.bboxes[j].xmin.item(),
-                         p.detection.bboxes[j].ymax.item() - p.detection.bboxes[j].ymin.item()]
+                         p.detection.bboxes[j].ymax.item() - p.detection.bboxes[j].ymin.item()],
+                'score': p.detection.scores[j]
             }
 
             anns.append(ann_dict)

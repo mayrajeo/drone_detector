@@ -120,7 +120,8 @@ class COCOProcessor():
                     cats.append(a['category_id'])
                     # Bbox has format xmin, ymin, xdelta, ydelta
                     polys.append(box(a['bbox'][0], a['bbox'][1], a['bbox'][2] + a['bbox'][0], a['bbox'][3]+a['bbox'][1]))
-
+                    if 'score' in a.keys():
+                        scores.append(a['score'])
                 # Single polygon
                 elif len(a['segmentation']) == 1:
                     cats.append(a['category_id'])
@@ -128,7 +129,8 @@ class COCOProcessor():
                                  for i in range(0,len(a['segmentation'][0]),2)]
                     xy_coords.append(xy_coords[-1])
                     polys.append(Polygon(xy_coords))
-
+                    if 'score' in a.keys():
+                        scores.append(a['score'])
                 # Multipolygon
                 else:
                     for p in rangeof(a['segmentation']):
@@ -137,9 +139,9 @@ class COCOProcessor():
                                      for i in range(0,len(a['segmentation'][p]),2)]
                         xy_coords.append(xy_coords[-1])
                         polys.append(Polygon(xy_coords))
-                # If we are working with predictions then save scores also
-                if 'score' in a.keys():
-                    scores.append(a['score'])
+                        if 'score' in a.keys():
+                            scores.append(a['score'])
+
             gdf = gpd.GeoDataFrame({'label':cats, 'geometry':polys})
             if len(scores) != 0: gdf['score'] = scores
             tfmd_gdf = georegister_px_df(gdf, f'{self.raster_path}/{i["file_name"]}')

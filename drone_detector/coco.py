@@ -138,7 +138,7 @@ class COCOProcessor():
                         xy_coords.append(xy_coords[-1])
                         polys.append(Polygon(xy_coords))
                 # If we are working with predictions then save scores also
-                if 'score' in anns_in_image.keys():
+                if 'score' in a.keys():
                     scores.append[score]
             gdf = gpd.GeoDataFrame({'label':cats, 'geometry':polys})
             if len(scores) != 0: gdf['score'] = scores

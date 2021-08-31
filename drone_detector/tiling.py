@@ -154,7 +154,8 @@ def untile_vector(path_to_targets:str, outpath:str, non_max_suppression_thresh:f
     print(f'{len(gdf)} polygons before non-max suppression')
     if non_max_suppression_thresh != 0:
         np_bounding_boxes = np.array([b.bounds for b in gdf.geometry])
-        idxs = non_max_suppression_fast(np_bounding_boxes, overlap_thresh = non_max_suppression_thresh)
+        scores = gdf.score.values
+        idxs = non_max_suppression_fast(np_bounding_boxes, scores, overlap_thresh=non_max_suppression_thresh)
         gdf = gdf.iloc[idxs]
     print(f'{len(gdf)} polygons after non-max suppression')
     gdf.to_file(outpath)

@@ -36,6 +36,12 @@ nb_path: "nbs/10_metrics.ipynb"
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="General-metrics-to-use-in-training-and-such">General metrics to use in training and such<a class="anchor-link" href="#General-metrics-to-use-in-training-and-such"> </a></h2>
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -54,7 +60,7 @@ nb_path: "nbs/10_metrics.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="adjusted_R2Score" class="doc_header"><code>adjusted_R2Score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L22" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>adjusted_R2Score</code>(<strong><code>r2_score</code></strong>, <strong><code>n</code></strong>, <strong><code>k</code></strong>)</p>
+<h4 id="adjusted_R2Score" class="doc_header"><code>adjusted_R2Score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L23" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>adjusted_R2Score</code>(<strong><code>r2_score</code></strong>, <strong><code>n</code></strong>, <strong><code>k</code></strong>)</p>
 </blockquote>
 <p>Calculates adjusted_R2Score based on r2_score, number of observations (n) and number of predictor variables(k)</p>
 
@@ -114,7 +120,7 @@ nb_path: "nbs/10_metrics.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="label_ranking_average_precision_score" class="doc_header"><code>label_ranking_average_precision_score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>label_ranking_average_precision_score</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="label_ranking_average_precision_score" class="doc_header"><code>label_ranking_average_precision_score</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L57" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>label_ranking_average_precision_score</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Label ranking average precision (LRAP) is the average over each ground truth label assigned to each sample,
 of the ratio of true vs. total labels with lower score.</p>
@@ -147,7 +153,7 @@ of the ratio of true vs. total labels with lower score.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="label_ranking_loss" class="doc_header"><code>label_ranking_loss</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L65" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>label_ranking_loss</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="label_ranking_loss" class="doc_header"><code>label_ranking_loss</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L66" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>label_ranking_loss</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Compute the average number of label pairs that are incorrectly ordered given y_score
 weighted by the size of the label set and the number of labels not in the label set.</p>
@@ -187,7 +193,7 @@ weighted by the size of the label set and the number of labels not in the label 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="coverage_error" class="doc_header"><code>coverage_error</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L86" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>coverage_error</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="coverage_error" class="doc_header"><code>coverage_error</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L87" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>coverage_error</code>(<strong><code>sigmoid</code></strong>=<em><code>True</code></em>, <strong><code>sample_weight</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Compute how far we need to go through the ranked scores to cover all true labels.
 The best value is equal to the average number of labels in y_true per sample.</p>
@@ -468,6 +474,200 @@ The best value is equal to the average number of labels in y_true per sample.</p
 
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Object-detection-metrics-and-evaluation-for-shapefiles">Object detection metrics and evaluation for shapefiles<a class="anchor-link" href="#Object-detection-metrics-and-evaluation-for-shapefiles"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To evaluate our collection of predicted masks, we'll compare each of our predicted masks with each of the available target masks for a given input.</p>
+<ul>
+<li>A <strong>true positive</strong>, when a prediction-target mask pair has an IoU score which exceeds some predefined threshold</li>
+<li>A <strong>false positive</strong>, when a predicted object had no associated ground truth object mask</li>
+<li>A <strong>false negative</strong> indicates a ground truth object mask had no associated predicted object mask</li>
+</ul>
+<p>In the case of multiple detections, the one with the largest IoU is considered to be \"correct\" and others are FP.</p>
+<p>From these, we can get <strong>Precision</strong> and <strong>Recall</strong></p>
+<p>$Precision = \frac{TP}{TP + FP} = \frac{TP}{all \: detections}, Recall = \frac{TP}{TP+FN} = \frac{TP}{all \: ground \: truths}$\n\nAnd use these to derive other metrics.</p>
+<p>Typical metrics include <strong>Average Precision</strong> (AP) and <strong>mean Average Precision</strong> (mAP). From these several metrics can be derived:</p>
+<ul>
+<li>AP50, AP75, AP[.50:.05:.95] are the most common, with AP[.50:.05:.95] being the primary challenge metric in COCO</li>
+<li>AP Across scales: AP<sub>small</sub>, AP<sub>medium</sub>, AP<sub>large</sub>, where small, medium and large have specified areas<ul>
+<li>Scales for COCO are less than 32² for small, between 32² and 96² for medium and more than 96² for large, sizes in pixels</li>
+<li>Our data has variable resolution sizes, but on average the resolution is around 0.05m, so small is less than 2.56m², medium is between 2.56m² and 23.04m², and large is more than 23.04m²</li>
+</ul>
+</li>
+<li><strong>Average Recall</strong> (AR) is also sometimes used similarly, but with restrictions for the number of detections per image    <em> It is computed as the area under Recall-IoU -curve for IoU thresholds from [0.5, 1]\n</em> All of these can be applied to bounding boxes and masks</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All the following functions assume that you have two <code>GeoDataFrame</code>s that have same CRS and matching column <code>label</code>. Usage example is the following:</p>
+<div class="highlight"><pre><span></span><span class="n">ground_truth</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_ground_truth</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_results</span><span class="o">&gt;</span><span class="p">)</span>
+
+<span class="c1"># clip the geodataframes to have same extent</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">box</span><span class="p">(</span><span class="o">*</span><span class="n">ground_truth</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">),</span> <span class="n">keep_geom_type</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ground_truth</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">box</span><span class="p">(</span><span class="o">*</span><span class="n">results</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">),</span> <span class="n">keep_geom_type</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># create spatial index for faster queries                         </span>
+<span class="n">res_sindex</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">sindex</span>
+<span class="n">gt_sindex</span> <span class="o">=</span> <span class="n">ground_truth</span><span class="o">.</span><span class="n">sindex</span>
+
+<span class="c1"># TP/FN check with different thresholds, applied to ground truth</span>
+<span class="n">tp_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;TP_</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.04</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)]</span>
+<span class="n">ground_truth</span><span class="p">[</span><span class="n">tp_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">ground_truth</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">is_true_positive</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">res_sindex</span><span class="p">),</span> 
+                                           <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="s1">&#39;expand&#39;</span><span class="p">)</span>
+
+<span class="c1"># TP/FP check with different thresholds, applied to predictions</span>
+<span class="n">fp_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;FP_</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)]</span>
+<span class="n">results</span><span class="p">[</span><span class="n">fp_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">is_false_positive</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">ground_truth</span><span class="p">,</span> <span class="n">gt_sindex</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">res_sindex</span><span class="p">),</span> 
+                                 <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">result_type</span><span class="o">=</span><span class="s1">&#39;expand&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="is_true_positive" class="doc_header"><code>is_true_positive</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L95" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_true_positive</code>(<strong><code>row</code></strong>, <strong><code>results</code></strong>:<code>GeoDataFrame</code>, <strong><code>res_sindex</code></strong>:<code>geopandas.sindex</code>)</p>
+</blockquote>
+<p>Check if a single ground truth mask is TP or FN with 11 different IoU thresholds</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="is_false_positive" class="doc_header"><code>is_false_positive</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L128" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_false_positive</code>(<strong><code>row</code></strong>, <strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>gt_sindex</code></strong>:<code>geopandas.sindex</code>, <strong><code>results</code></strong>:<code>GeoDataFrame</code>, <strong><code>res_sindex</code></strong>:<code>geopandas.sindex</code>)</p>
+</blockquote>
+<p>Check if prediction is FP or TP for 11 different IoU thresholds</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="/drone_detector/metrics.html#average_precision"><code>average_precision</code></a> and <a href="/drone_detector/metrics.html#average_recall"><code>average_recall</code></a> both return <code>dict</code> of the results, with each label and each IoU threshold separately. Each item is 11 item list where each item correspond to a different recall threshold in the range of [0:.1:1] in the case of <a href="/drone_detector/metrics.html#average_precision"><code>average_precision</code></a>, or IoU threshold in the range of [.50:.05:1] in for <a href="/drone_detector/metrics.html#average_recall"><code>average_recall</code></a>.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="average_precision" class="doc_header"><code>average_precision</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L200" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_precision</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>)</p>
+</blockquote>
+<p>Get 11-point AP score for each label separately and with all iou_thresholds</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="average_recall" class="doc_header"><code>average_recall</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L242" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_recall</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>)</p>
+</blockquote>
+<p>Get 11-point AR score for each label separately and with all iou_thresholds. TODO add detection limits</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}

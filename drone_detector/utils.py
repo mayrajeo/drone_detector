@@ -16,7 +16,7 @@ def rangeof(iterable):
 # Cell
 
 # Malisiewicz et al.
-def non_max_suppression_fast(boxes, scores, overlap_thresh):
+def non_max_suppression_fast(boxes, scores, overlap_thresh:float, sort_criterion:str='score'):
     "Right now sorts by scores, another possibility is to sort by area"
 
     # if there are no boxes, return an empty list
@@ -42,8 +42,13 @@ def non_max_suppression_fast(boxes, scores, overlap_thresh):
     # compute the area of the bounding boxes and sort the bounding
     # boxes by the bottom-right y-coordinate of the bounding box
     area = (x2 - x1 + 1) * (y2 - y1 + 1)
-    #idxs = np.argsort(y2)
-    idxs = np.argsort(scores)
+    if sort_criterion == 'score':
+        idxs = np.argsort(scores)
+    elif sort_criterion == 'area':
+        idxs = np.argsort(area)
+    else:
+        print('Unknown sort criteria, reverting to "score"')
+        idxs = np.argsort(scores)
 
     # keep looping while some indexes still remain in the indexes
     # list

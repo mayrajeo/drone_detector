@@ -79,9 +79,9 @@ class COCOProcessor():
 
     def shp_to_coco(self, outfile:str='coco.json'):
         "Process shapefiles from self.vector_path to coco-format and save to self.outpath/outfile"
-        vector_tiles = [f for f in os.listdir(self.vector_path) if f.endswith('.shp')]
+        vector_tiles = [f for f in os.listdir(self.vector_path) if f.endswith(('.shp', '.geojson'))]
         # If no annotations are in found in raster tile then there is no shapefile for that
-        raster_tiles = [f'{fname[:-4]}.tif' for fname in vector_tiles]
+        raster_tiles = [f'{fname.split(".")[0]}.tif' for fname in vector_tiles]
         self.coco_dict['images'] = [{'file_name': raster_tiles[i],
                                      'id': i} for i in rangeof(raster_tiles)]
         ann_id = 0
@@ -145,7 +145,7 @@ class COCOProcessor():
             gdf = gpd.GeoDataFrame({'label':cats, 'geometry':polys})
             if len(scores) != 0: gdf['score'] = scores
             tfmd_gdf = georegister_px_df(gdf, f'{self.raster_path}/{i["file_name"]}')
-            tfmd_gdf.to_file(f'{self.outpath}/{outdir}/{i["file_name"][:-4]}.shp')
+            tfmd_gdf.to_file(f'{self.outpath}/{outdir}/{i["file_name"][:-4]}.geojson', driver='GeoJSON')
         return
 
 def mask_preds_to_coco_anns(preds:list) -> dict:

@@ -79,7 +79,7 @@ class Tiler():
             if len(tempvector) == 0: continue
 
             # Filter too small geometries TODO
-            tempvector.to_file(f'{self.vector_path}/{row.cell}.shp')
+            tempvector.to_file(f'{self.vector_path}/{row.cell}.geojson', driver='GeoJSON')
         return
 
     def tile_and_rasterize_vector(self, column:str) -> None:
@@ -88,8 +88,8 @@ class Tiler():
         if not os.path.exists(self.rasterized_vector_path):
             os.makedirs(self.rasterized_vector_path)
 
-        vector_files = [f for f in os.listdir(self.vector_path) if f.endswith('.shp')]
-        raster_files = [f'{f[:-4]}.tif' for f in vector_files]
+        vector_files = [f for f in os.listdir(self.vector_path) if f.endswith(('.shp','.geojson'))]
+        raster_files = [f'{f.split(".")[0]}.tif' for f in vector_files]
         for r, v in tqdm(zip(raster_files, vector_files)):
             source_raster = gdal.Open(f'{self.raster_path}/{r}', gdal.GA_ReadOnly)
             source_vector = ogr.Open(f'{self.vector_path}/{v}')
@@ -143,9 +143,9 @@ def copy_sum(merged_data, new_data, merged_mask, new_mask, **kwargs):
     newregion = merged_data + new_data
     np.copyto(merged_data, newregion)
 
-def untile_vector(path_to_targets:str, outpath:str, non_max_suppression_thresh:float=0.0):
+def untile_vector(path_to_targets:str, outpath:str, non_max_suppression_thresh:float=0.0, nms_criterion:str='score'):
     "Create single shapefile from a directory of predicted shapefiles"
-    pred_files = [f for f in os.listdir(path_to_targets) if f.endswith('.shp')]
+    pred_files = [f for f in os.listdir(path_to_targets) if f.endswith(('.shp', '.geojson'))]
     gdf = None
     for p in tqdm(pred_files):
         temp_gdf = gpd.read_file(f'{path_to_targets}/{p}')
@@ -155,8 +155,13 @@ def untile_vector(path_to_targets:str, outpath:str, non_max_suppression_thresh:f
     if non_max_suppression_thresh != 0:
         np_bounding_boxes = np.array([b.bounds for b in gdf.geometry])
         scores = gdf.score.values
-        idxs = non_max_suppression_fast(np_bounding_boxes, scores, overlap_thresh=non_max_suppression_thresh)
+        idxs = non_max_suppression_fast(np_bounding_boxes, scores,
+                                        overlap_thresh=non_max_suppression_thresh,
+                                        sort_criterion=nms_criterion)
         gdf = gdf.iloc[idxs]
     print(f'{len(gdf)} polygons after non-max suppression')
-    gdf.to_file(outpath)
+    if outfile.endswith('shp'):
+        gdf.to_file(outpath)
+    elif outfile.endswith('geojson'):
+        gdf.to_file(outpath, driver='GeoJSON')
     return

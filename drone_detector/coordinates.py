@@ -8,6 +8,14 @@ from .utils import *
 
 # Cell
 
+def _reduce_geom_precision(geom, precision=2):
+    "Grom solaris.utils.geo"
+    geojson = mapping(geom)
+    geojson['coordinates'] = np.round(np.array(geojson['coordinates']),
+                                      precision)
+    return shape(geojson)
+
+
 def convert_poly_coords(geom:shape, raster_src:str=None, affine_obj:affine.Affine=None,
                         inverse:bool=False, precision=None) -> shape:
     "Adapted from solaris. Converts georeferenced coordinates to pixel coordinates and vice versa"

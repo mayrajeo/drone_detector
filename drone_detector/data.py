@@ -347,7 +347,7 @@ class MultiChannelImageDataLoaders(DataLoaders):
 
     @classmethod
     def from_shapefile(cls, path, chans=None, max_val=None, shp_fname='labels.shp', **kwargs):
-        """Create from shapefile `shp_fname` in `path` readable with geopandas.
+        """Create from shapefile `shp_fname` in `path` readable with geopandas (GeoJSON, ESRI Shapefile)
         Optionally list the channels to use."""
         df = gpd.read_file(str(Path(path)/shp_fname))
         # Shapefiles don't support boolean columns

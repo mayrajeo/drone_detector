@@ -169,7 +169,6 @@ def is_false_positive(row, ground_truth:gpd.GeoDataFrame, gt_sindex:gpd.sindex,
         if possible_gt_matches.iloc[gt_ix].label != row.label:
             return retvals + ['FP'] * (len(iou_threshs)-len(retvals))
 
-
         # Then check whether there are other predictions
         c = list(res_sindex.intersection(row.geometry.bounds))
         possible_pred_matches = results.iloc[c].copy()
@@ -248,8 +247,10 @@ def average_precision(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame) -> 
 
 # Cell
 
-def average_recall(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame) -> dict:
-    "Get 11-point AR score for each label separately and with all iou_thresholds. TODO add detection limits "
+def average_recall(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame, max_detections:int=None) -> dict:
+    """Get 11-point AR score for each label separately and with all iou_thresholds.
+    If `max_detections` is not `None` evaluate with only that most confident predictions
+    """
 
     # Clip geodataframes so that they cover the same area
     preds = gpd.clip(preds, box(*ground_truth.total_bounds), keep_geom_type=True)
@@ -257,6 +258,9 @@ def average_recall(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame) -> dic
 
     pred_sindex = preds.sindex
     tp_cols = [f'TP_{np.round(i, 2)}' for i in np.arange(0.5, 1.03, 0.05)]
+    if max_detections is not None:
+        preds.sort_values(by='score', ascending=False, inplace=True)
+        preds = preds[:max_detections]
     ground_truth[tp_cols] = ground_truth.apply(lambda row: is_true_positive(row, preds, pred_sindex),
                                                axis=1, result_type='expand')
     iou_threshs = np.arange(0.5, 1.04, 0.05)

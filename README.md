@@ -35,3 +35,16 @@ TODO
 CLI commands `predict_bboxes`, `predict_instance_masks` and `predict_segmentation` work similarly, with `--path_to_model`, `--path_to_image`, `--outfile`, `--processing_dir`, `--tile_size` and `--tile_overlap` flags. `predict_bboxes` and `predict_instance_masks` have additional flag `--num_classes`.
 
 `predict_bboxes` and `predict_instance_masks` utilize IceVision for Faster RCNN and Mask RCNN, whereas `predict_segmentation` utilizes fast.ai U-Net. 
+
+# Citations
+
+## Publications using this repository
+
+Nothing so far, but soon!
+
+## Other people's work applied in this repository
+
+This repository contains parts from 
+
+* [Solaris](https://github.com/CosmiQ/solaris) by CosmiQ Works
+* [pycococreator](https://github.com/waspinator/pycococreator) by waspinator, [https://doi.org/10.5281/zenodo.4627206]

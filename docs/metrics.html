@@ -492,7 +492,7 @@ The best value is equal to the average number of labels in y_true per sample.</p
 <li>A <strong>false positive</strong>, when a predicted object had no associated ground truth object mask</li>
 <li>A <strong>false negative</strong> indicates a ground truth object mask had no associated predicted object mask</li>
 </ul>
-<p>In the case of multiple detections, the one with the largest IoU is considered to be "correct" and others are FP.</p>
+<p>In the case of multiple detections, the one with the highest confidence is considered to be "correct" and others are FP.</p>
 <p>From these, we can get <strong>Precision</strong> and <strong>Recall</strong></p>
 <p>$Precision = \frac{TP}{TP + FP} = \frac{TP}{all \: detections}, Recall = \frac{TP}{TP+FN} = \frac{TP}{all \: ground \: truths}$</p>
 <p>And use these to derive other metrics.</p>
@@ -652,7 +652,7 @@ The best value is equal to the average number of labels in y_true per sample.</p
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="average_precision" class="doc_header"><code>average_precision</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L209" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_precision</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>)</p>
+<h4 id="average_precision" class="doc_header"><code>average_precision</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L208" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_precision</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>)</p>
 </blockquote>
 <p>Get 11-point AP score for each label separately and with all iou_thresholds</p>
 
@@ -684,9 +684,10 @@ The best value is equal to the average number of labels in y_true per sample.</p
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="average_recall" class="doc_header"><code>average_recall</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L251" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_recall</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>)</p>
+<h4 id="average_recall" class="doc_header"><code>average_recall</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L250" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_recall</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>, <strong><code>max_detections</code></strong>:<code>int</code>=<em><code>None</code></em>)</p>
 </blockquote>
-<p>Get 11-point AR score for each label separately and with all iou_thresholds. TODO add detection limits</p>
+<p>Get 11-point AR score for each label separately and with all iou_thresholds.
+If <code>max_detections</code> is not <code>None</code> evaluate with only that most confident predictions</p>
 
 </div>
 

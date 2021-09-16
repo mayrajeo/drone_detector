@@ -129,7 +129,7 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
 
     # Check whether is possible to use gpu
     device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device()}'
-
+    mask_rcnn = models.torchvision.mask_rcnn
     # Loading pretrained model
     print('Loading model')
     class_map = ClassMap(list(range(1, num_classes+1)))
@@ -145,7 +145,6 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     infer_ds = Dataset(infer_set, infer_tfms)
     infer_dl = mask_rcnn.infer_dl(infer_ds, batch_size=16, shuffle=False)
     preds = mask_rcnn.predict_from_dl(model=model, infer_dl=infer_dl)
-
     preds_coco = mask_preds_to_coco_anns(preds)
 
     # TODO fix categories to not be hardcoded

@@ -19,8 +19,8 @@ def make_grid(path, gridsize_x:int=640, gridsize_y:int=480,
     lrx = ulx + (ds.RasterXSize * xres)
     lry = uly + (ds.RasterYSize * yres)
     # number of output cells is calculated like conv output
-    ncols = int(np.floor((np.floor((lrx - ulx) / xres)) - gridsize_x) / (gridsize_x - overlap[0]) + 1)
-    nrows = int(np.floor((np.floor((lry - uly) / yres)) - gridsize_y) / (gridsize_y - overlap[1]) + 1)
+    ncols = int(np.ceil((np.ceil((lrx - ulx) / xres)) - gridsize_x) / (gridsize_x - overlap[0]) + 1)
+    nrows = int(np.ceil((np.ceil((lry - uly) / yres)) - gridsize_y) / (gridsize_y - overlap[1]) + 1)
     polys = []
     names = []
     for col, row in (itertools.product(range(ncols), range(nrows))):
@@ -160,8 +160,8 @@ def untile_vector(path_to_targets:str, outpath:str, non_max_suppression_thresh:f
                                         sort_criterion=nms_criterion)
         gdf = gdf.iloc[idxs]
     print(f'{len(gdf)} polygons after non-max suppression')
-    if outfile.endswith('shp'):
+    if outpath.endswith('shp'):
         gdf.to_file(outpath)
-    elif outfile.endswith('geojson'):
+    elif outpath.endswith('geojson'):
         gdf.to_file(outpath, driver='GeoJSON')
     return

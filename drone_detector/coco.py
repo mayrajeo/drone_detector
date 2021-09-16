@@ -158,20 +158,20 @@ def mask_preds_to_coco_anns(preds:list) -> dict:
     outdict['images'] = [{'file_name': str(f'{p.ground_truth.filepath.stem}{p.ground_truth.filepath.suffix}'), 'id': p.record_id} for p in preds]
     anns = []
     for i, p in tqdm(enumerate(preds)):
-        for j in rangeof(p.detection.masks):
+        for j in rangeof(p.pred.detection.label_ids):
             anns = []
             ann_dict = {
-                'segmentation': binary_mask_to_polygon(p.detection.masks.to_mask(p.height,p.width).data[j]),
+                'segmentation': binary_mask_to_polygon(p.pred.detection.mask_array.to_mask(p.height,p.width).data[j]),
                 'area': None,
                 'iscrowd': 0,
-                'category_id': p.detection.label_ids[j].item(),
+                'category_id': p.pred.detection.label_ids[j].item(),
                 'id': i,
                 'image_id': p.record_id,
-                'bbox': [p.detection.bboxes[j].xmin.item(),
-                         p.detection.bboxes[j].ymin.item(),
-                         p.detection.bboxes[j].xmax.item() - p.detection.bboxes[j].xmin.item(),
-                         p.detection.bboxes[j].ymax.item() - p.detection.bboxes[j].ymin.item()],
-                'score': p.detection.scores[j]
+                'bbox': [p.pred.detection.bboxes[j].xmin.item(),
+                         p.pred.detection.bboxes[j].ymin.item(),
+                         p.pred.detection.bboxes[j].xmax.item() - p.pred.detection.bboxes[j].xmin.item(),
+                         p.pred.detection.bboxes[j].ymax.item() - p.pred.detection.bboxes[j].ymin.item()],
+                'score': p.pred.detection.scores[j]
             }
 
 
@@ -189,20 +189,20 @@ def bbox_preds_to_coco_anns(preds:list) -> dict:
 
     anns = []
     for i, p in tqdm(enumerate(preds)):
-        for j in rangeof(p.detection.bboxes):
+        for j in rangeof(p.pred.detection.bboxes):
             anns = []
             ann_dict = {
                 'segmentation': None,
                 'area': None,
                 'iscrowd': 0,
-                'category_id': p.detection.label_ids[j].item(),
+                'category_id': p.pred.detection.label_ids[j].item(),
                 'id': i,
                 'image_id': s.record_id,
-                'bbox': [p.detection.bboxes[j].xmin.item(),
-                         p.detection.bboxes[j].ymin.item(),
-                         p.detection.bboxes[j].xmax.item() - p.detection.bboxes[j].xmin.item(),
-                         p.detection.bboxes[j].ymax.item() - p.detection.bboxes[j].ymin.item()],
-                'score': p.detection.scores[j]
+                'bbox': [p.pred.detection.bboxes[j].xmin.item(),
+                         p.pred.detection.bboxes[j].ymin.item(),
+                         p.pred.detection.bboxes[j].xmax.item() - p.pred.detection.bboxes[j].xmin.item(),
+                         p.pred.detection.bboxes[j].ymax.item() - p.pred.detection.bboxes[j].ymin.item()],
+                'score': p.pred.detection.scores[j]
             }
 
             anns.append(ann_dict)

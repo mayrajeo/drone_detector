@@ -157,3 +157,6 @@ gradio/
 temp/
 predictions/
 analyses/Quicktest.ipynb
+*/lightning_logs/
+*/results/
+*.pth

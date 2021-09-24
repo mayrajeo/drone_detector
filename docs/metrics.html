@@ -687,7 +687,8 @@ The best value is equal to the average number of labels in y_true per sample.</p
 <h4 id="average_recall" class="doc_header"><code>average_recall</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L250" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_recall</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>, <strong><code>max_detections</code></strong>:<code>int</code>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Get 11-point AR score for each label separately and with all iou_thresholds.
-If <code>max_detections</code> is not <code>None</code> evaluate with only that most confident predictions</p>
+If <code>max_detections</code> is not <code>None</code> evaluate with only that most confident predictions
+Seems to be still bugged, needs fixing</p>
 
 </div>
 

@@ -45,6 +45,7 @@ index = {"rangeof": "00_utils.ipynb",
          "one_error": "10_metrics.ipynb",
          "one_error.__doc__": "10_metrics.ipynb",
          "coverage_error": "10_metrics.ipynb",
+         "JaccardCoeffMulti": "10_metrics.ipynb",
          "is_true_positive": "10_metrics.ipynb",
          "is_false_positive": "10_metrics.ipynb",
          "average_precision": "10_metrics.ipynb",
@@ -96,7 +97,8 @@ index = {"rangeof": "00_utils.ipynb",
          "LovaszSigmoidLoss": "12_losses.ipynb",
          "LovaszSoftmaxLossFlat": "12_losses.ipynb",
          "LovaszSoftmaxLoss": "12_losses.ipynb",
-         "DiceLoss": "12_losses.ipynb"}
+         "DiceLoss": "12_losses.ipynb",
+         "FocalDice": "12_losses.ipynb"}
 
 modules = ["utils.py",
            "tiling.py",

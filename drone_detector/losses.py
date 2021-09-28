@@ -7,14 +7,14 @@ from __future__ import print_function, division
 __all__ = ['lovasz_grad', 'iou_binary', 'iou', 'isnan', 'mean', 'lovasz_hinge', 'lovasz_hinge_flat',
            'flatten_binary_scores', 'lovasz_softmax', 'lovasz_softmax_flat', 'flatten_probas', 'xloss',
            'LovaszHingeLossFlat', 'LovaszHingeLoss', 'LovaszSigmoidLossFlat', 'LovaszSigmoidLoss',
-           'LovaszSoftmaxLossFlat', 'LovaszSoftmaxLoss', 'DiceLoss']
+           'LovaszSoftmaxLossFlat', 'LovaszSoftmaxLoss', 'DiceLoss', 'FocalDice']
 
 # Cell
 from .imports import *
 from fastai.learner import Metric
 from fastai.torch_core import *
 from fastai.metrics import *
-from fastai.losses import BaseLoss
+from fastai.losses import BaseLoss, FocalLossFlat
 from fastcore.meta import *
 import sklearn.metrics as skm
 import torch
@@ -402,3 +402,18 @@ class DiceLoss:
         return torch.stack([torch.where(x==c, 1, 0) for c in range(classes)], axis=axis)
     def activation(self, x): return F.softmax(x, dim=self.axis)
     def decodes(self, x):    return x.argmax(dim=self.axis)
+
+# Cell
+
+class FocalDice:
+    "Dice and Focal combined"
+    def __init__(self, axis=1, smooth=1., alpha=1.):
+        store_attr()
+        self.focal_loss = FocalLossFlat(axis=axis)
+        self.dice_loss =  DiceLoss(axis, smooth)
+
+    def __call__(self, pred, targ):
+        return self.focal_loss(pred, targ) + self.alpha * self.dice_loss(pred, targ)
+
+    def decodes(self, x):    return x.argmax(dim=self.axis)
+    def activation(self, x): return F.softmax(x, dim=self.axis)

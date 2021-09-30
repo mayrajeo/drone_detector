@@ -8,8 +8,7 @@ dependencies:
   - pip
   - python=3.8.5
   - pytorch::cpuonly
-  - fastchan::fastai==2.3.1
-  - pillow==8.2.0
+  - fastchan::fastai
   - fastchan::nbdev
   - conda-forge::gdal=3.1.2
   - conda-forge::geopandas
@@ -26,6 +25,5 @@ dependencies:
     - captum
     - laspy
     - xlrd
-    - jedi==0.17.2
-    - icevision
+    - git+https://github.com/airctic/icevision.git#egg=icevision[all]
     - ipywidgets

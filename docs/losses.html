@@ -851,13 +851,6 @@ Remove labels equal to 'ignore'</p>
 </div>
     {% endraw %}
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We present a general Dice loss for segmentation tasks. It is commonly used together with CrossEntropyLoss or FocalLoss in kaggle competitions. This is very similar to the DiceMulti metric, but to be able to derivate through, we replace the argmax activation by a softmax and compare this with a one-hot encoded target mask. This function also adds a smooth parameter to help numerical stabilities in the intersection over union division.</p>
-
-</div>
-</div>
-</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -869,9 +862,9 @@ Remove labels equal to 'ignore'</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DiceLoss" class="doc_header"><code>class</code> <code>DiceLoss</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/losses.py#L389" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DiceLoss</code>(<strong><code>axis</code></strong>=<em><code>1</code></em>, <strong><code>smooth</code></strong>=<em><code>1</code></em>)</p>
+<h2 id="FocalDice" class="doc_header"><code>class</code> <code>FocalDice</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/losses.py#L389" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>FocalDice</code>(<strong><code>axis</code></strong>=<em><code>1</code></em>, <strong><code>smooth</code></strong>=<em><code>1.0</code></em>, <strong><code>alpha</code></strong>=<em><code>1.0</code></em>)</p>
 </blockquote>
-<p>Dice loss for segmentation. Already part of fastai 2.4 but due to icevision combatibilities copypasted here</p>
+<p>Combines Focal loss with dice loss</p>
 
 </div>
 

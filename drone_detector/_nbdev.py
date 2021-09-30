@@ -97,7 +97,6 @@ index = {"rangeof": "00_utils.ipynb",
          "LovaszSigmoidLoss": "12_losses.ipynb",
          "LovaszSoftmaxLossFlat": "12_losses.ipynb",
          "LovaszSoftmaxLoss": "12_losses.ipynb",
-         "DiceLoss": "12_losses.ipynb",
          "FocalDice": "12_losses.ipynb"}
 
 modules = ["utils.py",

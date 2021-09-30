@@ -7,14 +7,14 @@ from __future__ import print_function, division
 __all__ = ['lovasz_grad', 'iou_binary', 'iou', 'isnan', 'mean', 'lovasz_hinge', 'lovasz_hinge_flat',
            'flatten_binary_scores', 'lovasz_softmax', 'lovasz_softmax_flat', 'flatten_probas', 'xloss',
            'LovaszHingeLossFlat', 'LovaszHingeLoss', 'LovaszSigmoidLossFlat', 'LovaszSigmoidLoss',
-           'LovaszSoftmaxLossFlat', 'LovaszSoftmaxLoss', 'DiceLoss', 'FocalDice']
+           'LovaszSoftmaxLossFlat', 'LovaszSoftmaxLoss', 'FocalDice']
 
 # Cell
 from .imports import *
 from fastai.learner import Metric
 from fastai.torch_core import *
 from fastai.metrics import *
-from fastai.losses import BaseLoss, FocalLossFlat
+from fastai.losses import BaseLoss, FocalLossFlat, DiceLoss
 from fastcore.meta import *
 import sklearn.metrics as skm
 import torch
@@ -386,27 +386,8 @@ class LovaszSoftmaxLoss(Module):
 
 # Cell
 
-class DiceLoss:
-    "Dice loss for segmentation. Already part of fastai 2.4 but due to icevision combatibilities copypasted here"
-    def __init__(self, axis=1, smooth=1):
-        store_attr()
-    def __call__(self, pred, targ):
-        targ = self._one_hot(targ, pred.shape[self.axis])
-        pred, targ = flatten_check(self.activation(pred), targ)
-        inter = (pred*targ).sum()
-        union = (pred+targ).sum()
-        return 1 - (2. * inter + self.smooth)/(union + self.smooth)
-    @staticmethod
-    def _one_hot(x, classes, axis=1):
-        "Creates one binay mask per class"
-        return torch.stack([torch.where(x==c, 1, 0) for c in range(classes)], axis=axis)
-    def activation(self, x): return F.softmax(x, dim=self.axis)
-    def decodes(self, x):    return x.argmax(dim=self.axis)
-
-# Cell
-
 class FocalDice:
-    "Dice and Focal combined"
+    "Combines Focal loss with dice loss"
     def __init__(self, axis=1, smooth=1., alpha=1.):
         store_attr()
         self.focal_loss = FocalLossFlat(axis=axis)

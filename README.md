@@ -12,7 +12,7 @@ Use `conda` to create environment from `environment.yml` with
 conda env create -f environment.yml
 ```
 
-This will install all otherwise difficult to install dependencies like gdal. If `geopandas` and `rtree` won't work properly , it might be because `rtree` conda installation doesn't work properly with python 3.8 or newer. 
+This will install all otherwise difficult to install dependencies like gdal. If `geopandas` and `rtree` won't work properly , it might be because `rtree` conda installation at some point didn't work properly with python 3.8 or newer. 
 
 After that change directory to `drone_detector` and run `pip install -e .` to get CLI commands to work.
 

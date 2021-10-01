@@ -18,6 +18,9 @@ from fastai.vision.all import *
 from fastai.learner import load_learner, Learner
 from icevision.all import *
 
+from fastai.data.load import DataLoader
+from fastcore.transform import Pipeline
+
 from shutil import rmtree
 from icevision.data.convert_records_to_coco_style import coco_api_from_preds
 
@@ -40,6 +43,24 @@ class AllDataParser(parsers.Parser):
     def parse_fields(self, o, record, is_new):
         record.set_img_size(get_img_size(o))
         record.set_filepath(o)
+
+# Cell
+
+@patch
+def remove(self:Pipeline, t):
+    "Remove an instance of `t` from `self` if present"
+    for i,o in enumerate(self.fs):
+        if isinstance(o, t.__class__): self.fs.pop(i)
+@patch
+def set_base_transforms(self:DataLoader):
+    "Removes all transforms with a `size` parameter"
+    attrs = ['after_item', 'after_batch']
+    for i, attr in enumerate(attrs):
+        tfms = getattr(self, attr)
+        for j, o in enumerate(tfms):
+            if hasattr(o, 'size'):
+                tfms.remove(o)
+        setattr(self, attr, tfms)
 
 # Cell
 
@@ -211,6 +232,7 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
         os.makedirs(f'{processing_dir}/predicted_rasters')
         for chunk in range(0, len(test_files), 300):
             test_dl = learn.dls.test_dl(test_files[chunk:chunk+300], num_workers=0, bs=1)
+            test_dl.set_base_transforms()
             preds = learn.get_preds(dl=test_dl, with_input=False, with_decoded=False)[0]
 
             print('Rasterizing predictions')

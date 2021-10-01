@@ -26,21 +26,6 @@ nb_path: "nbs/09_augmentations.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/mayrajeo/miniconda3/envs/dronedetector/lib/python3.8/site-packages/torch/cuda/__init__.py:52: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /pytorch/c10/cuda/CUDAFunctions.cpp:100.)
-  return torch._C._cuda_getDeviceCount() &gt; 0
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -193,10 +178,10 @@ nb_path: "nbs/09_augmentations.ipynb"
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">transform_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">A</span><span class="o">.</span><span class="n">ToFloat</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="mf">65535.0</span><span class="p">,</span> <span class="n">always_apply</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-                  <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">brightness_limit</span><span class="o">=.</span><span class="mi">05</span><span class="p">,</span> <span class="n">brightness_by_max</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                  <span class="n">A</span><span class="o">.</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">brightness_limit</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">brightness_by_max</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
                   <span class="n">A</span><span class="o">.</span><span class="n">RandomRotate90</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
-                  <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=.</span><span class="mi">5</span><span class="p">),</span>
-                  <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=.</span><span class="mi">5</span><span class="p">),</span>
+                  <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">.5</span><span class="p">),</span>
+                  <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">.5</span><span class="p">),</span>
                   <span class="n">A</span><span class="o">.</span><span class="n">CoarseDropout</span><span class="p">(),</span>
                   <span class="n">A</span><span class="o">.</span><span class="n">FromFloat</span><span class="p">(</span><span class="n">max_value</span><span class="o">=</span><span class="mf">65535.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="n">always_apply</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                  <span class="p">]</span>

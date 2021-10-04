@@ -183,6 +183,21 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
 
     coco_proc.coco_to_shp(preds_coco)
 
+    # Discard all predictions that are not completely within -2m erosion of grid cell
+    # TODO add as optional postprocessing step
+
+    grid = tiler.grid
+
+    for cell in grid.itertuples():
+        if not os.path.isfile(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson'): continue
+        pred_shp = gpd.read_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
+        cell_geom = cell.geometry.buffer(-2) # 2 meter erosion from the edge
+        pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.within(cell_geom) else 1, axis=1)
+        pred_shp = pred_shp[pred_shp.to_drop == 0]
+        pred_shp.drop(columns=['to_drop'], inplace=True)
+        if len(pred_shp) > 0: pred_shp.to_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
+        else: os.remove(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
+
     # Collate shapefiles
     untile_vector(path_to_targets=f'{processing_dir}/predicted_vectors', outpath=outfile)
 

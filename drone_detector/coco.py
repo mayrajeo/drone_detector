@@ -96,7 +96,7 @@ class COCOProcessor():
 
         return
 
-    def coco_to_shp(self, coco_data:dict=None, outdir:str='predicted_vectors'):
+    def coco_to_shp(self, coco_data:dict=None, outdir:str='predicted_vectors', ioverlap:int=None):
         """Generates shapefiles from a dictionary with coco annotations.
         TODO handle multipolygons better"""
 

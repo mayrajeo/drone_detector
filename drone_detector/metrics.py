@@ -2,7 +2,7 @@
 
 __all__ = ['adjusted_R2Score', 'rrmse', 'bias', 'bias_pct', 'label_ranking_average_precision_score',
            'label_ranking_loss', 'one_error', 'coverage_error', 'JaccardCoeffMulti', 'poly_IoU', 'is_true_positive',
-           'is_false_positive', 'average_precision', 'average_recall']
+           'is_false_positive', 'average_precision', 'average_recall', 'GisCOCOeval']
 
 # Cell
 from .imports import *
@@ -285,3 +285,212 @@ def average_recall(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame, max_de
             temp_gt = ground_truth[ground_truth.label == l].copy()
             res_dict[f'{l}_rec'].append(len(temp_gt[temp_gt[f'TP_{iou_thresh}'] == 'TP']) / len(temp_gt))
     return res_dict
+
+# Cell
+
+from pycocotools.coco import COCO
+from pycocotools.cocoeval import COCOeval
+from pycocotools.mask import decode
+from .coco import *
+
+# Cell
+
+class GisCOCOeval():
+
+    def __init__(self, data_path:str, outpath:str, coco_info:dict, coco_licenses:list, coco_categories:list):
+        store_attr()
+        self.iou_threshs = [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95]
+        self.coco_proc = COCOProcessor(data_path=self.data_path, outpath=self.outpath, coco_info=self.coco_info,
+                                       coco_licenses=self.coco_licenses, coco_categories=self.coco_categories)
+
+    def prepare_data(self, gt_label_col:str='label', res_label_col:str='label'):
+        "Convert GIS-data predictions to COCO-format for evaluation, and save resulting files to self.outpath"
+        self.coco_proc.shp_to_coco(label_col=gt_label_col)
+        self.coco_proc.results_to_coco_res(label_col=res_label_col)
+
+    def prepare_eval(self, eval_type:str='segm'):
+        """
+        Prepare COCOeval to evaluate predictions with 100 and 1000 detections.
+        AP metrics are evaluated with 1000 detections and AR with 100
+        """
+        self.coco = COCO(f'{self.outpath}/coco.json')
+        self.coco_res = self.coco.loadRes(f'{self.outpath}/coco_res.json')
+        self.coco_eval = COCOeval(self.coco, self.coco_res, eval_type)
+        self.coco_eval.params.maxDets = [100, 1000]
+
+    def evaluate(self):
+        "Run evaluation and print metrics"
+
+        for cat in self.coco_categories:
+            print(f'\nEvaluating for category {cat["name"]}')
+            self.coco_eval.params.catIds = [cat['id']]
+            self.coco_eval.evaluate()
+            self.coco_eval.accumulate()
+            _summarize_coco(self.coco_eval)
+
+        self.coco_eval.params.catIds = self.coco.getCatIds()
+        print('Evaluating for full data...')
+
+        self.coco_eval.evaluate()
+        self.coco_eval.accumulate()
+        _summarize_coco(self.coco_eval)
+
+    def save_results(self, outpath, iou_thresh:float=0.5):
+        """Saves correctly detected ground truths, correct detections missed ground truths
+        and misclassifications with specified iou_threshold in separate files for each scene"""
+
+        if not os.path.exists(f'{self.coco_proc.outpath}/{outpath}'):
+            os.makedirs(f'{self.coco_proc.outpath}/{outpath}')
+            os.makedirs(f'{self.coco_proc.outpath}/{outpath}/cor_gts')
+            os.makedirs(f'{self.coco_proc.outpath}/{outpath}/cor_dts')
+            os.makedirs(f'{self.coco_proc.outpath}/{outpath}/miss_gts')
+            os.makedirs(f'{self.coco_proc.outpath}/{outpath}/miss_dts')
+
+        else:
+            print('Output directory exists')
+            return
+
+        # Index from which get the Iou
+        iou_ix = self.iou_threshs.index(iou_thresh)
+
+        im_ids = self.coco.getImgIds()
+        cat_ids = self.coco.getCatIds()
+        anns = self.coco.anns
+
+        cor_gt_res = {'images': self.coco.dataset['images'],
+                      'categories': self.coco.cats,
+                      'annotations': []}
+
+        miss_gt_res = {'images': self.coco.dataset['images'],
+                       'categories': self.coco.cats,
+                       'annotations': []}
+
+        cor_dt_res = {'images': self.coco.dataset['images'],
+                      'categories': self.coco.cats,
+                      'annotations': []}
+
+        miss_dt_res = {'images': self.coco.dataset['images'],
+                       'categories': self.coco.cats,
+                       'annotations': []}
+
+        # self.cocoeval.evalImgs has lenght of 4 * n_images * n_cats, and full results are in the ranges of
+        # [(4*n_images*(cat_id-1)):(4*n_images*(cat_id-1)+9)]
+
+        for im_id, cat_id in tqdm(itertools.product(im_ids, cat_ids)):
+            eval_ix = 4*len(im_ids)*(cat_id-1) + im_id
+            res_dict = self.coco_eval.evalImgs[eval_ix]
+
+            gt_matches = np.unique(res_dict['dtMatches'][iou_ix]) # Detected ground truth ids in specified iou level
+            dt_matches = np.unique(res_dict['gtMatches'][iou_ix]) # Correct detection ids in specified iou level
+            gt_matches = gt_matches[gt_matches>0]
+            dt_matches = dt_matches[dt_matches>0]
+
+            gt_misses = [i for i in res_dict['gtIds'] if i not in gt_matches] # Missed ground truths
+            dt_misses = [i for i in res_dict['dtIds'] if i not in dt_matches] # Misdetections
+
+            gt_match_anns = [self.coco.anns[i] for i in gt_matches]
+            dt_match_anns = [self.coco_res.anns[i] for i in dt_matches]
+
+            gt_miss_anns = [self.coco.anns[i] for i in gt_misses]
+            dt_miss_anns = [self.coco_res.anns[i] for i in dt_misses]
+
+            for a in gt_match_anns:
+                ann = a.copy()
+                ann['segmentation'] = binary_mask_to_polygon(decode(a['segmentation']))
+                cor_gt_res['annotations'].append(ann)
+
+            for a in dt_match_anns:
+                ann = a.copy()
+                ann['segmentation'] = binary_mask_to_polygon(decode(a['segmentation']))
+                cor_dt_res['annotations'].append(ann)
+
+            for a in gt_miss_anns:
+                ann = a.copy()
+                ann['segmentation'] = binary_mask_to_polygon(decode(a['segmentation']))
+                miss_gt_res['annotations'].append(ann)
+
+            for a in dt_miss_anns:
+                ann = a.copy()
+                ann['segmentation'] = binary_mask_to_polygon(decode(a['segmentation']))
+                miss_dt_res['annotations'].append(ann)
+
+        self.coco_proc.coco_to_shp(cor_gt_res, f'{outpath}/cor_gts/')
+        self.coco_proc.coco_to_shp(cor_dt_res, f'{outpath}/cor_dts/')
+        self.coco_proc.coco_to_shp(miss_gt_res, f'{outpath}/miss_gts/')
+        self.coco_proc.coco_to_shp(miss_dt_res, f'{outpath}/miss_dts/')
+
+def _summarize_coco(cocoeval:COCOeval):
+    """
+    Compute and display summary metrics for evaluation results.
+    Note this functin can *only* be applied on the default parameter setting
+    """
+    def _summarize(ap=1, iouThr=None, areaRng='all', maxDets=100):
+        p = cocoeval.params
+        iStr = ' {:<18} {} @[ IoU={:<9} | area={:>6s} | maxDets={:>3d} ] = {:0.3f}'
+        titleStr = 'Average Precision' if ap == 1 else 'Average Recall'
+        typeStr = '(AP)' if ap==1 else '(AR)'
+        iouStr = '{:0.2f}:{:0.2f}'.format(p.iouThrs[0], p.iouThrs[-1]) \
+            if iouThr is None else '{:0.2f}'.format(iouThr)
+
+        aind = [i for i, aRng in enumerate(p.areaRngLbl) if aRng == areaRng]
+        mind = [i for i, mDet in enumerate(p.maxDets) if mDet == maxDets]
+        if ap == 1:
+            # dimension of precision: [TxRxKxAxM]
+            s = cocoeval.eval['precision']
+            # IoU
+            if iouThr is not None:
+                t = np.where(iouThr == p.iouThrs)[0]
+                s = s[t]
+            s = s[:,:,:,aind,mind]
+        else:
+            # dimension of recall: [TxKxAxM]
+            s = cocoeval.eval['recall']
+            if iouThr is not None:
+                t = np.where(iouThr == p.iouThrs)[0]
+                s = s[t]
+            s = s[:,:,aind,mind]
+        if len(s[s>-1])==0:
+            mean_s = -1
+        else:
+            mean_s = np.mean(s[s>-1])
+        print(iStr.format(titleStr, typeStr, iouStr, areaRng, maxDets, mean_s))
+        return mean_s
+
+    def _summarizeDets():
+        stats = np.zeros((12,))
+        stats[0] = _summarize(1, maxDets=cocoeval.params.maxDets[1])
+        stats[1] = _summarize(1, iouThr=.5, maxDets=cocoeval.params.maxDets[1])
+        stats[2] = _summarize(1, iouThr=.75, maxDets=cocoeval.params.maxDets[1])
+        stats[3] = _summarize(1, areaRng='small', maxDets=cocoeval.params.maxDets[1])
+        stats[4] = _summarize(1, areaRng='medium', maxDets=cocoeval.params.maxDets[1])
+        stats[5] = _summarize(1, areaRng='large', maxDets=cocoeval.params.maxDets[1])
+        stats[6] = _summarize(0, maxDets=cocoeval.params.maxDets[0])
+        stats[9] = _summarize(0, areaRng='small', maxDets=cocoeval.params.maxDets[0])
+        stats[10] = _summarize(0, areaRng='medium', maxDets=cocoeval.params.maxDets[0])
+        stats[11] = _summarize(0, areaRng='large', maxDets=cocoeval.params.maxDets[0])
+        return stats
+
+    def _summarizeKps():
+        stats = np.zeros((10,))
+        stats[0] = _summarize(1, maxDets=20)
+        stats[1] = _summarize(1, maxDets=20, iouThr=.5)
+        stats[2] = _summarize(1, maxDets=20, iouThr=.75)
+        stats[3] = _summarize(1, maxDets=20, areaRng='medium')
+        stats[4] = _summarize(1, maxDets=20, areaRng='large')
+        stats[5] = _summarize(0, maxDets=20)
+        stats[6] = _summarize(0, maxDets=20, iouThr=.5)
+        stats[7] = _summarize(0, maxDets=20, iouThr=.75)
+        stats[8] = _summarize(0, maxDets=20, areaRng='medium')
+        stats[9] = _summarize(0, maxDets=20, areaRng='large')
+        return stats
+
+    if not cocoeval.eval:
+        raise Exception('Please run accumulate() first')
+
+    iouType = cocoeval.params.iouType
+
+    if iouType == 'segm' or iouType == 'bbox':
+        summarize = _summarizeDets
+    elif iouType == 'keypoints':
+        summarize = _summarizeKps
+    cocoeval.stats = summarize()

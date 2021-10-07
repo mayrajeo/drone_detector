@@ -154,6 +154,7 @@ gradio/
 
 # temp
 
+obsolete/
 temp/
 predictions/
 analyses/Quicktest.ipynb

@@ -8,6 +8,8 @@ from .utils import *
 
 # Cell
 
+from shapely.geometry import mapping
+
 def _reduce_geom_precision(geom, precision=2):
     "Grom solaris.utils.geo"
     geojson = mapping(geom)

@@ -56,6 +56,8 @@ def binary_mask_to_polygon(binary_mask, tolerance=0):
 
 # Cell
 
+from pycocotools.mask import frPyObjects
+
 class COCOProcessor():
     "Handles Transformations from shapefiles to COCO-format and backwards"
 
@@ -77,26 +79,28 @@ class COCOProcessor():
         self.categories = {c['name']:c['id'] for c in self.coco_dict['categories']}
 
 
-    def shp_to_coco(self, outfile:str='coco.json'):
+    def shp_to_coco(self, label_col:str='label', outfile:str='coco.json'):
         "Process shapefiles from self.vector_path to coco-format and save to self.outpath/outfile"
         vector_tiles = [f for f in os.listdir(self.vector_path) if f.endswith(('.shp', '.geojson'))]
         # If no annotations are in found in raster tile then there is no shapefile for that
         raster_tiles = [f'{fname.split(".")[0]}.tif' for fname in vector_tiles]
-        self.coco_dict['images'] = [{'file_name': raster_tiles[i],
-                                     'id': i} for i in rangeof(raster_tiles)]
-        ann_id = 0
+        for i, r in enumerate(raster_tiles):
+            with rio.open(f'{self.raster_path}/{r}') as im:
+                h, w = im.shape
+            self.coco_dict['images'].append({'file_name': raster_tiles[i],'id': i, 'height':h, 'width':w})
+        ann_id = 1
         for i in tqdm(rangeof(raster_tiles)):
             gdf = gpd.read_file(f'{self.vector_path}/{vector_tiles[i]}')
-            tfmd_gdf = gdf_to_px(gdf, f'{self.raster_path}/{raster_tiles[i]}')
+            tfmd_gdf = gdf_to_px(gdf, f'{self.raster_path}/{raster_tiles[i]}', precision=None)
             for row in tfmd_gdf.itertuples():
-                category_id = self.categories[row.label]
+                category_id = self.categories[getattr(row, label_col)]
                 self.coco_dict['annotations'].append(_process_shp_to_coco(i, category_id, ann_id, row.geometry))
                 ann_id += 1
         with open(f'{self.outpath}/{outfile}', 'w') as f: json.dump(self.coco_dict, f)
 
         return
 
-    def coco_to_shp(self, coco_data:dict=None, outdir:str='predicted_vectors', ioverlap:int=None):
+    def coco_to_shp(self, coco_data:dict=None, outdir:str='predicted_vectors'):
         """Generates shapefiles from a dictionary with coco annotations.
         TODO handle multipolygons better"""
 
@@ -147,6 +151,33 @@ class COCOProcessor():
             tfmd_gdf = georegister_px_df(gdf, f'{self.raster_path}/{i["file_name"]}')
             tfmd_gdf.to_file(f'{self.outpath}/{outdir}/{i["file_name"][:-4]}.geojson', driver='GeoJSON')
         return
+
+    def results_to_coco_res(self, label_col:str='label_id', outfile:str='coco_res.json'):
+        result_tiles = [f for f in os.listdir(self.prediction_path) if f.endswith(('.shp', '.geojson'))]
+        # If no annotations are in found in raster tile then there is no shapefile for that
+        raster_tiles = [f'{fname.split(".")[0]}.tif' for fname in result_tiles]
+        results = []
+        for i in tqdm(rangeof(raster_tiles)):
+            for im_id, im in enumerate(self.coco_dict['images']):
+                if im['file_name'] == raster_tiles[i]:
+                    break
+            image_id = self.coco_dict['images'][im_id]['id']
+            h = self.coco_dict['images'][im_id]['height']
+            w = self.coco_dict['images'][im_id]['width']
+            gdf = gpd.read_file(f'{self.prediction_path}/{result_tiles[i]}')
+            tfmd_gdf = gdf_to_px(gdf, f'{self.raster_path}/{raster_tiles[i]}', precision=None)
+            for row in tfmd_gdf.itertuples():
+                res = {'image_id': image_id,
+                       'category_id': getattr(row, label_col),
+                       'segmentation': None,
+                       'score': np.round(getattr(row, 'score'), 5)}
+                ann = _process_shp_to_coco(image_id, getattr(row, label_col), 0, row.geometry)
+                res['segmentation'] = frPyObjects(ann['segmentation'], h, w)[0]
+                res['segmentation']['counts'] = res['segmentation']['counts'].decode('ascii')
+                results.append(res)
+
+        with open(f'{self.outpath}/{outfile}', 'w') as f:
+            json.dump(results, f)
 
 def mask_preds_to_coco_anns(preds:list) -> dict:
     """Process list of IceVision `samples` and `preds` to COCO-annotation polygon format.

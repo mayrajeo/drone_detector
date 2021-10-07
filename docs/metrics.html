@@ -801,6 +801,63 @@ Seems to be still bugged, needs fixing</p>
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Object-detection-metrics-with-pycocotools-and-gis-data">Object detection metrics with pycocotools and gis-data<a class="anchor-link" href="#Object-detection-metrics-with-pycocotools-and-gis-data"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Run <a href="/drone_detector/predict.html#predict_instance_masks"><code>predict_instance_masks</code></a> or <a href="/drone_detector/predict.html#predict_bboxes"><code>predict_bboxes</code></a> for each scene separately, and save the resulting files in <code>data_path</code> containing</p>
+<ul>
+<li>folder <code>raster_tiles</code> that contain the corresponding raster data. Required for transforming shapefiles to pixel coordinates</li>
+<li>folder <code>vector_tiles</code> that contain ground truth masks</li>
+<li>folder <code>predicted_vectors</code> that contain predictions</li>
+</ul>
+<p>All files corresponding to the same scene should have the same name, e.g. <code>raster_tiles/1053_Hiidenportti_Chunk9_orto.tif</code> for raster image, <code>vector_tiles/1053_Hiidenportti_Chunk9_orto.geojson</code> for ground truth and <code>predicted_vectors/1053_Hiidenportti_Chunk9_orto.geojson</code> for predictions.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="GisCOCOeval" class="doc_header"><code>class</code> <code>GisCOCOeval</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L298" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GisCOCOeval</code>(<strong><code>data_path</code></strong>:<code>str</code>, <strong><code>outpath</code></strong>:<code>str</code>, <strong><code>coco_info</code></strong>:<code>dict</code>, <strong><code>coco_licenses</code></strong>:<code>list</code>, <strong><code>coco_categories</code></strong>:<code>list</code>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
 </div>
  
 

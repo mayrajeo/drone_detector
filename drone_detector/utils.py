@@ -17,7 +17,7 @@ def rangeof(iterable):
 
 # Malisiewicz et al.
 def non_max_suppression_fast(boxes, scores, overlap_thresh:float, sort_criterion:str='score'):
-    "Right now sorts by scores, another possibility is to sort by area"
+    "Possibility to sort boxes by score (default) or area"
 
     # if there are no boxes, return an empty list
     if len(boxes) == 0:

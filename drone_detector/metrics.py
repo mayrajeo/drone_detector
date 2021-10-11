@@ -329,7 +329,7 @@ class GisCOCOeval():
             _summarize_coco(self.coco_eval)
 
         self.coco_eval.params.catIds = self.coco.getCatIds()
-        print('Evaluating for full data...')
+        print('\nEvaluating for full data...')
 
         self.coco_eval.evaluate()
         self.coco_eval.accumulate()

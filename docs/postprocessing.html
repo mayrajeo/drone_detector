@@ -38,7 +38,14 @@ nb_path: "nbs/04_postprocessing.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Math">Math<a class="anchor-link" href="#Math"> </a></h2>
+<h2 id="Non-maximum-suppression">Non-maximum suppression<a class="anchor-link" href="#Non-maximum-suppression"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First the commonly used NMS with bounding boxes, that prioritizes either confidence score (default) or bounding box area.</p>
+
 </div>
 </div>
 </div>
@@ -53,34 +60,9 @@ nb_path: "nbs/04_postprocessing.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="poly_IoU" class="doc_header"><code>poly_IoU</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L10" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>poly_IoU</code>(<strong><code>poly_1</code></strong>:<code>Polygon</code>, <strong><code>poly_2</code></strong>:<code>Polygon</code>)</p>
+<h4 id="non_max_suppression_fast" class="doc_header"><code>non_max_suppression_fast</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L17" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>non_max_suppression_fast</code>(<strong><code>boxes</code></strong>, <strong><code>scores</code></strong>, <strong><code>overlap_thresh</code></strong>:<code>float</code>, <strong><code>sort_criterion</code></strong>:<code>str</code>=<em><code>'score'</code></em>)</p>
 </blockquote>
-<p>IoU for polygons</p>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-<div class="output_markdown rendered_html output_subarea ">
-<h4 id="poly_intersection_over_area" class="doc_header"><code>poly_intersection_over_area</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L17" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>poly_intersection_over_area</code>(<strong><code>poly_1</code></strong>:<code>Polygon</code>, <strong><code>poly_2</code></strong>:<code>Polygon</code>)</p>
-</blockquote>
-<p>How much of smaller polygon is contained within larger</p>
+<p>Possibility to sort boxes by score (default) or area</p>
 
 </div>
 
@@ -101,17 +83,8 @@ nb_path: "nbs/04_postprocessing.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Vector-shapefile-postprocessing">Vector shapefile postprocessing<a class="anchor-link" href="#Vector-shapefile-postprocessing"> </a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Steps in postprocessing:</p>
-<ol>
-<li>Drop all polygons that are within another polygon of a same class</li>
-<li>Merge all polygons of a same class that have IoU / IoA larger than (p1.union(p2))</li>
-</ol>
+<p>Non-max suppression can in theory be applied also on polygons, but it hasn't been used in any publications as far as I know.</p>
+<p>If <a href="/drone_detector/postprocessing.html#non_max_suppression_poly"><code>non_max_suppression_poly</code></a> is used to eliminate polygons, threshold might need to be smaller than typical value of 0.7 that is used.</p>
 
 </div>
 </div>
@@ -119,16 +92,163 @@ nb_path: "nbs/04_postprocessing.ipynb"
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
+<div class="output_wrapper">
+<div class="output">
 
-    </div>
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="non_max_suppression_poly" class="doc_header"><code>non_max_suppression_poly</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L87" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>non_max_suppression_poly</code>(<strong><code>geoms</code></strong>, <strong><code>scores</code></strong>, <strong><code>overlap_thresh</code></strong>:<code>float</code>, <strong><code>sort_criterion</code></strong>:<code>str</code>=<em><code>'score'</code></em>)</p>
+</blockquote>
+<p>Possibility to sort geoms by score (default) or area</p>
+
+</div>
+
+</div>
+
 </div>
 </div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Some utils to run above functions to <code>GeoDataFrames</code></p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="do_nms" class="doc_header"><code>do_nms</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L132" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>do_nms</code>(<strong><code>gdf</code></strong>:<code>GeoDataFrame</code>, <strong><code>nms_thresh</code></strong>=<em><code>0.7</code></em>, <strong><code>crit</code></strong>=<em><code>'score'</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="do_poly_nms" class="doc_header"><code>do_poly_nms</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L140" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>do_poly_nms</code>(<strong><code>gdf</code></strong>:<code>GeoDataFrame</code>, <strong><code>nms_thresh</code></strong>=<em><code>0.1</code></em>, <strong><code>crit</code></strong>=<em><code>'score'</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Smoothing-and-filling-holes">Smoothing and filling holes<a class="anchor-link" href="#Smoothing-and-filling-holes"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Below functions are run before converting IceVision preds to COCO or shapefile format.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="fill_holes" class="doc_header"><code>fill_holes</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L149" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fill_holes</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
+</blockquote>
+<p>Run <code>binary_fill_holes</code> to predicted binary masks</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="dilate_erode" class="doc_header"><code>dilate_erode</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L157" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dilate_erode</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
+</blockquote>
+<p>Run dilation followed by erosion in order to smooth masks</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
 
 </div>
     {% endraw %}

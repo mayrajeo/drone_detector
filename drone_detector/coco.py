@@ -228,7 +228,7 @@ def bbox_preds_to_coco_anns(preds:list) -> dict:
                 'iscrowd': 0,
                 'category_id': p.pred.detection.label_ids[j].item(),
                 'id': i,
-                'image_id': s.record_id,
+                'image_id': p.record_id,
                 'bbox': [p.pred.detection.bboxes[j].xmin.item(),
                          p.pred.detection.bboxes[j].ymin.item(),
                          p.pred.detection.bboxes[j].xmax.item() - p.pred.detection.bboxes[j].xmin.item(),

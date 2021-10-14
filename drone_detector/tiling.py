@@ -6,6 +6,7 @@ __all__ = ['make_grid', 'Tiler', 'untile_raster', 'copy_sum', 'untile_vector']
 
 from .imports import *
 from .utils import *
+from .postproc import *
 
 # Cell
 

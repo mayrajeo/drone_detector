@@ -94,12 +94,13 @@ def coverage_error(sigmoid=True, sample_weight=None):
 # Cell
 
 class JaccardCoeffMulti(DiceMulti):
-    "Averaged Jaccard coefficient for multiclass target in segmentation. Includes background as one class"
+    "Averaged Jaccard coefficient for multiclass target in segmentation. Excludes background class"
     @property
     def value(self):
         binary_jaccard_scores = np.array([])
         for c in self.inter:
-            binary_jaccard_scores = np.append(binary_jaccard_scores, self.inter[c]/(self.union[c] - self.inter[c]) if self.union[c] > 0 else np.nan)
+            if c > 0:
+                binary_jaccard_scores = np.append(binary_jaccard_scores, self.inter[c]/(self.union[c] - self.inter[c]) if self.union[c] > 0 else np.nan)
         return np.nanmean(binary_jaccard_scores)
 
 # Cell

@@ -10,6 +10,7 @@ from .tiling import *
 from .coco import *
 from .metrics import *
 from .losses import *
+from .postproc import *
 
 from fastcore.foundation import *
 from fastcore.script import *
@@ -167,12 +168,12 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
     for cell in grid.itertuples():
         if not os.path.isfile(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson'): continue
         pred_shp = gpd.read_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
-        cell_geom = cell.geometry.buffer(-2) # 2 meter erosion from the edge
+        cell_geom = cell.geometry.buffer(-1) # 2 meter erosion from the edge
         pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.within(cell_geom) else 1, axis=1)
         pred_shp = pred_shp[pred_shp.to_drop == 0]
         pred_shp.drop(columns=['to_drop'], inplace=True)
         if use_tta:
-            do_nms(pred_shp, 0.1, 'score')
+            pred_shp = do_nms(pred_shp, 0.1, 'score')
         if len(pred_shp) > 0: pred_shp.to_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
         else: os.remove(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
 
@@ -187,6 +188,9 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
 
 # Cell
 
+from torchvision.models.detection.rpn import AnchorGenerator, RPNHead
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
+
 @call_parse
 def predict_instance_masks(path_to_model:Param("Path to pretrained model file",type=str),
                            path_to_image:Param("Path to image to annotate", type=str),
@@ -196,7 +200,8 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
                            tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=200),
                            num_classes:Param("Number of classes to predict. Default 2", type=int, default=2),
                            use_tta:Param("Use test-time augmentation", store_true),
-                           smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_true)
+                           smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_true),
+                           custom_anchors:Param('Use smaller anchors', store_true)
     ):
     "Segment instance masks from a new image using a pretrained model"
 
@@ -217,6 +222,19 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     class_map = ClassMap(list(range(1, num_classes+1)))
     state_dict = torch.load(path_to_model, map_location=device)
     model = mask_rcnn.model(num_classes=len(class_map))
+
+    if custom_anchors:
+        anchor_generator = AnchorGenerator(sizes=((16,), (32,), (64,), (128,), (256,)),
+                                       aspect_ratios=tuple([(0.25,0.5,1.,2.) for _ in range(5)]))
+        model.rpn.anchor_generator = anchor_generator
+
+        model.rpn.head = RPNHead(256, anchor_generator.num_anchors_per_location()[0])
+        in_features = model.roi_heads.box_predictor.cls_score.in_features
+
+        model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes+1)
+
+        in_features_mask = model.roi_heads.mask_predictor.conv5_mask.in_channels
+
     model.load_state_dict(state_dict)
     if device != 'cpu': model.to(torch.device('cuda'))
     infer_tfms = tfms.A.Adapter([tfms.A.Normalize()])
@@ -228,8 +246,8 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
         preds = icevision_tta(mask_rcnn, infer_set, model)
     else:
         infer_ds = Dataset(infer_set, infer_tfms)
-        infer_dl = faster_rcnn.infer_dl(infer_ds, batch_size=16, shuffle=False)
-        preds = faster_rcnn.predict_from_dl(model=model, infer_dl=infer_dl, keep_images=True)
+        infer_dl = mask_rcnn.infer_dl(infer_ds, batch_size=16, shuffle=False)
+        preds = mask_rcnn.predict_from_dl(model=model, infer_dl=infer_dl, keep_images=True)
 
     # Mask postprocessing:
     if smooth_preds:
@@ -261,10 +279,12 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     for cell in grid.itertuples():
         if not os.path.isfile(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson'): continue
         pred_shp = gpd.read_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
-        cell_geom = cell.geometry.buffer(-2) # 2 meter erosion from the edge
+        cell_geom = cell.geometry.buffer(-1) # 1 meter erosion from the edge
         pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.within(cell_geom) else 1, axis=1)
         pred_shp = pred_shp[pred_shp.to_drop == 0]
         pred_shp.drop(columns=['to_drop'], inplace=True)
+        if use_tta:
+            pred_shp = do_nms(pred_shp, 0.1, 'score')
         if len(pred_shp) > 0: pred_shp.to_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
         else: os.remove(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
 
@@ -322,6 +342,7 @@ def predict_segmentation(path_to_model:Param("Path to pretrained model file",typ
             test_dl.set_base_transforms()
             if use_tta:
                 batch_tfms = [Dihedral()]
+                item_tfms = [ToTensor(), IntToFloatTensor()]
                 preds = learn.tta(dl=test_dl, batch_tfms=batch_tfms)[0]
             else:
                 preds = learn.get_preds(dl=test_dl, with_input=False, with_decoded=False)[0]

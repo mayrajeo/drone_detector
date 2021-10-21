@@ -4,7 +4,8 @@ __all__ = ['open_npy', 'open_geotiff', 'show_composite', 'show_single_channel', 
            'show_mean_spectra', 'norm', 'RegressionMask', 'RegressionMaskBlock', 'MultiChannelTensorImage',
            'MultiChannelImageBlock', 'using_attr', 'MultiChannelTensorImageTuple', 'MultiChannelImageTupleBlock',
            'get_image_timeseries', 'get_all_but_last', 'get_last', 'MultiChannelImageDataLoaders',
-           'TifSegmentationDataLoaders', 'label_with_matching_fname', 'ScaleToFloatTensor']
+           'TifSegmentationDataLoaders', 'label_with_matching_fname', 'label_from_different_folder',
+           'ScaleToFloatTensor']
 
 # Cell
 
@@ -406,6 +407,9 @@ class TifSegmentationDataLoaders(DataLoaders):
 def label_with_matching_fname(fn, path):
     "Utility to match image and mask that have different folder but identical filename"
     return f'{path}/{fn.stem}{fn.suffix}'
+
+def label_from_different_folder(fn, original_folder, new_folder):
+    return str(fn).replace('raster_tiles', 'rasterized_vector_tiles')
 
 # Cell
 

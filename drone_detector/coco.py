@@ -57,6 +57,7 @@ def binary_mask_to_polygon(binary_mask, tolerance=0):
 # Cell
 
 from pycocotools.mask import frPyObjects
+from shapely.geometry import MultiPolygon
 
 class COCOProcessor():
     "Handles Transformations from shapefiles to COCO-format and backwards"
@@ -137,15 +138,20 @@ class COCOProcessor():
                         scores.append(a['score'])
                 # Multipolygon
                 else:
+                    temp_poly = None
+                    max_area = 0
+                    cats.append(a['category_id'])
+
                     for p in rangeof(a['segmentation']):
-                        cats.append(a['category_id'])
                         xy_coords = [(a['segmentation'][p][i], a['segmentation'][p][i+1])
                                      for i in range(0,len(a['segmentation'][p]),2)]
                         xy_coords.append(xy_coords[-1])
-                        polys.append(Polygon(xy_coords))
-                        if 'score' in a.keys():
-                            scores.append(a['score'])
-
+                        if Polygon(xy_coords).area > max_area:
+                            temp_poly = Polygon(xy_coords)
+                            max_area = temp_poly.area
+                    polys.append(temp_poly)
+                    if 'score' in a.keys():
+                        scores.append(a['score'])
             gdf = gpd.GeoDataFrame({'label':cats, 'geometry':polys})
             if len(scores) != 0: gdf['score'] = scores
             tfmd_gdf = georegister_px_df(gdf, f'{self.raster_path}/{i["file_name"]}')
@@ -261,5 +267,13 @@ def _process_shp_to_coco(image_id, category_id, ann_id, poly:Polygon):
     if poly.type == 'Polygon':
         ann_dict['segmentation'] = [list(sum(poly.exterior.coords[:-1], ()))]
     elif poly.type == 'MultiPolygon':
-        ann_dict['segmentation'] = [list(sum(p.exterior.coords[:-1], ())) for p in list(poly)]
+        temp_poly = None
+        max_area = 0
+        # Take only the largest polygon
+        for p in list(poly):
+            area = p.area
+            if area > max_area:
+                max_area = area
+                temp_poly = p
+        ann_dict['segmentation'] = [list(sum(temp_poly.exterior.coords[:-1], ()))]
     return ann_dict

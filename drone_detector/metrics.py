@@ -381,19 +381,29 @@ class GisCOCOeval():
             eval_ix = 4*len(im_ids)*(cat_id-1) + im_id
             res_dict = self.coco_eval.evalImgs[eval_ix]
 
+            if res_dict is None:
+                continue
+
             gt_matches = np.unique(res_dict['dtMatches'][iou_ix]) # Detected ground truth ids in specified iou level
             dt_matches = np.unique(res_dict['gtMatches'][iou_ix]) # Correct detection ids in specified iou level
             gt_matches = gt_matches[gt_matches>0]
             dt_matches = dt_matches[dt_matches>0]
 
+            if gt_matches is None:
+                gt_matches = []
+
             gt_misses = [i for i in res_dict['gtIds'] if i not in gt_matches] # Missed ground truths
-            dt_misses = [i for i in res_dict['dtIds'] if i not in dt_matches] # Misdetections
-
             gt_match_anns = [self.coco.anns[i] for i in gt_matches]
-            dt_match_anns = [self.coco_res.anns[i] for i in dt_matches]
-
             gt_miss_anns = [self.coco.anns[i] for i in gt_misses]
+
+
+            if dt_matches is None:
+                dt_matches = []
+
+            dt_misses = [i for i in res_dict['dtIds'] if i not in dt_matches] # Misdetections
+            dt_match_anns = [self.coco_res.anns[i] for i in dt_matches]
             dt_miss_anns = [self.coco_res.anns[i] for i in dt_misses]
+
 
             for a in gt_match_anns:
                 ann = a.copy()

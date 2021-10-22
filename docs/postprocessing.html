@@ -180,6 +180,30 @@ nb_path: "nbs/04_postprocessing.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="do_min_rot_rectangle_nms" class="doc_header"><code>do_min_rot_rectangle_nms</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L147" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>do_min_rot_rectangle_nms</code>(<strong><code>gdf</code></strong>:<code>GeoDataFrame</code>, <strong><code>nms_thresh</code></strong>=<em><code>0.7</code></em>, <strong><code>crit</code></strong>=<em><code>'score'</code></em>)</p>
+</blockquote>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
 </div>
     {% endraw %}
 
@@ -207,7 +231,7 @@ nb_path: "nbs/04_postprocessing.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="fill_holes" class="doc_header"><code>fill_holes</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L149" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fill_holes</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
+<h4 id="fill_holes" class="doc_header"><code>fill_holes</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L157" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>fill_holes</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
 </blockquote>
 <p>Run <code>binary_fill_holes</code> to predicted binary masks</p>
 
@@ -232,7 +256,7 @@ nb_path: "nbs/04_postprocessing.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="dilate_erode" class="doc_header"><code>dilate_erode</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L157" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dilate_erode</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
+<h4 id="dilate_erode" class="doc_header"><code>dilate_erode</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/postproc.py#L165" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>dilate_erode</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
 </blockquote>
 <p>Run dilation followed by erosion in order to smooth masks</p>
 

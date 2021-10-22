@@ -47,7 +47,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="AllDataParser" class="doc_header"><code>class</code> <code>AllDataParser</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L30" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AllDataParser</code>(<strong><code>data_dir</code></strong>) :: <code>Parser</code></p>
+<h2 id="AllDataParser" class="doc_header"><code>class</code> <code>AllDataParser</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L29" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>AllDataParser</code>(<strong><code>data_dir</code></strong>) :: <code>Parser</code></p>
 </blockquote>
 <p>Read all image files from data_dir, used with IceVision models</p>
 
@@ -86,7 +86,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Pipeline.remove" class="doc_header"><code>Pipeline.remove</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L50" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Pipeline.remove</code>(<strong><code>t</code></strong>)</p>
+<h4 id="Pipeline.remove" class="doc_header"><code>Pipeline.remove</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L49" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Pipeline.remove</code>(<strong><code>t</code></strong>)</p>
 </blockquote>
 <p>Remove an instance of <code>t</code> from <code>self</code> if present</p>
 
@@ -111,7 +111,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="DataLoader.set_base_transforms" class="doc_header"><code>DataLoader.set_base_transforms</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L55" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>DataLoader.set_base_transforms</code>()</p>
+<h4 id="DataLoader.set_base_transforms" class="doc_header"><code>DataLoader.set_base_transforms</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L54" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>DataLoader.set_base_transforms</code>()</p>
 </blockquote>
 <p>Removes all transforms with a <code>size</code> parameter</p>
 
@@ -154,7 +154,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="icevision_tta" class="doc_header"><code>icevision_tta</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L68" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>icevision_tta</code>(<strong><code>model_type</code></strong>, <strong><code>items</code></strong>, <strong><code>model</code></strong>)</p>
+<h4 id="icevision_tta" class="doc_header"><code>icevision_tta</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L67" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>icevision_tta</code>(<strong><code>model_type</code></strong>, <strong><code>items</code></strong>, <strong><code>model</code></strong>)</p>
 </blockquote>
 <p>Simple TTA with horizontal and vertical flips as augmentations</p>
 
@@ -186,7 +186,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_bboxes" class="doc_header"><code>predict_bboxes</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L103" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_bboxes</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file", <strong><code>path_to_image</code></strong>:"Path to image to annotate", <strong><code>outfile</code></strong>:"Path and filename for output raster", <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use", <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles", <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px", <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2", <strong><code>use_tta</code></strong>:"Use test-time augmentation")</p>
+<h4 id="predict_bboxes" class="doc_header"><code>predict_bboxes</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L102" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_bboxes</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file", <strong><code>path_to_image</code></strong>:"Path to image to annotate", <strong><code>outfile</code></strong>:"Path and filename for output raster", <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use", <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles", <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px", <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2", <strong><code>use_tta</code></strong>:"Use test-time augmentation")</p>
 </blockquote>
 <p>Detect bounding boxes from a new image using a pretrained model</p>
 
@@ -218,7 +218,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_instance_masks" class="doc_header"><code>predict_instance_masks</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L194" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_instance_masks</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file", <strong><code>path_to_image</code></strong>:"Path to image to annotate", <strong><code>outfile</code></strong>:"Path and filename for output raster", <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use", <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles", <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px", <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2", <strong><code>use_tta</code></strong>:"Use test-time augmentation", <strong><code>smooth_preds</code></strong>:"Run fill_holes and dilate_erode to masks", <strong><code>custom_anchors</code></strong>:"Use smaller anchors")</p>
+<h4 id="predict_instance_masks" class="doc_header"><code>predict_instance_masks</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L193" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_instance_masks</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file", <strong><code>path_to_image</code></strong>:"Path to image to annotate", <strong><code>outfile</code></strong>:"Path and filename for output raster", <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use", <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles", <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px", <strong><code>num_classes</code></strong>:"Number of classes to predict. Default 2", <strong><code>use_tta</code></strong>:"Use test-time augmentation", <strong><code>smooth_preds</code></strong>:"Run fill_holes and dilate_erode to masks", <strong><code>custom_anchors</code></strong>:"Use smaller anchors")</p>
 </blockquote>
 <p>Segment instance masks from a new image using a pretrained model</p>
 
@@ -250,7 +250,7 @@ nb_path: "nbs/08_predict.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="predict_segmentation" class="doc_header"><code>predict_segmentation</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L301" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_segmentation</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file", <strong><code>path_to_image</code></strong>:"Path to image to annotate", <strong><code>outfile</code></strong>:"Path and filename for output raster", <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use", <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles", <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px", <strong><code>use_tta</code></strong>:"Use test-time augmentation"=<em><code>None</code></em>)</p>
+<h4 id="predict_segmentation" class="doc_header"><code>predict_segmentation</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/predict.py#L305" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>predict_segmentation</code>(<strong><code>path_to_model</code></strong>:"Path to pretrained model file", <strong><code>path_to_image</code></strong>:"Path to image to annotate", <strong><code>outfile</code></strong>:"Path and filename for output raster", <strong><code>processing_dir</code></strong>:"Directory to save the intermediate tiles. Deleted after use", <strong><code>tile_size</code></strong>:"Tile size to use. Default 400x400px tiles", <strong><code>tile_overlap</code></strong>:"Tile overlap to use. Default 100px", <strong><code>use_tta</code></strong>:"Use test-time augmentation"=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Segment image into land cover classes with a pretrained models
 TODO save also information about label and class

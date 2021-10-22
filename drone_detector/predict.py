@@ -4,7 +4,6 @@ __all__ = ['AllDataParser', 'icevision_tta', 'predict_bboxes', 'predict_instance
 
 # Cell
 from .imports import *
-
 from .utils import *
 from .tiling import *
 from .coco import *
@@ -255,12 +254,12 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
         preds = dilate_erode(preds)
 
     preds_coco = mask_preds_to_coco_anns(preds)
-
     # TODO fix categories to not be hardcoded
     preds_coco['categories'] = [
         {'supercategory':'deadwood', 'id':1, 'name': 'Standing'},
         {'supercategory':'deadwood', 'id':2, 'name': 'Fallen'},
     ]
+
 
     # Process preds to shapefiles
     coco_proc = COCOProcessor(data_path=processing_dir,
@@ -276,12 +275,17 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
 
     grid = tiler.grid
 
+    grid = grid.to_crs('EPSG:3067')
+
     for cell in grid.itertuples():
         if not os.path.isfile(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson'): continue
         pred_shp = gpd.read_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
-        cell_geom = cell.geometry.buffer(-1) # 1 meter erosion from the edge
+        orig_crs = pred_shp.crs
+        pred_shp  = pred_shp.to_crs('EPSG:3067')
+        cell_geom = cell.geometry.buffer(-1) # 1 unit erosion from the edge, hope that crs unit is meters
         pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.within(cell_geom) else 1, axis=1)
         pred_shp = pred_shp[pred_shp.to_drop == 0]
+        pred_shp = pred_shp.to_crs(orig_crs)
         pred_shp.drop(columns=['to_drop'], inplace=True)
         if use_tta:
             pred_shp = do_nms(pred_shp, 0.1, 'score')

@@ -33,6 +33,11 @@ def make_grid(path, gridsize_x:int=640, gridsize_y:int=480,
         names.append(f'R{row}C{col}')
     grid = gpd.GeoDataFrame({'cell': names, 'geometry':polys})
     ds = None
+
+    with rio.open(path) as src:
+        crs = src.crs
+    grid.crs = crs
+
     return grid
 
 # Cell

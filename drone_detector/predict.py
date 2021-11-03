@@ -10,6 +10,7 @@ from .coco import *
 from .metrics import *
 from .losses import *
 from .postproc import *
+from .models import *
 
 from fastcore.foundation import *
 from fastcore.script import *
@@ -100,7 +101,7 @@ def icevision_tta(model_type, items, model) -> list:
 # Cell
 
 @call_parse
-def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str),
+def predict_bboxes(path_to_model_config:Param("Path to pretrained model folder",type=str),
                    path_to_image:Param("Path to image to annotate", type=str),
                    outfile:Param('Path and filename for output raster', type=str),
                    processing_dir:Param("Directory to save the intermediate tiles. Deleted after use", type=str, default='temp'),
@@ -126,29 +127,38 @@ def predict_bboxes(path_to_model:Param("Path to pretrained model file",type=str)
     # Loading pretrained model
     print('Loading model')
     faster_rcnn = models.torchvision.faster_rcnn
-    class_map = ClassMap(list(range(1, num_classes+1)))
-    state_dict = torch.load(path_to_model, map_location=device)
-    model = faster_rcnn.model(num_classes=len(class_map))
-    model.load_state_dict(state_dict)
-    if device != 'cpu': model.to(torch.device('cuda'))
+    #state_dict = torch.load(path_to_model, map_location=device)
+    #model = faster_rcnn.model(num_classes=len(class_map))
+    #model.load_state_dict(state_dict)
+    #if device != 'cpu': model.to(torch.device('cuda'))
+
+    with open(f'{path_to_conf}/config.json') as conf:
+        conf_dict = json.load(conf)
+
+    class_map = ClassMap(list(range(1, len(conf_dict['categories']+1))))
+    #state_dict = torch.load(path_to_model, map_location=device)
+    model = load_mask_rcnn_from_config(path_to_model_config)#mask_rcnn.model(num_classes=len(class_map))
+
     infer_tfms = tfms.A.Adapter([tfms.A.Normalize()])
 
     print('Starting predictions')
     infer_parser = AllDataParser(data_dir=f'{processing_dir}/raster_tiles')
     infer_set = infer_parser.parse(data_splitter=SingleSplitSplitter(), autofix=False)[0]
+
     if use_tta:
         preds = icevision_tta(faster_rcnn, infer_set, model)
     else:
         infer_ds = Dataset(infer_set, infer_tfms)
         infer_dl = faster_rcnn.infer_dl(infer_ds, batch_size=16, shuffle=False)
         preds = faster_rcnn.predict_from_dl(model=model, infer_dl=infer_dl, keep_images=True)
+
     preds_coco = bbox_preds_to_coco_anns(preds)
 
     # TODO fix categories to not be hardcoded
-    preds_coco['categories'] = [
-        {'supercategory':'deadwood', 'id':1, 'name': 'Standing'},
-        {'supercategory':'deadwood', 'id':2, 'name': 'Fallen'},
-    ]
+    preds_coco['categories'] = conf_dict['categories']#[
+        #{'supercategory':'deadwood', 'id':1, 'name': 'Standing'},
+        #{'supercategory':'deadwood', 'id':2, 'name': 'Fallen'},
+    #]
 
     # Process preds to shapefiles
     coco_proc = COCOProcessor(data_path=processing_dir,
@@ -191,7 +201,7 @@ from torchvision.models.detection.rpn import AnchorGenerator, RPNHead
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
 @call_parse
-def predict_instance_masks(path_to_model:Param("Path to pretrained model file",type=str),
+def predict_instance_masks(path_to_model_config:Param("Path to pretrained model folder",type=str),
                            path_to_image:Param("Path to image to annotate", type=str),
                            outfile:Param('Path and filename for output raster', type=str),
                            processing_dir:Param("Directory to save the intermediate tiles. Deleted after use", type=str, default='temp'),
@@ -199,8 +209,7 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
                            tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=200),
                            num_classes:Param("Number of classes to predict. Default 2", type=int, default=2),
                            use_tta:Param("Use test-time augmentation", store_true),
-                           smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_true),
-                           custom_anchors:Param('Use smaller anchors', store_true)
+                           smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_true)
     ):
     "Segment instance masks from a new image using a pretrained model"
 
@@ -218,24 +227,16 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     mask_rcnn = models.torchvision.mask_rcnn
     # Loading pretrained model
     print('Loading model')
-    class_map = ClassMap(list(range(1, num_classes+1)))
-    state_dict = torch.load(path_to_model, map_location=device)
-    model = mask_rcnn.model(num_classes=len(class_map))
 
-    if custom_anchors:
-        anchor_generator = AnchorGenerator(sizes=((16,), (32,), (64,), (128,), (256,)),
-                                       aspect_ratios=tuple([(0.25,0.5,1.,2.) for _ in range(5)]))
-        model.rpn.anchor_generator = anchor_generator
+    with open(f'{path_to_conf}/config.json') as conf:
+        conf_dict = json.load(conf)
 
-        model.rpn.head = RPNHead(256, anchor_generator.num_anchors_per_location()[0])
-        in_features = model.roi_heads.box_predictor.cls_score.in_features
+    class_map = ClassMap(list(range(1, len(conf_dict['categories']+1))))
+    #state_dict = torch.load(path_to_model, map_location=device)
+    model = load_mask_rcnn_from_config(path_to_model_config)#mask_rcnn.model(num_classes=len(class_map))
 
-        model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes+1)
-
-        in_features_mask = model.roi_heads.mask_predictor.conv5_mask.in_channels
-
-    model.load_state_dict(state_dict)
-    if device != 'cpu': model.to(torch.device('cuda'))
+    #model.load_state_dict(state_dict)
+    #if device != 'cpu': model.to(torch.device('cuda'))
     infer_tfms = tfms.A.Adapter([tfms.A.Normalize()])
 
     print('Starting predictions')
@@ -255,10 +256,11 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
 
     preds_coco = mask_preds_to_coco_anns(preds)
     # TODO fix categories to not be hardcoded
-    preds_coco['categories'] = [
-        {'supercategory':'deadwood', 'id':1, 'name': 'Standing'},
-        {'supercategory':'deadwood', 'id':2, 'name': 'Fallen'},
-    ]
+    preds_coco['categories'] = conf_dict['categories']#[
+        #{'supercategory':'deadwood', 'id':1, 'name': 'Standing'},
+        #{'supercategory':'deadwood', 'id':2, 'name': 'Fallen'},
+    #]
+
 
 
     # Process preds to shapefiles
@@ -274,6 +276,7 @@ def predict_instance_masks(path_to_model:Param("Path to pretrained model file",t
     # TODO add as optional postprocessing step
 
     grid = tiler.grid
+
 
     grid = grid.to_crs('EPSG:3067')
 

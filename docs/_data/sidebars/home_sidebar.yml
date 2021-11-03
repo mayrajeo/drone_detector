@@ -28,6 +28,9 @@ entries:
       title: Visualizations
       url: visualizations.html
     - output: web,pdf
+      title: Models
+      url: models.html
+    - output: web,pdf
       title: CLI for using pretrained models to process new images
       url: predict.html
     - output: web,pdf

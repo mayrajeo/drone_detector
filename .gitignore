@@ -162,3 +162,7 @@ analyses/Quicktest.ipynb
 */results/
 *.pth
 hiidenportti_models
+analyses/coco_eval
+*wandb
+analyses/detectron2_models
+*debug

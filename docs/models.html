@@ -47,7 +47,7 @@ nb_path: "nbs/06_models.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="mask_rcnn_custom_anchors" class="doc_header"><code>mask_rcnn_custom_anchors</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/models.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mask_rcnn_custom_anchors</code>(<strong><code>num_classes</code></strong>:<code>int</code>, <strong><code>backbone</code></strong>=<em><code>None</code></em>, <strong><code>pretrained</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>sizes</code></strong>:<code>tuple</code>=<em><code>((32,), (64,), (128,), (256,), (512,))</code></em>, <strong><code>aspect_ratios</code></strong>:<code>tuple</code>=<em><code>(0.5, 1.0, 2.0)</code></em>)</p>
+<h4 id="mask_rcnn_custom_anchors" class="doc_header"><code>mask_rcnn_custom_anchors</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/models.py#L18" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mask_rcnn_custom_anchors</code>(<strong><code>num_classes</code></strong>:<code>int</code>, <strong><code>backbone</code></strong>=<em><code>None</code></em>, <strong><code>pretrained</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>sizes</code></strong>:<code>tuple</code>=<em><code>((32,), (64,), (128,), (256,), (512,))</code></em>, <strong><code>aspect_ratios</code></strong>:<code>tuple</code>=<em><code>(0.5, 1.0, 2.0)</code></em>, <strong><code>min_size</code></strong>:<code>int</code>=<em><code>800</code></em>, <strong><code>max_size</code></strong>:<code>int</code>=<em><code>1333</code></em>)</p>
 </blockquote>
 <p>Make icevision Mask RCNN with custom anchors. Default values are torchvision defaults</p>
 
@@ -72,7 +72,7 @@ nb_path: "nbs/06_models.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="faster_rcnn_custom_anchors" class="doc_header"><code>faster_rcnn_custom_anchors</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/models.py#L58" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>faster_rcnn_custom_anchors</code>(<strong><code>num_classes</code></strong>:<code>int</code>, <strong><code>backbone</code></strong>=<em><code>None</code></em>, <strong><code>pretrained</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>sizes</code></strong>:<code>tuple</code>=<em><code>((32,), (64,), (128,), (256,), (512,))</code></em>, <strong><code>aspect_ratios</code></strong>:<code>tuple</code>=<em><code>(0.5, 1.0, 2.0)</code></em>)</p>
+<h4 id="faster_rcnn_custom_anchors" class="doc_header"><code>faster_rcnn_custom_anchors</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/models.py#L64" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>faster_rcnn_custom_anchors</code>(<strong><code>num_classes</code></strong>:<code>int</code>, <strong><code>backbone</code></strong>=<em><code>None</code></em>, <strong><code>pretrained</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>sizes</code></strong>:<code>tuple</code>=<em><code>((32,), (64,), (128,), (256,), (512,))</code></em>, <strong><code>aspect_ratios</code></strong>:<code>tuple</code>=<em><code>(0.5, 1.0, 2.0)</code></em>, <strong><code>min_size</code></strong>:<code>int</code>=<em><code>800</code></em>, <strong><code>max_size</code></strong>:<code>int</code>=<em><code>1333</code></em>)</p>
 </blockquote>
 <p>Make icevision Faster RCNN with custom anchors. Default values are torchvision defaults</p>
 
@@ -120,7 +120,7 @@ nb_path: "nbs/06_models.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="save_model_and_config" class="doc_header"><code>save_model_and_config</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/models.py#L93" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>save_model_and_config</code>(<strong><code>outdir</code></strong>, <strong><code>model</code></strong>, <strong><code>backbone_name</code></strong>, <strong><code>model_type</code></strong>, <strong><code>categories</code></strong>)</p>
+<h4 id="save_model_and_config" class="doc_header"><code>save_model_and_config</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/models.py#L105" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>save_model_and_config</code>(<strong><code>outdir</code></strong>, <strong><code>model</code></strong>, <strong><code>backbone_name</code></strong>, <strong><code>model_type</code></strong>, <strong><code>categories</code></strong>, <strong><code>min_size</code></strong>:<code>int</code>=<em><code>800</code></em>, <strong><code>max_size</code></strong>:<code>int</code>=<em><code>1333</code></em>)</p>
 </blockquote>
 
 </div>
@@ -144,7 +144,7 @@ nb_path: "nbs/06_models.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="load_rcnn_from_config" class="doc_header"><code>load_rcnn_from_config</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/models.py#L118" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_rcnn_from_config</code>(<strong><code>path_to_conf</code></strong>)</p>
+<h4 id="load_rcnn_from_config" class="doc_header"><code>load_rcnn_from_config</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/models.py#L138" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>load_rcnn_from_config</code>(<strong><code>path_to_conf</code></strong>)</p>
 </blockquote>
 <p>Load model according to config</p>
 

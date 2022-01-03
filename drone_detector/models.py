@@ -19,7 +19,9 @@ def mask_rcnn_custom_anchors(num_classes:int,
                              backbone=None,
                              pretrained:bool=True,
                              sizes:tuple=((32,), (64,), (128,), (256,), (512,)),
-                             aspect_ratios:tuple=(0.5, 1.0, 2.0)
+                             aspect_ratios:tuple=(0.5, 1.0, 2.0),
+                             min_size:int=800,
+                             max_size:int=1333
 
     ) -> nn.Module:
     "Make icevision Mask RCNN with custom anchors. Default values are torchvision defaults"
@@ -29,7 +31,7 @@ def mask_rcnn_custom_anchors(num_classes:int,
         backbone = mask_rcnn.backbones.resnet50_fpn(pretrained=pretrained)
 
     rpn_anchor_generator = AnchorGenerator(sizes=sizes,
-                                           aspect_ratios=tuple([aspect_ratios for _ in rangeof(sizes)]))
+                                           aspect_ratios=aspect_ratios)
 
     rpn_head = RPNHead(256, rpn_anchor_generator.num_anchors_per_location()[0])
 
@@ -47,10 +49,14 @@ def mask_rcnn_custom_anchors(num_classes:int,
         'rpn_head': rpn_head,
         'box_predictor': box_predictor,
         'mask_predictor': mask_predictor,
-        'num_classes': None
+        'num_classes': None,
+        'image_mean': [1., 1., 1.],
+        'image_std': [1., 1., 1.], # This way no need to remove model normalization
+        'min_size': min_size,
+        'max_size': max_size
     }
 
-    custom_model = mask_rcnn.model(backbone=backbone, **mask_rcnn_kwargs)
+    custom_model = mask_rcnn.model(backbone=backbone, remove_internal_transforms=False, **mask_rcnn_kwargs)
 
     return custom_model
 
@@ -59,7 +65,9 @@ def faster_rcnn_custom_anchors(num_classes:int,
                                backbone=None,
                                pretrained:bool=True,
                                sizes:tuple=((32,), (64,), (128,), (256,), (512,)),
-                               aspect_ratios:tuple=(0.5, 1.0, 2.0)
+                               aspect_ratios:tuple=(0.5, 1.0, 2.0),
+                               min_size:int=800, # Default value
+                               max_size:int=1333 # Default value
 
     ) -> nn.Module:
     "Make icevision Faster RCNN with custom anchors. Default values are torchvision defaults"
@@ -69,7 +77,7 @@ def faster_rcnn_custom_anchors(num_classes:int,
         backbone = mask_rcnn.backbones.resnet50_fpn(pretrained=pretrained)
 
     rpn_anchor_generator = AnchorGenerator(sizes=sizes,
-                                           aspect_ratios=tuple([aspect_ratios for _ in rangeof(sizes)]))
+                                           aspect_ratios=aspect_ratios)
 
     rpn_head = RPNHead(256, rpn_anchor_generator.num_anchors_per_location()[0])
 
@@ -81,16 +89,26 @@ def faster_rcnn_custom_anchors(num_classes:int,
         'rpn_anchor_generator': rpn_anchor_generator,
         'rpn_head': rpn_head,
         'box_predictor': box_predictor,
-        'num_classes': None
+        'num_classes': None,
+        'image_mean': (1.,1.,1.),
+        'image_std': (1.,1.,1.), # This way no need to remove model normalization
+        'min_size': min_size,
+        'max_size': max_size
     }
 
-    custom_model = faster_rcnn.model(backbone=backbone, **faster_rcnn_kwargs)
+    custom_model = faster_rcnn.model(backbone=backbone, **faster_rcnn_kwargs, remove_internal_transforms=False)
 
     return custom_model
 
 # Cell
 
-def save_model_and_config(outdir, model, backbone_name, model_type, categories):
+def save_model_and_config(outdir,
+                          model,
+                          backbone_name,
+                          model_type,
+                          categories,
+                          min_size:int=800,
+                          max_size:int=1333):
     if os.path.exists(outdir):
         print('Output directory exists')
         return
@@ -107,7 +125,9 @@ def save_model_and_config(outdir, model, backbone_name, model_type, categories):
         'backbone_name': backbone_name,
         'anchor_generator_sizes': [s[0] for s in anchor_generator_sizes],
         'aspect_ratios': list(aspect_ratios),
-        'categories': categories
+        'categories': categories,
+        'min_size': min_size,
+        'max_size': max_size
     }
 
     with open(f'{outdir}/config.json', 'w') as dest:
@@ -127,6 +147,8 @@ def load_rcnn_from_config(path_to_conf):
     aspect_ratios = tuple(conf_dict['aspect_ratios'])
 
     num_classes = len(conf_dict['categories']) + 1
+    min_size = conf_dict['min_size']
+    max_size = conf_dict['max_size']
 
 
     if conf_dict['model_type'] == 'faster_rcnn':
@@ -141,7 +163,10 @@ def load_rcnn_from_config(path_to_conf):
         custom_model = mask_rcnn_custom_anchors(num_classes=num_classes,
                                                 backbone=backbone,
                                                 sizes=anchor_generator_sizes,
-                                                aspect_ratios=aspect_ratios)
+                                                aspect_ratios=aspect_ratios,
+                                                min_size=min_size,
+                                                max_size=max_size)
+
 
     device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device()}'
     state_dict = torch.load(f'{path_to_conf}/model.pth', map_location=device)

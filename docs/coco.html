@@ -60,7 +60,7 @@ nb_path: "nbs/03_coco.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="resize_binary_mask" class="doc_header"><code>resize_binary_mask</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L22" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>resize_binary_mask</code>(<strong><code>array</code></strong>, <strong><code>new_size</code></strong>)</p>
+<h4 id="resize_binary_mask" class="doc_header"><code>resize_binary_mask</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L23" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>resize_binary_mask</code>(<strong><code>array</code></strong>, <strong><code>new_size</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -84,7 +84,7 @@ nb_path: "nbs/03_coco.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="close_contour" class="doc_header"><code>close_contour</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L27" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>close_contour</code>(<strong><code>contour</code></strong>)</p>
+<h4 id="close_contour" class="doc_header"><code>close_contour</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L28" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>close_contour</code>(<strong><code>contour</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -108,7 +108,7 @@ nb_path: "nbs/03_coco.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="binary_mask_to_polygon" class="doc_header"><code>binary_mask_to_polygon</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L32" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>binary_mask_to_polygon</code>(<strong><code>binary_mask</code></strong>, <strong><code>tolerance</code></strong>=<em><code>0</code></em>)</p>
+<h4 id="binary_mask_to_polygon" class="doc_header"><code>binary_mask_to_polygon</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L33" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>binary_mask_to_polygon</code>(<strong><code>binary_mask</code></strong>, <strong><code>tolerance</code></strong>=<em><code>0</code></em>)</p>
 </blockquote>
 <p>Converts a binary mask to COCO polygon representation
 Args:
@@ -139,6 +139,18 @@ Args:
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Utility to transform geospatial data to different COCO formats.</p>
+<p>Notes:</p>
+<ul>
+<li>It is possible to specify <code>min_bbox_area</code> to <code>shp_to_coco</code> function to exclude too small polygons. Default value is 16 pixels</li>
+<li>If a detection is a multipart polygon, only the polygon with the largest area is converted to a shapefile.</li>
+</ul>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -150,7 +162,7 @@ Args:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="COCOProcessor" class="doc_header"><code>class</code> <code>COCOProcessor</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L62" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>COCOProcessor</code>(<strong><code>data_path</code></strong>:<code>str</code>, <strong><code>outpath</code></strong>:<code>str</code>, <strong><code>coco_info</code></strong>:<code>dict</code>, <strong><code>coco_licenses</code></strong>:<code>list</code>, <strong><code>coco_categories</code></strong>:<code>list</code>)</p>
+<h2 id="COCOProcessor" class="doc_header"><code>class</code> <code>COCOProcessor</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L63" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>COCOProcessor</code>(<strong><code>data_path</code></strong>:<code>str</code>, <strong><code>outpath</code></strong>:<code>str</code>, <strong><code>coco_info</code></strong>:<code>dict</code>, <strong><code>coco_licenses</code></strong>:<code>list</code>, <strong><code>coco_categories</code></strong>:<code>list</code>)</p>
 </blockquote>
 <p>Handles Transformations from shapefiles to COCO-format and backwards</p>
 
@@ -175,7 +187,7 @@ Args:
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="mask_preds_to_coco_anns" class="doc_header"><code>mask_preds_to_coco_anns</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L188" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mask_preds_to_coco_anns</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
+<h4 id="icevision_mask_preds_to_coco_anns" class="doc_header"><code>icevision_mask_preds_to_coco_anns</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L194" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>icevision_mask_preds_to_coco_anns</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
 </blockquote>
 <p>Process list of IceVision <code>samples</code> and <code>preds</code> to COCO-annotation polygon format.
 Returns a dict with Coco-style <code>images</code> and <code>annotations</code></p>
@@ -202,10 +214,62 @@ Returns a dict with Coco-style <code>images</code> and <code>annotations</code><
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="bbox_preds_to_coco_anns" class="doc_header"><code>bbox_preds_to_coco_anns</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L220" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>bbox_preds_to_coco_anns</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
+<h4 id="icevision_bbox_preds_to_coco_anns" class="doc_header"><code>icevision_bbox_preds_to_coco_anns</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L228" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>icevision_bbox_preds_to_coco_anns</code>(<strong><code>preds</code></strong>:<code>list</code>)</p>
 </blockquote>
 <p>Process list of IceVision <code>samples</code> and <code>preds</code> to COCO-annotation polygon format.
 Returns a dict with Coco-style <code>images</code> and <code>annotations</code></p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="detectron2_bbox_preds_to_coco_anns" class="doc_header"><code>detectron2_bbox_preds_to_coco_anns</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L258" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>detectron2_bbox_preds_to_coco_anns</code>(<strong><code>images</code></strong>:<code>list</code>, <strong><code>preds</code></strong>:<code>list</code>)</p>
+</blockquote>
+<p>Process detectron2 prediction to COCO-annotation polygon format.
+Returns a dict with COCO-style <code>images</code> and <code>annotations</code></p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="detectron2_mask_preds_to_coco_anns" class="doc_header"><code>detectron2_mask_preds_to_coco_anns</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/coco.py#L292" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>detectron2_mask_preds_to_coco_anns</code>(<strong><code>images</code></strong>:<code>list</code>, <strong><code>preds</code></strong>:<code>list</code>)</p>
+</blockquote>
+<p>Process detectron2 prediction to COCO-annotation polygon format.
+Returns a dict with COCO-style <code>images</code> and <code>annotations</code></p>
 
 </div>
 

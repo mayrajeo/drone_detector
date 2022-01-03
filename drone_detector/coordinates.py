@@ -109,7 +109,8 @@ def georegister_px_df(df:pd.DataFrame, im_path=None, affine_obj:affine.Affine=No
 
     tmp_df = affine_transform_gdf(df, affine_obj, geom_col=geom_col,
                                   precision=precision)
-    result = gpd.GeoDataFrame(tmp_df, crs='epsg:' + str(crs.to_epsg()))
+    result = gpd.GeoDataFrame(tmp_df)
+    result.set_crs(crs='epsg:' + str(crs.to_epsg()), allow_override=True, inplace=True)
 
     if output_path is not None:
         if output_path.lower().endswith('json'):

@@ -69,6 +69,7 @@ class Tiler():
 
 
     def tile_vector(self, path_to_vector:str) -> None:
+        "Tiles a vector data file into smaller tiles. Converts all multipolygons to a singular polygons."
         if self.grid is None:
             print('No raster grid specified, use Tiler.tile_raster to determine grid limits')
             return
@@ -80,11 +81,14 @@ class Tiler():
         for row in tqdm(self.grid.itertuples()):
             possible_matches_index = list(sindex.intersection(row.geometry.bounds))
             tempvector = vector.iloc[possible_matches_index].copy()
-            tempvector = gpd.clip(tempvector, row.geometry, keep_geom_type=True)
+            tempvector = tempvector.clip(row.geometry, keep_geom_type=True)
             # No annotations -> no shapefile
             if len(tempvector) == 0: continue
 
-            # Filter too small geometries TODO
+            tempvector['geometry'] = tempvector.apply(lambda row: fix_multipolys(row.geometry)
+                                                      if row.geometry.type == 'MultiPolygon'
+                                                      else shapely.geometry.Polygon(row.geometry.exterior), axis=1)
+
             tempvector.to_file(f'{self.vector_path}/{row.cell}.geojson', driver='GeoJSON')
         return
 

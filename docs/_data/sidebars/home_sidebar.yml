@@ -13,38 +13,41 @@ entries:
       title: utils
       url: utils.html
     - output: web,pdf
-      title: Tiling
-      url: tiling.html
-    - output: web,pdf
-      title: Coordinate transformations for vector data
-      url: coordinates.html
-    - output: web,pdf
-      title: COCO utilities
-      url: coco.html
-    - output: web,pdf
-      title: Postprocessing
-      url: postprocessing.html
-    - output: web,pdf
-      title: Visualizations
-      url: visualizations.html
-    - output: web,pdf
-      title: Models
-      url: models.html
-    - output: web,pdf
-      title: CLI for using pretrained models to process new images
-      url: predict.html
-    - output: web,pdf
-      title: Augmentations
-      url: augmentations.html
-    - output: web,pdf
       title: Custom losses and metrics
       url: metrics.html
     - output: web,pdf
+      title: Tiling
+      url: processing.tiling.html
+    - output: web,pdf
+      title: Coordinate transformations for vector data
+      url: processing.coordinates.html
+    - output: web,pdf
+      title: COCO utilities
+      url: processing.coco.html
+    - output: web,pdf
+      title: Postprocessing
+      url: processing.postprocessing.html
+    - output: web,pdf
+      title: Models
+      url: engines.icevision.models.html
+    - output: web,pdf
+      title: CLI for inference using icevision models
+      url: engines.icevision.predict.html
+    - output: web,pdf
       title: Custom data used in remote sensing
-      url: data.html
+      url: engines.fastai.data.html
     - output: web,pdf
       title: Custom losses for segmentation and object detection
-      url: losses.html
+      url: engines.fastai.losses.html
+    - output: web,pdf
+      title: Augmentations
+      url: engines.fastai.augmentations.html
+    - output: web,pdf
+      title: CLI for inference using fastai models
+      url: engines.fastai.predict.html
+    - output: web,pdf
+      title: CLI for using Detectron2 models for inference
+      url: engines.detectron2.predict.html
     output: web
     title: drone_detector
   output: web

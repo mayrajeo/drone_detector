@@ -31,7 +31,7 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>drone_detector</code> was originally a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It utilizes <a href="https://airctic.com">IceVision</a> for object detection and instance segmentation, and <a href="https://docs.fast.ai">fastai</a> for semantic segmentation. It has started to morph into general library for fastai with remote sensing tasks.</p>
+<p><code>drone_detector</code> was originally a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It contains functions and helpers to use various GIS data with fastai, icevision and Detectron2.</p>
 
 </div>
 </div>
@@ -44,10 +44,10 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>NEEDS UPDATING</p>
 <p>Use <code>conda</code> to create environment from <code>environment.yml</code> with</p>
 
 <pre><code>conda env create -f environment.yml</code></pre>
-<p>This will install all otherwise difficult to install dependencies like gdal. If <code>geopandas</code> and <code>rtree</code> won't work properly , it might be because <code>rtree</code> conda installation at some point didn't work properly with python 3.8 or newer.</p>
 <p>After that change directory to <code>drone_detector</code> and run <code>pip install -e .</code> to get CLI commands to work.</p>
 
 </div>
@@ -55,9 +55,10 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Running-with-Singularity">Running with Singularity<a class="anchor-link" href="#Running-with-Singularity"> </a></h3><p>Use provided <code>dronecontainer.def</code> definition file to build Singularity container. Follow instructions on <a href="https://cloud.sylabs.io/builder">https://cloud.sylabs.io/builder</a> and build the image with</p>
+<h3 id="Running-with-Singularity">Running with Singularity<a class="anchor-link" href="#Running-with-Singularity"> </a></h3><p>NEEDS UPDATING</p>
+<p>Use provided <code>dronecontainer.def</code> definition file to build Singularity container. Follow instructions on <a href="https://cloud.sylabs.io/builder">https://cloud.sylabs.io/builder</a> and build the image with</p>
 
-<pre><code> singularity build --remote dronecontainer.sif dronecontainer.der</code></pre>
+<pre><code>singularity build --remote dronecontainer.sif dronecontainer.der</code></pre>
 
 </div>
 </div>
@@ -71,15 +72,45 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Usage">Usage<a class="anchor-link" href="#Usage"> </a></h2>
+<h2 id="CLI-Usage">CLI Usage<a class="anchor-link" href="#CLI-Usage"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>drone_detector</code> provides several utilities, like tiling raster and vector files into smaller patches with overlap, and untiling them back to a larger tiles.</p>
-<p>CLI commands <a href="/drone_detector/predict.html#predict_bboxes"><code>predict_bboxes</code></a>, <a href="/drone_detector/predict.html#predict_instance_masks"><code>predict_instance_masks</code></a> and <a href="/drone_detector/predict.html#predict_segmentation"><code>predict_segmentation</code></a> work similarly, with <code>--path_to_model</code>, <code>--path_to_image</code>, <code>--outfile</code>, <code>--processing_dir</code>, <code>--tile_size</code> and <code>--tile_overlap</code> flags. <a href="/drone_detector/predict.html#predict_bboxes"><code>predict_bboxes</code></a> and <a href="/drone_detector/predict.html#predict_instance_masks"><code>predict_instance_masks</code></a> have additional flag <code>--num_classes</code>.</p>
-<p><a href="/drone_detector/predict.html#predict_bboxes"><code>predict_bboxes</code></a> and <a href="/drone_detector/predict.html#predict_instance_masks"><code>predict_instance_masks</code></a> utilize IceVision for Faster RCNN and Mask RCNN, whereas <a href="/drone_detector/predict.html#predict_segmentation"><code>predict_segmentation</code></a> utilizes fast.ai U-Net.</p>
+<h3 id="icevision">icevision<a class="anchor-link" href="#icevision"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="/drone_detector/engines.icevision.predict.html#predict_bboxes_icevision"><code>predict_bboxes_icevision</code></a> and <a href="/drone_detector/engines.icevision.predict.html#predict_instance_masks_icevision"><code>predict_instance_masks_icevision</code></a> process large image, tile them to <code>--tile_size</code> sized patches with <code>--tile_overlap</code> pixel overlap. The parameters for the models are read from config files described in <code>drone_detector.engines.icevision.models</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="fastai">fastai<a class="anchor-link" href="#fastai"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="/drone_detector/engines.fastai.predict.html#predict_segmentation_fastai"><code>predict_segmentation_fastai</code></a> runs pretrained U-Net model for larger image. So far we support only models saved with <code>learner.export()</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Detectron2">Detectron2<a class="anchor-link" href="#Detectron2"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="/drone_detector/engines.detectron2.predict.html#predict_bboxes_detectron2"><code>predict_bboxes_detectron2</code></a> and <a href="/drone_detector/engines.detectron2.predict.html#predict_instance_masks_detectron2"><code>predict_instance_masks_detectron2</code></a> work identically with icevision CLI commands, but use Detectron2 instead.</p>
 
 </div>
 </div>

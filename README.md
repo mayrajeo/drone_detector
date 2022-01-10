@@ -3,9 +3,11 @@
 
 
 
-`drone_detector` was originally a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It utilizes [IceVision](https://airctic.com) for object detection and instance segmentation, and [fastai](https://docs.fast.ai) for semantic segmentation. It has started to morph into general library for fastai with remote sensing tasks.
+`drone_detector` was originally a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It contains functions and helpers to use various GIS data with fastai, icevision and Detectron2.
 
 ## Installation
+
+NEEDS UPDATING
 
 Use `conda` to create environment from `environment.yml` with
 
@@ -13,29 +15,35 @@ Use `conda` to create environment from `environment.yml` with
 conda env create -f environment.yml
 ```
 
-This will install all otherwise difficult to install dependencies like gdal. If `geopandas` and `rtree` won't work properly , it might be because `rtree` conda installation at some point didn't work properly with python 3.8 or newer. 
-
 After that change directory to `drone_detector` and run `pip install -e .` to get CLI commands to work.
 
- ### Running with Singularity
+### Running with Singularity
  
- Use provided `dronecontainer.def` definition file to build Singularity container. Follow instructions on [https://cloud.sylabs.io/builder](https://cloud.sylabs.io/builder) and build the image with
+NEEDS UPDATING
  
- ```
- singularity build --remote dronecontainer.sif dronecontainer.der
- ```
+Use provided `dronecontainer.def` definition file to build Singularity container. Follow instructions on [https://cloud.sylabs.io/builder](https://cloud.sylabs.io/builder) and build the image with
+ 
+```
+singularity build --remote dronecontainer.sif dronecontainer.der
+```
 
 ### Running with Docker
 
 TODO
 
-## Usage
+## CLI Usage
 
-`drone_detector` provides several utilities, like tiling raster and vector files into smaller patches with overlap, and untiling them back to a larger tiles.
+### icevision
 
-CLI commands `predict_bboxes`, `predict_instance_masks` and `predict_segmentation` work similarly, with `--path_to_model`, `--path_to_image`, `--outfile`, `--processing_dir`, `--tile_size` and `--tile_overlap` flags. `predict_bboxes` and `predict_instance_masks` have additional flag `--num_classes`.
+`predict_bboxes_icevision` and `predict_instance_masks_icevision` process large image, tile them to `--tile_size` sized patches with `--tile_overlap` pixel overlap. The parameters for the models are read from config files described in `drone_detector.engines.icevision.models`.
 
-`predict_bboxes` and `predict_instance_masks` utilize IceVision for Faster RCNN and Mask RCNN, whereas `predict_segmentation` utilizes fast.ai U-Net. 
+### fastai
+
+`predict_segmentation_fastai` runs pretrained U-Net model for larger image. So far we support only models saved with `learner.export()`.
+
+### Detectron2
+
+`predict_bboxes_detectron2` and `predict_instance_masks_detectron2` work identically with icevision CLI commands, but use Detectron2 instead. 
 
 # Citations
 

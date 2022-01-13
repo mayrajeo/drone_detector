@@ -13,18 +13,25 @@
     "Custom losses and metrics": "metrics.html"
   },
   "Engines": {
-    "fastai": {
-      "Custom data used in remote sensing": "engines.fastai.data.html",
-      "Custom losses for segmentation and object detection": "engines.fastai.losses.html",
-      "Augmentations": "engines.fastai.augmentations.html",
-      "CLI for inference using fastai models": "engines.fastai.predict.html"
+    
+    "": {
+      "fastai": {
+        "Custom data used in remote sensing": "engines.fastai.data.html",
+        "Custom losses for segmentation and object detection": "engines.fastai.losses.html",
+        "Augmentations": "engines.fastai.augmentations.html",
+        "CLI for inference using fastai models": "engines.fastai.predict.html"
+      }
     },
-    "detectron2": {
-      "CLI for using Detectron2 models for inference": "engines.detectron2.predict.html"
+    "": {
+      "detectron2": {
+        "CLI for using Detectron2 models for inference": "engines.detectron2.predict.html"
+      }
     },
-    "icevision": {
-      "Models": "engines.icevision.models.html",
-      "CLI for inference using icevision models": "engines.icevision.predict.html"
+    "": {
+      "icevision": {
+        "Models": "engines.icevision.models.html",
+        "CLI for inference using icevision models": "engines.icevision.predict.html"
+      }
     }
   }
 }

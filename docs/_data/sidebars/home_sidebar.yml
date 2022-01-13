@@ -36,6 +36,9 @@ entries:
     output: web
     title: Common
   - folderitems:
+    - output: web,pdf
+      title: Overview
+      url: /
       subfolders:
       - output: web
         subfolderitems:

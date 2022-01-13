@@ -1,18 +1,30 @@
 {
   "drone_detector": {
-    "Overview": "/",
+    "Overview": "/"
+  },
+  "Processing": {
+    "Tiling": "processsing.tiling.html",
+    "Coordinate transformations": "processing.coordinates.html",
+    "COCO Utilities": "processing.coco.html",
+    "Postprocessing": "processing.postprocessing.html"
+  },
+  "Common": {
     "utils": "utils.html",
-    "Custom losses and metrics": "metrics.html",
-    "Tiling": "processing.tiling.html",
-    "Coordinate transformations for vector data": "processing.coordinates.html",
-    "COCO utilities": "processing.coco.html",
-    "Postprocessing": "processing.postprocessing.html",
-    "Models": "engines.icevision.models.html",
-    "CLI for inference using icevision models": "engines.icevision.predict.html",
-    "Custom data used in remote sensing": "engines.fastai.data.html",
-    "Custom losses for segmentation and object detection": "engines.fastai.losses.html",
-    "Augmentations": "engines.fastai.augmentations.html",
-    "CLI for inference using fastai models": "engines.fastai.predict.html",
-    "CLI for using Detectron2 models for inference": "engines.detectron2.predict.html"
+    "Custom losses and metrics": "metrics.html"
+  },
+  "Engines": {
+    "fastai": {
+      "Custom data used in remote sensing": "engines.fastai.data.html",
+      "Custom losses for segmentation and object detection": "engines.fastai.losses.html",
+      "Augmentations": "engines.fastai.augmentations.html",
+      "CLI for inference using fastai models": "engines.fastai.predict.html"
+    },
+    "detectron2": {
+      "CLI for using Detectron2 models for inference": "engines.detectron2.predict.html"
+    },
+    "icevision": {
+      "Models": "engines.icevision.models.html",
+      "CLI for inference using icevision models": "engines.icevision.predict.html"
+    }
   }
 }

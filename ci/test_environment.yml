@@ -22,9 +22,6 @@ dependencies:
     - tensorboard
     - captum
     - laspy
-    - xlrd
     - git+https://github.com/airctic/icevision.git#egg=icevision[all]
     - ipywidgets
-    - detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
-    - ensemble-boxes
     - seaborn

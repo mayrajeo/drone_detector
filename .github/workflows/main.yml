@@ -17,6 +17,7 @@ jobs:
         auto-activate-base: false
     - shell: bash -l {0}
       run: |
+        pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
         pip install -e .
     - name: Read all notebooks
       shell: bash -l {0}

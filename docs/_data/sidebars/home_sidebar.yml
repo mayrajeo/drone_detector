@@ -39,6 +39,7 @@ entries:
     - output: web,pdf
       title: Overview
       url: /
+      subfolders:
       - output: web
         subfolderitems:
         - output: web,pdf

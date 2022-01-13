@@ -14,7 +14,7 @@ entries:
   - folderitems:
     - output: web,pdf
       title: Tiling
-      url: processsing.tiling.html
+      url: processing.tiling.html
     - output: web,pdf
       title: Coordinate transformations
       url: processing.coordinates.html

@@ -61,7 +61,7 @@ From: nvidia/cuda:11.3.1-base-ubuntu20.04
     pip install torchsummary
     pip install seaborn
    
-    pip install git+git://github.com/airctic/icevision.git/#egg=icevision[all] --upgrade
+    pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
     pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu113/torch1.10/index.html
     # Test that libraries (read: gdal) work
     gdal_translate --version

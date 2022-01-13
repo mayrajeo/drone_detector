@@ -7,29 +7,23 @@
 
 ## Installation
 
-NEEDS UPDATING
+Installing the required packages is fairly tricky, because some of them are easiest to install via conda (`geopandas` and `GDAL`), some via pip (`pytorch`) and for `detectron2` it is required to specify which prebuilt package to use. 
 
-Use `conda` to create environment from `environment.yml` with
+Repository contains two installation scripts, one for CPU environment and other for GPU environment with cudatoolkit 11.3. Install miniconda and run `bash -i install_cpu_env.sh` for CPU environment and `bash -i install_gpu_env.sh`. If you have different cudatoolkit, modify `pytorch` and `detectron2` urls. 
 
-```
-conda env create -f environment.yml
-```
-
-After that change directory to `drone_detector` and run `pip install -e .` to get CLI commands to work.
+Afterwards install library with `pip install . -e`.
 
 ### Running with Singularity
- 
-NEEDS UPDATING
- 
+  
 Use provided `dronecontainer.def` definition file to build Singularity container. Follow instructions on [https://cloud.sylabs.io/builder](https://cloud.sylabs.io/builder) and build the image with
  
 ```
-singularity build --remote dronecontainer.sif dronecontainer.der
+singularity build --remote dronecontainer.sif dronecontainer.def
 ```
 
-### Running with Docker
+## Training
 
-TODO
+Examples need to be updated, stay tuned!
 
 ## CLI Usage
 
@@ -56,4 +50,4 @@ Nothing so far, but soon!
 This repository contains parts from 
 
 * [Solaris](https://github.com/CosmiQ/solaris) by CosmiQ Works
-* [pycococreator](https://github.com/waspinator/pycococreator) by waspinator, [https://doi.org/10.5281/zenodo.4627206]
+* [pycococreator](https://github.com/waspinator/pycococreator) by waspinator, [https://doi.org/10.5281/zenodo.4627206](https://doi.org/10.5281/zenodo.4627206)

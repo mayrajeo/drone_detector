@@ -9,19 +9,22 @@ dependencies:
   - pytorch::cpuonly
   - fastchan::fastai==2.5.3
   - fastchan::nbdev
-  - conda-forge::gdal=3.1.2
+  - conda-forge::gdal
   - conda-forge::geopandas
   - conda-forge::rasterio
+  - conda-forge::jupyter_contrib_nbextensions
+  - bokeh
+  - pyviz::holoviews
+  - pyviz::hvplot
   - defaults::xarray
   - pip:
     - opencv-python 
     - scikit-image 
-    - albumentations
     - pyarrow
     - wandb
     - tensorboard
     - captum
     - laspy
     - git+https://github.com/airctic/icevision.git#egg=icevision[all]
-    - ipywidgets
     - seaborn
+    - torchsummary

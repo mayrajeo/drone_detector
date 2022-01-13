@@ -58,28 +58,31 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>NEEDS UPDATING</p>
-<p>Use <code>conda</code> to create environment from <code>environment.yml</code> with</p>
-
-<pre><code>conda env create -f environment.yml</code></pre>
-<p>After that change directory to <code>drone_detector</code> and run <code>pip install -e .</code> to get CLI commands to work.</p>
+<p>Installing the required packages is fairly tricky, because some of them are easiest to install via conda (<code>geopandas</code> and <code>GDAL</code>), some via pip (<code>pytorch</code>) and for <code>detectron2</code> it is required to specify which prebuilt package to use.</p>
+<p>Repository contains two installation scripts, one for CPU environment and other for GPU environment with cudatoolkit 11.3. Install miniconda and run <code>bash -i install_cpu_env.sh</code> for CPU environment and <code>bash -i install_gpu_env.sh</code>. If you have different cudatoolkit, modify <code>pytorch</code> and <code>detectron2</code> urls.</p>
+<p>Afterwards install library with <code>pip install . -e</code>.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Running-with-Singularity">Running with Singularity<a class="anchor-link" href="#Running-with-Singularity"> </a></h3><p>NEEDS UPDATING</p>
-<p>Use provided <code>dronecontainer.def</code> definition file to build Singularity container. Follow instructions on <a href="https://cloud.sylabs.io/builder">https://cloud.sylabs.io/builder</a> and build the image with</p>
+<h3 id="Running-with-Singularity">Running with Singularity<a class="anchor-link" href="#Running-with-Singularity"> </a></h3><p>Use provided <code>dronecontainer.def</code> definition file to build Singularity container. Follow instructions on <a href="https://cloud.sylabs.io/builder">https://cloud.sylabs.io/builder</a> and build the image with</p>
 
-<pre><code>singularity build --remote dronecontainer.sif dronecontainer.der</code></pre>
+<pre><code>singularity build --remote dronecontainer.sif dronecontainer.def</code></pre>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Running-with-Docker">Running with Docker<a class="anchor-link" href="#Running-with-Docker"> </a></h3><p>TODO</p>
+<h2 id="Training">Training<a class="anchor-link" href="#Training"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Examples need to be updated, stay tuned!</p>
 
 </div>
 </div>
@@ -147,7 +150,7 @@ nb_path: "nbs/index.ipynb"
 <h2 id="Other-people's-work-applied-in-this-repository">Other people's work applied in this repository<a class="anchor-link" href="#Other-people's-work-applied-in-this-repository"> </a></h2><p>This repository contains parts from</p>
 <ul>
 <li><a href="https://github.com/CosmiQ/solaris">Solaris</a> by CosmiQ Works</li>
-<li><a href="https://github.com/waspinator/pycococreator">pycococreator</a> by waspinator, [<a href="https://doi.org/10.5281/zenodo.4627206">https://doi.org/10.5281/zenodo.4627206</a>]</li>
+<li><a href="https://github.com/waspinator/pycococreator">pycococreator</a> by waspinator, <a href="https://doi.org/10.5281/zenodo.4627206">https://doi.org/10.5281/zenodo.4627206</a></li>
 </ul>
 
 </div>

@@ -39,7 +39,27 @@ entries:
     - output: web,pdf
       title: Overview
       url: /
-      subfolders:
+      - output: web
+        subfolderitems:
+        - output: web,pdf
+          title: Custom data used in remote sensing
+          url: engines.fastai.data.html
+        - output: web,pdf
+          title: Custom losses for segmentation and object detection
+          url: engines.fastai.losses.html
+        - output: web,pdf
+          title: Augmentations
+          url: engines.fastai.augmentations.html
+        - output: web,pdf
+          title: CLI for inference using fastai models
+          url: engines.fastai.predict.html
+        title: fastai
+      - output: web
+        subfolderitems:
+        - output: web,pdf
+          title: CLI for using Detectron2 models for inference
+          url: engines.detectron2.predict.html
+        title: detectron2
       - output: web
         subfolderitems:
         - output: web,pdf

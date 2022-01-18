@@ -1,9 +1,11 @@
 {
   "drone_detector": {
     "Overview": "/",
-    "Examples": {
-      "How to use tiling.Tiler": "examples.tiling.html",
-      "Semantic segmentation with fastai": "examples.fastai.segmentation.html"
+    "": {
+      "Examples": {
+        "How to use tiling.Tiler": "examples.tiling.html",
+        "Semantic segmentation with fastai": "examples.fastai.segmentation.html"
+      }
     }
   },
   "Processing": {

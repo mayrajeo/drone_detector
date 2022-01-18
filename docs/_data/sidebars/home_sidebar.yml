@@ -9,6 +9,15 @@ entries:
     - output: web,pdf
       title: Overview
       url: /
+    - output: web
+      subfolders:
+      - output: web,pdf
+        title: How to use tiling.Tiler
+        url: examples.tiling.html
+      - output: web,pdf
+        title: Semantic segmentation with fastai
+        url: examples.fastai.segmentation.html
+      title: Examples
     output: web
     title: drone_detector
   - folderitems:
@@ -38,7 +47,7 @@ entries:
   - folderitems:
     - output: web,pdf
       title: Overview
-      url: /
+      url: overview.engines.html
       subfolders:
       - output: web
         subfolderitems:

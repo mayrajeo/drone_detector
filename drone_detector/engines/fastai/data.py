@@ -408,7 +408,7 @@ def label_with_matching_fname(fn, path):
     return f'{path}/{fn.stem}{fn.suffix}'
 
 def label_from_different_folder(fn, original_folder, new_folder):
-    return str(fn).replace('raster_tiles', 'rasterized_vector_tiles')
+    return str(fn).replace(original_folder, new_folder)
 
 # Cell
 

@@ -26,20 +26,6 @@ nb_path: "nbs/10_processing.tiling.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>The history saving thread hit an unexpected error (DatabaseError(&#39;database disk image is malformed&#39;)).History will not be written to the database.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -96,7 +82,93 @@ based on geotiff file in <code>path</code>. Returns a gpd.GeoDataFrame with <cod
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="Tiler" class="doc_header"><code>class</code> <code>Tiler</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/processing/tiling.py#L45" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Tiler</code>(<strong><code>outpath</code></strong>, <strong><code>gridsize_x</code></strong>:<code>int</code>=<em><code>400</code></em>, <strong><code>gridsize_y</code></strong>:<code>int</code>=<em><code>400</code></em>, <strong><code>overlap</code></strong>:<code>Tuple</code>[<code>int</code>, <code>int</code>]=<em><code>(100, 100)</code></em>)</p>
 </blockquote>
-<p>Similar functions than ´solaris.tile.raster_tile' but with more recent dependencies</p>
+<p>Similar functions than ´solaris.tile.raster_tile' but with more recent dependencies.
+So far these only work with images that have sensible geotransform</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="Tiler.tile_raster" class="doc_header"><code>Tiler.tile_raster</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/processing/tiling.py#L58" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Tiler.tile_raster</code>(<strong><code>path_to_raster</code></strong>:<code>str</code>)</p>
+</blockquote>
+<p>Tiles specified raster to <code>self.gridsize_x</code> times <code>self.gridsize_y</code> grid, with <code>self.overlap</code> pixel overlap</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="Tiler.tile_vector" class="doc_header"><code>Tiler.tile_vector</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/processing/tiling.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Tiler.tile_vector</code>(<strong><code>path_to_vector</code></strong>:<code>str</code>, <strong><code>min_area_pct</code></strong>:<code>float</code>=<em><code>0.0</code></em>)</p>
+</blockquote>
+<p>Tiles a vector data file into smaller tiles. Converts all multipolygons to a singular polygons.
+<code>min_area_pct</code> is be used to specify the minimum area for partial masks to keep.
+Default value 0.0 keeps all masks</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="Tiler.tile_and_rasterize_vector" class="doc_header"><code>Tiler.tile_and_rasterize_vector</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/processing/tiling.py#L104" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Tiler.tile_and_rasterize_vector</code>(<strong><code>path_to_vector</code></strong>:<code>str</code>, <strong><code>column</code></strong>:<code>str</code>)</p>
+</blockquote>
+<p>Rasterizes vectors based on tiled rasters.
+Requires that shapefile has numeric data in <code>column</code></p>
 
 </div>
 

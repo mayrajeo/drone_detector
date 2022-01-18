@@ -1,6 +1,10 @@
 {
   "drone_detector": {
-    "Overview": "/"
+    "Overview": "/",
+    "Examples": {
+      "How to use tiling.Tiler": "examples.tiling.html",
+      "Semantic segmentation with fastai": "examples.fastai.segmentation.html"
+    },
   },
   "Processing": {
     "Tiling": "processing.tiling.html",
@@ -13,7 +17,7 @@
     "Custom losses and metrics": "metrics.html"
   },
   "Engines": {
-    "Overview": "/",
+    "Overview": "overview.engines.html",
     "": {
       "fastai": {
         "Custom data used in remote sensing": "engines.fastai.data.html",

@@ -43,7 +43,8 @@ def make_grid(path, gridsize_x:int=640, gridsize_y:int=480,
 # Cell
 
 class Tiler():
-    "Similar functions than ´solaris.tile.raster_tile' but with more recent dependencies"
+    """Similar functions than ´solaris.tile.raster_tile' but with more recent dependencies.
+    So far these only work with images that have sensible geotransform"""
     def __init__(self, outpath, gridsize_x:int=400, gridsize_y:int=400,
                  overlap:Tuple[int, int]=(100, 100)):
         store_attr()
@@ -55,6 +56,7 @@ class Tiler():
         self.rasterized_vector_path = f'{self.outpath}/rasterized_vector_tiles'
 
     def tile_raster(self, path_to_raster:str) -> None:
+        "Tiles specified raster to `self.gridsize_x` times `self.gridsize_y` grid, with `self.overlap` pixel overlap"
         self.grid = make_grid(str(path_to_raster), gridsize_x=self.gridsize_x,
                               gridsize_y=self.gridsize_y, overlap=self.overlap)
         raster = gdal.Open(path_to_raster)
@@ -105,15 +107,11 @@ class Tiler():
         if not os.path.exists(self.rasterized_vector_path):
             os.makedirs(self.rasterized_vector_path)
 
-        #vector_files = [f for f in os.listdir(self.vector_path) if f.endswith(('.shp','.geojson'))]
-        #raster_files = [f'{f.split(".")[0]}.tif' for f in vector_files]
         raster_files = os.listdir(self.raster_path)
         source_vector = ogr.Open(f'{path_to_vector}')
         source_vector_layer = source_vector.GetLayer()
-        for r in tqdm(raster_files,):
+        for r in tqdm(raster_files):
             source_raster = gdal.Open(f'{self.raster_path}/{r}', gdal.GA_ReadOnly)
-            #source_vector = ogr.Open(f'{self.vector_path}/{v}')
-            #source_vector_layer = source_vector.GetLayer()
 
             output_raster = gdal.GetDriverByName('gtiff').Create(f'{self.rasterized_vector_path}/{r}',
                                                                  source_raster.RasterXSize,
@@ -127,11 +125,13 @@ class Tiler():
             gdal.RasterizeLayer(output_raster, [1], source_vector_layer, options=[f'ATTRIBUTE={column}'])
 
             band = None
-            #source_vector = None
             source_raster = None
             output_raster = None
 
         return
+
+
+# Cell
 
 def untile_raster(path_to_targets:str, outfile:str, method:str='first'):
     """Create a single raster file from a directory of predicted rasters, based on the grid generated in

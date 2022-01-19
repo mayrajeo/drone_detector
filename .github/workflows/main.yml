@@ -30,7 +30,7 @@ jobs:
         activate-environment: test
         use-mamba: true
         
-    - name: Set cache date:
+    - name: Set cache date
       run: echo "DATE=$(date + '%Y%m%d')" >> $GITHUB_ENV
       
     - uses: actions/cache@v2

@@ -1,11 +1,10 @@
-# run: conda env create --file environment.yml
 name: test
 channels:
   - defaults
   - fastchan
   - conda-forge
 dependencies: 
-  - pip
+  - defaults::pip
   - pytorch::cpuonly
   - fastchan::fastai==2.5.3
   - fastchan::nbdev
@@ -13,7 +12,7 @@ dependencies:
   - conda-forge::geopandas
   - conda-forge::rasterio
   - conda-forge::jupyter_contrib_nbextensions
-  - bokeh
+  - defaults::bokeh
   - pyviz::holoviews
   - pyviz::hvplot
   - defaults::xarray

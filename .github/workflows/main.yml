@@ -21,8 +21,8 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-          - label: linux-64
-          - prefix: /usr/share/miniconda3/envs/test
+            label: linux-64
+            prefix: /usr/share/miniconda3/envs/test
   
     name: ${{ matrix.label }}
     runs-on: ${{ matrix.os }}

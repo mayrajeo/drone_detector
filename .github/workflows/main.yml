@@ -1,12 +1,19 @@
 name: CI
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - '*'
+
+  pull_request:
+    branches:
+      - '*'
+  
+  schedule:
+    - cron: '0 0 1 * *'
 
 env:
-   CACHE_NUMBER: 0
-
-schedule:
-  - cron: '0 0 1 * *'
+   CACHE_NUMBER: 0 # increase to reset cache manually
 
 jobs:
   build:

@@ -166,3 +166,5 @@ analyses/coco_eval
 *wandb
 analyses/detectron2_models
 *debug
+test_nbs/
+batch_jobs/

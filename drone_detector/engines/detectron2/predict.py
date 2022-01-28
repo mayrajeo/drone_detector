@@ -6,11 +6,14 @@ __all__ = ['predict_bboxes_detectron2', 'predict_instance_masks_detectron2']
 from ...imports import *
 from ...processing.all import *
 from ...metrics import *
+from ...utils import *
 
 import detectron2
 from detectron2.config import get_cfg
 from detectron2.engine import DefaultPredictor
 import cv2
+import torch
+from shutil import rmtree
 
 from fastcore.foundation import *
 from fastcore.script import *

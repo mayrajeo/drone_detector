@@ -8,7 +8,6 @@ dependencies:
   - pytorch::cpuonly
   - fastchan::fastai==2.5.3
   - fastchan::nbdev
-  - conda-forge::gdal==3.4.0
   - conda-forge::geopandas
   - conda-forge::rasterio
   - conda-forge::jupyter_contrib_nbextensions

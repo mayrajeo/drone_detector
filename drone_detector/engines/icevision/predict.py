@@ -15,6 +15,9 @@ from icevision.all import *
 from shutil import rmtree
 from icevision.data.convert_records_to_coco_style import coco_api_from_preds
 
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+
 # Cell
 
 class AllDataParser(parsers.Parser):

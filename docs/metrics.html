@@ -675,7 +675,39 @@ The best value is equal to the average number of labels in y_true per sample.</p
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="is_true_positive" class="doc_header"><code>is_true_positive</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L116" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_true_positive</code>(<strong><code>row</code></strong>, <strong><code>results</code></strong>:<code>GeoDataFrame</code>, <strong><code>res_sindex</code></strong>:<code>geopandas.sindex</code>)</p>
+<h4 id="poly_dice" class="doc_header"><code>poly_dice</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L117" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>poly_dice</code>(<strong><code>poly_1</code></strong>:<code>Polygon</code>, <strong><code>poly_2</code></strong>:<code>Polygon</code>)</p>
+</blockquote>
+<p>Dice for polygons</p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="is_true_positive" class="doc_header"><code>is_true_positive</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L124" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_true_positive</code>(<strong><code>row</code></strong>, <strong><code>results</code></strong>:<code>GeoDataFrame</code>, <strong><code>res_sindex</code></strong>:<code>geopandas.sindex</code>)</p>
 </blockquote>
 <p>Check if a single ground truth mask is TP or FN with 11 different IoU thresholds</p>
 
@@ -707,7 +739,7 @@ The best value is equal to the average number of labels in y_true per sample.</p
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="is_false_positive" class="doc_header"><code>is_false_positive</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L149" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_false_positive</code>(<strong><code>row</code></strong>, <strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>gt_sindex</code></strong>:<code>geopandas.sindex</code>, <strong><code>results</code></strong>:<code>GeoDataFrame</code>, <strong><code>res_sindex</code></strong>:<code>geopandas.sindex</code>)</p>
+<h4 id="is_false_positive" class="doc_header"><code>is_false_positive</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L157" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>is_false_positive</code>(<strong><code>row</code></strong>, <strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>gt_sindex</code></strong>:<code>geopandas.sindex</code>, <strong><code>results</code></strong>:<code>GeoDataFrame</code>, <strong><code>res_sindex</code></strong>:<code>geopandas.sindex</code>)</p>
 </blockquote>
 <p>Check if prediction is FP or TP for 11 different IoU thresholds</p>
 
@@ -746,7 +778,7 @@ The best value is equal to the average number of labels in y_true per sample.</p
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="average_precision" class="doc_header"><code>average_precision</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L220" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_precision</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>)</p>
+<h4 id="average_precision" class="doc_header"><code>average_precision</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L228" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_precision</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>)</p>
 </blockquote>
 <p>Get 11-point AP score for each label separately and with all iou_thresholds</p>
 
@@ -778,7 +810,7 @@ The best value is equal to the average number of labels in y_true per sample.</p
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="average_recall" class="doc_header"><code>average_recall</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L262" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_recall</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>, <strong><code>max_detections</code></strong>:<code>int</code>=<em><code>None</code></em>)</p>
+<h4 id="average_recall" class="doc_header"><code>average_recall</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L270" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>average_recall</code>(<strong><code>ground_truth</code></strong>:<code>GeoDataFrame</code>, <strong><code>preds</code></strong>:<code>GeoDataFrame</code>, <strong><code>max_detections</code></strong>:<code>int</code>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Get 11-point AR score for each label separately and with all iou_thresholds.
 If <code>max_detections</code> is not <code>None</code> evaluate with only that most confident predictions
@@ -838,7 +870,7 @@ Seems to be still bugged, needs fixing</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GisCOCOeval" class="doc_header"><code>class</code> <code>GisCOCOeval</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L299" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GisCOCOeval</code>(<strong><code>data_path</code></strong>:<code>str</code>, <strong><code>outpath</code></strong>:<code>str</code>, <strong><code>coco_info</code></strong>:<code>dict</code>, <strong><code>coco_licenses</code></strong>:<code>list</code>, <strong><code>coco_categories</code></strong>:<code>list</code>)</p>
+<h2 id="GisCOCOeval" class="doc_header"><code>class</code> <code>GisCOCOeval</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/metrics.py#L307" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GisCOCOeval</code>(<strong><code>data_path</code></strong>:<code>str</code>, <strong><code>outpath</code></strong>:<code>str</code>, <strong><code>coco_info</code></strong>:<code>dict</code>, <strong><code>coco_licenses</code></strong>:<code>list</code>, <strong><code>coco_categories</code></strong>:<code>list</code>)</p>
 </blockquote>
 
 </div>

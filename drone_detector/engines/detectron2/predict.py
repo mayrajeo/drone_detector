@@ -5,6 +5,7 @@ __all__ = ['predict_bboxes_detectron2', 'predict_instance_masks_detectron2']
 # Cell
 from ...imports import *
 from ...processing.all import *
+from .tta import *
 from ...metrics import *
 from ...utils import *
 
@@ -17,6 +18,9 @@ from shutil import rmtree
 
 from fastcore.foundation import *
 from fastcore.script import *
+
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 # Cell
 
@@ -53,13 +57,13 @@ def predict_bboxes_detectron2(path_to_model_config:Param("Path to pretrained mod
 
     print('Starting predictions')
     image_files = os.listdir(f'{processing_dir}/raster_tiles')
-    if use_tta:
-        print('Not yet implemented')
     #else:
 
     cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, 'model_final.pth')
     predictor = DefaultPredictor(cfg)
-
+    if use_tta:
+        cfg.TEST.AUG.MIN_SIZES = (cfg.INPUT.MIN_SIZE_TEST-200, cfg.INPUT.MIN_SIZE_TEST, cfg.INPUT.MIN_SIZE_TEST+200,)
+        predictor = TTAPredictor(cfg)
     images = []
     preds = []
 
@@ -102,13 +106,16 @@ def predict_bboxes_detectron2(path_to_model_config:Param("Path to pretrained mod
     grid = tiler.grid
     grid = grid.to_crs('EPSG:3067')
 
+    # Drop all polygons whose centroid is not within thresholded cell.
+    # Thresholded cell is constructed by eroding it by half the overlap area.
     for cell in grid.itertuples():
         if not os.path.isfile(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson'): continue
         pred_shp = gpd.read_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
         orig_crs = pred_shp.crs
         pred_shp = pred_shp.to_crs('EPSG:3067')
-        cell_geom = cell.geometry.buffer(-1) # 1 unit erosion (~25px) from each side, hope that crs unit is meters.
-        pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.intersects(cell_geom) else 1, axis=1)
+        cell_px = (cell.geometry.bounds[2] - cell.geometry.bounds[0]) / tile_size
+        cell_geom = cell.geometry.buffer(-(cell_px * overlap/2))
+        pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.centroid.within(cell_geom) else 1, axis=1)
         pred_shp = pred_shp[pred_shp.to_drop == 0]
         pred_shp = pred_shp.to_crs(orig_crs)
         pred_shp.drop(columns=['to_drop'], inplace=True)
@@ -133,7 +140,7 @@ def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretra
                                       processing_dir:Param("Directory to save the intermediate tiles. Deleted after use", type=str, default='temp'),
                                       tile_size:Param("Tile size to use. Default 400x400px tiles", type=int, default=400),
                                       tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=200),
-                                      use_tta:Param("Use test-time augmentation", store_true),
+                                      use_tta:Param("Use test-time augmentation", store_false),
                                       smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_true)
     ):
     "Segment instance masks from a new image using a pretrained model"
@@ -159,13 +166,12 @@ def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretra
 
     print('Starting predictions')
     image_files = os.listdir(f'{processing_dir}/raster_tiles')
-    if use_tta:
-        print('Not yet implemented')
-    #else:
 
     cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, 'model_final.pth')
     predictor = DefaultPredictor(cfg)
-
+    if use_tta:
+        cfg.TEST.AUG.MIN_SIZES = (cfg.INPUT.MIN_SIZE_TEST-200, cfg.INPUT.MIN_SIZE_TEST, cfg.INPUT.MIN_SIZE_TEST+200,)
+        predictor = TTAPredictor(cfg)
     images = []
     preds = []
 
@@ -191,8 +197,6 @@ def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretra
         {'supercategory':'deadwood', 'id':2, 'name': 'groundwood'},
     ]
 
-
-
     # Process preds to shapefiles
     coco_proc = COCOProcessor(data_path=processing_dir,
                               outpath=processing_dir,
@@ -202,28 +206,29 @@ def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretra
 
     coco_proc.coco_to_shp(preds_coco, downsample_factor=1)
 
-    # Discard all predictions that are not completely within -2m erosion of grid cell
-    # TODO add as optional postprocessing step
 
+    # Drop all polygons whose centroid is not within thresholded cell.
+    # Thresholded cell is constructed by eroding it by half the overlap area.
     grid = tiler.grid
     grid = grid.to_crs('EPSG:3067')
-
+    num_polys = 0
     for cell in grid.itertuples():
         if not os.path.isfile(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson'): continue
         pred_shp = gpd.read_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
+        num_polys += len(pred_shp)
         orig_crs = pred_shp.crs
         pred_shp = pred_shp.to_crs('EPSG:3067')
-        cell_geom = cell.geometry.buffer(-1) # 1 unit erosion (~25px) from each side, hope that crs unit is meters.
-        pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.intersects(cell_geom) else 1, axis=1)
+        cell_px = (cell.geometry.bounds[2] - cell.geometry.bounds[0]) / tile_size
+        cell_geom = cell.geometry.buffer(-(cell_px * tile_overlap/2))
+        pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.centroid.within(cell_geom) else 1, axis=1)
         pred_shp = pred_shp[pred_shp.to_drop == 0]
         pred_shp = pred_shp.to_crs(orig_crs)
         pred_shp.drop(columns=['to_drop'], inplace=True)
-        if use_tta:
-            pred_shp = do_nms(pred_shp, 0.1, 'score')
         if len(pred_shp) > 0: pred_shp.to_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
         else: os.remove(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
 
     # Collate shapefiles
+    print(f'{num_polys} polygons before edge area removal')
     untile_vector(path_to_targets=f'{processing_dir}/predicted_vectors', outpath=outfile)
 
     print('Removing intermediate files')

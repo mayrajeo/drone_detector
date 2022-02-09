@@ -68,6 +68,12 @@ entries:
       - output: web
         subfolderitems:
         - output: web,pdf
+          title: Augmentations
+          url: engines.detectron2.augmentations.html
+        - output: web,pdf
+          title: Test-time augmentation
+          url: engines.detectron2.tta.html
+        - output: web,pdf
           title: CLI for using Detectron2 models for inference
           url: engines.detectron2.predict.html
         title: detectron2

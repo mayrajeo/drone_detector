@@ -17,6 +17,9 @@ from shutil import rmtree
 from fastai.data.load import DataLoader
 from fastcore.transform import Pipeline
 
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+
 # Cell
 
 @patch

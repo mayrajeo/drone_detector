@@ -20,6 +20,7 @@ index = {"rangeof": "00_utils.ipynb",
          "coverage_error": "01_metrics.ipynb",
          "JaccardCoeffMulti": "01_metrics.ipynb",
          "poly_IoU": "01_metrics.ipynb",
+         "poly_dice": "01_metrics.ipynb",
          "is_true_positive": "01_metrics.ipynb",
          "is_false_positive": "01_metrics.ipynb",
          "average_precision": "01_metrics.ipynb",
@@ -123,7 +124,11 @@ index = {"rangeof": "00_utils.ipynb",
          "DataLoader.set_base_transforms": "33_engines.fastai.predict.ipynb",
          "predict_segmentation_fastai": "33_engines.fastai.predict.ipynb",
          "predict_bboxes_detectron2": "40_engines.detectron2.predict.ipynb",
-         "predict_instance_masks_detectron2": "40_engines.detectron2.predict.ipynb"}
+         "predict_instance_masks_detectron2": "40_engines.detectron2.predict.ipynb",
+         "Trainer": "41_engines.detectron2.training.ipynb",
+         "build_aug_transforms": "42_engines.detectron2.augmentations.ipynb",
+         "DatasetMapperTTAFlip": "43_engines.detectron2.tta.ipynb",
+         "TTAPredictor": "43_engines.detectron2.tta.ipynb"}
 
 modules = ["utils.py",
            "metrics.py",
@@ -137,7 +142,10 @@ modules = ["utils.py",
            "engines/fastai/losses.py",
            "engines/fastai/augmentations.py",
            "engines/fastai/predict.py",
-           "engines/detectron2/predict.py"]
+           "engines/detectron2/predict.py",
+           "engines/detectron2/training.py",
+           "engines/detectron2/augmentations.py",
+           "engines/detectron2/tta.py"]
 
 doc_url = "https://jaeeolma.github.io/drone_detector/"
 

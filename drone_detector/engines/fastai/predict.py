@@ -46,7 +46,7 @@ def predict_segmentation_fastai(path_to_model:Param("Path to pretrained model fi
                                outfile:Param('Path and filename for output raster', type=str),
                                processing_dir:Param("Directory to save the intermediate tiles. Deleted after use", type=str, default='temp'),
                                tile_size:Param("Tile size to use. Default 400x400px tiles", type=int, default=400),
-                               tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=200),
+                               tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=100),
                                use_tta:Param("Use test-time augmentation", store_true)=None
     ):
     """Segment image into land cover classes with a pretrained models

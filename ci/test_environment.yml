@@ -4,17 +4,14 @@ channels:
   - fastchan
   - conda-forge
 dependencies: 
-  - defaults::pip
+  - python==3.9
+  - conda-forge::pip
   - pytorch::cpuonly
   - fastchan::fastai==2.5.3
   - fastchan::nbdev
   - conda-forge::geopandas
   - conda-forge::rasterio
   - conda-forge::jupyter_contrib_nbextensions
-  - defaults::bokeh
-  - pyviz::holoviews
-  - pyviz::hvplot
-  - defaults::xarray
   - pip:
     - opencv-python 
     - scikit-image 

@@ -7,6 +7,7 @@ __all__ = ['make_grid', 'Tiler', 'untile_raster', 'copy_sum', 'untile_vector']
 from ..imports import *
 from ..utils import *
 from .postproc import *
+import rasterio.mask as rio_mask
 
 # Cell
 
@@ -15,10 +16,16 @@ def make_grid(path, gridsize_x:int=640, gridsize_y:int=480,
     """Creates a grid template with `gridsize_x` times `gridsize_y` cells, with `overlap` pixels of overlap
     based on geotiff file in `path`. Returns a gpd.GeoDataFrame with `RyyCxx` identifier for each geometry
     """
-    ds = gdal.Open(path)
-    ulx, xres, xskew, uly, yskew, yres = ds.GetGeoTransform()
-    lrx = ulx + (ds.RasterXSize * xres)
-    lry = uly + (ds.RasterYSize * yres)
+    with rio.open(path) as src:
+        tfm = src.transform
+        x_size = src.width
+        y_size = src.height
+    xres = tfm[0]
+    ulx = tfm[2]
+    yres = tfm[4]
+    uly = tfm[5]
+    lrx = ulx + (x_size * xres)
+    lry = uly + (y_size * yres)
     # number of output cells is calculated like conv output
     ncols = int(np.ceil((np.ceil((lrx - ulx) / xres)) - gridsize_x) / (gridsize_x - overlap[0]) + 1)
     nrows = int(np.ceil((np.ceil((lry - uly) / yres)) - gridsize_y) / (gridsize_y - overlap[1]) + 1)
@@ -32,7 +39,6 @@ def make_grid(path, gridsize_x:int=640, gridsize_y:int=480,
         polys.append(Polygon([(xleft,ytop), (xright,ytop), (xright,ybot), (xleft,ybot)]))
         names.append(f'R{row}C{col}')
     grid = gpd.GeoDataFrame({'cell': names, 'geometry':polys})
-    ds = None
 
     with rio.open(path) as src:
         crs = src.crs
@@ -59,14 +65,17 @@ class Tiler():
         "Tiles specified raster to `self.gridsize_x` times `self.gridsize_y` grid, with `self.overlap` pixel overlap"
         self.grid = make_grid(str(path_to_raster), gridsize_x=self.gridsize_x,
                               gridsize_y=self.gridsize_y, overlap=self.overlap)
-        raster = gdal.Open(path_to_raster)
         if not os.path.exists(self.raster_path): os.makedirs(self.raster_path)
-        for row in tqdm(self.grid.itertuples()):
-            tempraster = gdal.Translate(f'{self.raster_path}/{row.cell}.tif', raster,
-                                        projWin=[row.geometry.bounds[0], row.geometry.bounds[3],
-                                                 row.geometry.bounds[2], row.geometry.bounds[1]]
-                                       )
-            tempraster = None
+        with rio.open(path_to_raster) as src:
+            for row in tqdm(self.grid.itertuples()):
+                out_im, out_tfm = rio_mask.mask(src, [row.geometry], crop=True)
+                out_meta = src.meta
+                out_meta.update({'driver':'GTiff',
+                                 'height': out_im.shape[1],
+                                 'width': out_im.shape[2],
+                                 'transform': out_tfm})
+                with rio.open(f'{self.raster_path}/{row.cell}.tif', 'w', **out_meta) as dest:
+                    dest.write(out_im)
         return
 
 
@@ -101,35 +110,35 @@ class Tiler():
             tempvector.to_file(f'{self.vector_path}/{row.cell}.geojson', driver='GeoJSON')
         return
 
-    def tile_and_rasterize_vector(self, path_to_vector:str, column:str) -> None:
-        """Rasterizes vectors based on tiled rasters.
-        Requires that shapefile has numeric data in `column`"""
+    def tile_and_rasterize_vector(self, path_to_raster:str, path_to_vector:str, column:str,
+                                  keep_bg_only:bool=False) -> None:
+        """Rasterizes vectors based on tiled rasters. Requires that shapefile has numeric data in `column`.
+        By default only keeps the patches that contain polygon data, by specifying `keep_bg_only=True`
+        saves also masks for empty patches."""
         if not os.path.exists(self.rasterized_vector_path):
             os.makedirs(self.rasterized_vector_path)
 
-        raster_files = os.listdir(self.raster_path)
-        source_vector = ogr.Open(f'{path_to_vector}')
-        source_vector_layer = source_vector.GetLayer()
-        for r in tqdm(raster_files):
-            source_raster = gdal.Open(f'{self.raster_path}/{r}', gdal.GA_ReadOnly)
+        vector = gpd.read_file(path_to_vector)
 
-            output_raster = gdal.GetDriverByName('gtiff').Create(f'{self.rasterized_vector_path}/{r}',
-                                                                 source_raster.RasterXSize,
-                                                                 source_raster.RasterYSize,
-                                                                 1,
-                                                                 gdal.GDT_Int16)
-            output_raster.SetProjection(source_raster.GetProjectionRef())
-            output_raster.SetGeoTransform(source_raster.GetGeoTransform())
-            band = output_raster.GetRasterBand(1)
-            band.SetNoDataValue(0)
-            gdal.RasterizeLayer(output_raster, [1], source_vector_layer, options=[f'ATTRIBUTE={column}'])
-
-            band = None
-            source_raster = None
-            output_raster = None
-
+        with rio.open(path_to_raster) as src:
+            for row in tqdm(self.grid.itertuples()):
+                out_im, out_tfm = rio_mask.mask(src, [row.geometry], crop=True)
+                out_meta = src.meta
+                out_meta.update({'driver':'GTiff',
+                                 'height': out_im.shape[1],
+                                 'width': out_im.shape[2],
+                                 'transform': out_tfm,
+                                 'compress':'lwz'})
+                tempvector = vector.clip(row.geometry, keep_geom_type=True)
+                with rio.open(f'{self.rasterized_vector_path}/{row.cell}.tif', 'w+', **out_meta) as dest:
+                    dest_arr = dest.read(1)
+                    shapes = ((geom,value) for geom, value in zip(tempvector.geometry, tempvector[column]))
+                    if len(tempvector) == 0:
+                        if keep_bg_only: dest.write_band(1, dest_arr)
+                        continue
+                    burned = rio.features.rasterize(shapes=shapes, fill=0, out=dest_arr, transform=dest.transform)
+                    dest.write_band(1, burned)
         return
-
 
 # Cell
 

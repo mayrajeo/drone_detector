@@ -28,7 +28,6 @@ import shapely
 from shapely.geometry import Point, Polygon, box, shape
 import rasterio as rio
 from rasterio.merge import merge as rio_merge
-from osgeo import gdal, ogr
 import affine
 
 import matplotlib.pyplot as plt

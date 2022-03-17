@@ -86,7 +86,7 @@ def predict_bboxes_detectron2(path_to_model_config:Param("Path to pretrained mod
     preds_coco = detectron2_bbox_preds_to_coco_anns(images, preds)
     try:
         with open(coco_set) as coco:
-            coco = json.load(coco)['categories']
+            cats = json.load(coco)['categories']
     except:
         print('No categories found, defaulting to dummy classes')
         cats = [{'supercategory': 'dummy', 'id':i+1, 'name': f'class_{i+1}'}
@@ -97,34 +97,34 @@ def predict_bboxes_detectron2(path_to_model_config:Param("Path to pretrained mod
     coco_proc = COCOProcessor(data_path=processing_dir,
                               outpath=processing_dir,
                               coco_info=None, coco_licenses=None,
-                              coco_categories=preds_coco['categories'])
-
+                              coco_categories=cats)
+    preds_coco['categories'] = cats
 
     coco_proc.coco_to_shp(preds_coco, downsample_factor=1)
-
-
-    grid = tiler.grid
-    grid = grid.to_crs('EPSG:3067')
 
     if postproc_results:
         # Drop all polygons whose centroid is not within thresholded cell.
         # Thresholded cell is constructed by eroding it by half the overlap area.
+        grid = tiler.grid
+        grid = grid.to_crs('EPSG:3067')
+        num_polys = 0
         for cell in grid.itertuples():
             if not os.path.isfile(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson'): continue
             pred_shp = gpd.read_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
+            num_polys += len(pred_shp)
             orig_crs = pred_shp.crs
             pred_shp = pred_shp.to_crs('EPSG:3067')
             cell_px = (cell.geometry.bounds[2] - cell.geometry.bounds[0]) / tile_size
-            cell_geom = cell.geometry.buffer(-(cell_px * overlap/2))
+            cell_geom = cell.geometry.buffer(-(cell_px * tile_overlap/2))
             pred_shp['to_drop'] = pred_shp.apply(lambda row: 0 if row.geometry.centroid.within(cell_geom) else 1, axis=1)
             pred_shp = pred_shp[pred_shp.to_drop == 0]
             pred_shp = pred_shp.to_crs(orig_crs)
             pred_shp.drop(columns=['to_drop'], inplace=True)
-            if use_tta:
-                pred_shp = do_nms(pred_shp, 0.1, 'score')
             if len(pred_shp) > 0: pred_shp.to_file(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
             else: os.remove(f'{processing_dir}/predicted_vectors/{cell.cell}.geojson')
 
+        # Collate shapefiles
+        print(f'{num_polys} polygons before edge area removal')
     # Collate shapefiles
     untile_vector(path_to_targets=f'{processing_dir}/predicted_vectors', outpath=outfile)
 
@@ -197,7 +197,7 @@ def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretra
     preds_coco = detectron2_mask_preds_to_coco_anns(images, preds)
     try:
         with open(coco_set) as coco:
-            coco = json.load(coco)['categories']
+            cats = json.load(coco)['categories']
     except:
         print('No categories found, defaulting to dummy classes')
         cats = [{'supercategory': 'dummy', 'id':i+1, 'name': f'class_{i+1}'}
@@ -207,9 +207,9 @@ def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretra
     coco_proc = COCOProcessor(data_path=processing_dir,
                               outpath=processing_dir,
                               coco_info=None, coco_licenses=None,
-                              coco_categories=preds_coco['categories'])
+                              coco_categories=cats)
 
-
+    preds_coco['categories'] = cats
     coco_proc.coco_to_shp(preds_coco, downsample_factor=1)
 
     if postproc_results:

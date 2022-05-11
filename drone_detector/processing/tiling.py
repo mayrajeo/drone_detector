@@ -128,7 +128,8 @@ class Tiler():
                                  'height': out_im.shape[1],
                                  'width': out_im.shape[2],
                                  'transform': out_tfm,
-                                 'compress':'lwz'})
+                                 'compress':'lzw',
+                                 'count':1})
                 tempvector = vector.clip(row.geometry, keep_geom_type=True)
                 with rio.open(f'{self.rasterized_vector_path}/{row.cell}.tif', 'w+', **out_meta) as dest:
                     dest_arr = dest.read(1)

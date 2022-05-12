@@ -7,8 +7,8 @@ dependencies:
   - python==3.9
   - conda-forge::pip
   - pytorch::cpuonly
-  - pytorch::pytorch==1.10
-  - fastchan::fastai==2.5.3
+  - pytorch::pytorch==1.11
+  - fastchan::fastai==2.6.3
   - fastchan::nbdev
   - conda-forge::geopandas
   - conda-forge::rasterio
@@ -21,6 +21,6 @@ dependencies:
     - tensorboard
     - captum
     - laspy
-    - git+https://github.com/airctic/icevision.git#egg=icevision[all]
     - seaborn
     - torchsummary
+    - albumentations

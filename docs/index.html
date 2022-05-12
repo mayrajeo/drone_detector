@@ -26,26 +26,13 @@ nb_path: "nbs/index.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>The history saving thread hit an unexpected error (DatabaseError(&#39;database disk image is malformed&#39;)).History will not be written to the database.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>drone_detector</code> was originally a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It contains functions and helpers to use various GIS data with fastai, icevision and Detectron2.</p>
+<p><code>drone_detector</code> was originally a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It contains functions and helpers to use various GIS data with fastai and Detectron2.</p>
+<p>icevision support will be added once it supports pytorch 1.11 and fastai 2.6 or newer.</p>
 
 </div>
 </div>
@@ -90,19 +77,6 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="CLI-Usage">CLI Usage<a class="anchor-link" href="#CLI-Usage"> </a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="icevision">icevision<a class="anchor-link" href="#icevision"> </a></h3>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="/drone_detector/engines.icevision.predict.html#predict_bboxes_icevision"><code>predict_bboxes_icevision</code></a> and <a href="/drone_detector/engines.icevision.predict.html#predict_instance_masks_icevision"><code>predict_instance_masks_icevision</code></a> process large image, tile them to <code>--tile_size</code> sized patches with <code>--tile_overlap</code> pixel overlap. The parameters for the models are read from config files described in <code>drone_detector.engines.icevision.models</code>.</p>
-
 </div>
 </div>
 </div>

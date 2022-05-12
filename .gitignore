@@ -168,3 +168,5 @@ analyses/detectron2_models
 *debug
 test_nbs/
 batch_jobs/
+nbs/temp_obsolete
+

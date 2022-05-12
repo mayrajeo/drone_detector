@@ -1,9 +1,10 @@
-
 # Automatic deadwood detection from RGB UAV imagery
 
 
 
-`drone_detector` was originally a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It contains functions and helpers to use various GIS data with fastai, icevision and Detectron2.
+`drone_detector` was originally a python package for automatic deadwood detection or segmentation from RGB UAV imagery. It contains functions and helpers to use various GIS data with fastai and Detectron2.
+
+icevision support will be added once it supports pytorch 1.11 and fastai 2.6 or newer.
 
 ## Installation
 
@@ -26,10 +27,6 @@ singularity build --remote dronecontainer.sif dronecontainer.def
 Examples need to be updated, stay tuned!
 
 ## CLI Usage
-
-### icevision
-
-`predict_bboxes_icevision` and `predict_instance_masks_icevision` process large image, tile them to `--tile_size` sized patches with `--tile_overlap` pixel overlap. The parameters for the models are read from config files described in `drone_detector.engines.icevision.models`.
 
 ### fastai
 

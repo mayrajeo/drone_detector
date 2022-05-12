@@ -16,7 +16,6 @@ From: nvidia/cuda:11.3.1-base-ubuntu20.04
     export PATH=$PATH:/opt/conda/bin
     export LANG=C.UTF-8
     export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64
-
     # Install software and tools
     echo 'install software and tools'
     apt-get -y update
@@ -32,8 +31,6 @@ From: nvidia/cuda:11.3.1-base-ubuntu20.04
     
     echo 'downloaded miniconda'
 
-        
-
     chmod +x ~/miniconda.sh \
         && ~/miniconda.sh -b -p /opt/conda \
         && rm ~/miniconda.sh 
@@ -46,28 +43,33 @@ From: nvidia/cuda:11.3.1-base-ubuntu20.04
     
     conda install mamba -n base -c conda-forge
      
-    pip --no-cache-dir install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
-    pip --no-cache-dir install fastai==2.5.3
+    pip --no-cache-dir install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
+    pip --no-cache-dir install fastai==2.6.3
 
     # mamba install -c fastchan fastai 
     mamba install -c fastchan nbdev
 
     mamba install -c conda-forge geopandas rasterio 
     mamba install -c pyviz bokeh holoviews hvplot
-    mamba install -c defaults xarray 
+    mamba install -c conda-forge xarray 
     # conda install -c conda-forge jupyter_contrib_nbextensions
-    mamba install -c conda-forge jupyter_contrib_nbextensions 
+    mamba install -c conda-forge jupyter_contrib_nbextensions rise
     pip install opencv-python scikit-image pyarrow wandb tensorboard captum laspy
+
+    pip install openpyxl
     pip install torchsummary
     pip install seaborn
-   
-    pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
-    pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu113/torch1.10/index.html
+    pip install owslib 
+    # pip install icevision[all] 
+    pip install 'git+https://github.com/facebookresearch/detectron2.git'
+    pip install vit-pytorch
+    pip install albumentations
+            
     # Test that libraries (read: gdal) work
     gdal_translate --version
     
     # Shared locations
-    mkdir -p /projappl /scratch /users/mayrajan
+    mkdir -p /projappl /scratch /users/mayrajan /users/tavutavu
     
     # Enable jupyter extensions
     jupyter nbextension enable codefolding/main

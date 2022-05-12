@@ -2,7 +2,7 @@ topnav:
 - title: Topnav
   items:
     - title: github
-      external_url: https://github.com/jaeeolma/drone_detector/tree/{branch}/
+      external_url: https://github.com/jaeeolma/drone_detector/tree/master/
 
 #Topnav dropdowns
 topnav_dropdowns:

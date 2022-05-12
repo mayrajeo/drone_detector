@@ -107,7 +107,7 @@ def show_results(x:TensorImage, y:TensorMask, samples, outs, ctxs, max_n=6,
     "Patch `show_results` to show segmentation results in three columns (no-mask, ground truth, prediction)"
 
     if ctxs is None: ctxs = get_grid(min(len(samples)*3, max_n*3), nrows=int(min(len(samples), max_n)),
-                                     ncols=3, add_vert=1, figsize=figsize, double=False,
+                                     ncols=3, figsize=figsize, double=False,
                                      title='Image/Target/Prediction')
 
     for i in range(2):
@@ -131,7 +131,7 @@ def show_results(x:TensorImage, y:TensorMask, samples, outs, ctxs, max_n=6,
 def show_batch(x:TensorImage, y:TensorMask, samples, ctxs=None, max_n=6, nrows=None, ncols=2, figsize=None,
                show_cbar=False, **kwargs):
     if figsize is None: figsize = (ncols*6, max_n//ncols * 3)
-    if ctxs is None: ctxs = get_grid(min(len(samples*2), max_n), nrows=nrows, ncols=ncols, add_vert=1, figsize=figsize,
+    if ctxs is None: ctxs = get_grid(min(len(samples*2), max_n), nrows=nrows, ncols=ncols, figsize=figsize,
                                      double=False, title='Image/Target')
 
     for i in range(2):
@@ -252,7 +252,7 @@ def MultiChannelImageTupleBlock(cls=MultiChannelTensorImageTuple, chans=None, ma
 @typedispatch
 def show_batch(x:MultiChannelTensorImageTuple, y:TensorMask, samples, ctxs=None, max_n=6, nrows=None, ncols=2, figsize=None, **kwargs):
     if figsize is None: figsize = (ncols*6, max_n//ncols * 3)
-    if ctxs is None: ctxs = get_grid(min(len(samples*2), max_n), nrows=nrows, ncols=ncols, add_vert=1, figsize=figsize,
+    if ctxs is None: ctxs = get_grid(min(len(samples*2), max_n), nrows=nrows, ncols=ncols, figsize=figsize,
                                      double=False, title='Image/Target')
 
     for i in range(2):

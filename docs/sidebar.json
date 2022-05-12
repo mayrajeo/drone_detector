@@ -34,12 +34,6 @@
         "Test-time augmentation": "engines.detectron2.tta.html",
         "CLI for using Detectron2 models for inference": "engines.detectron2.predict.html"
       }
-    },
-    "empty2": {
-      "icevision": {
-        "Models": "engines.icevision.models.html",
-        "CLI for inference using icevision models": "engines.icevision.predict.html"
-      }
     }
   }
 }

@@ -77,15 +77,6 @@ entries:
           title: CLI for using Detectron2 models for inference
           url: engines.detectron2.predict.html
         title: detectron2
-      - output: web
-        subfolderitems:
-        - output: web,pdf
-          title: Models
-          url: engines.icevision.models.html
-        - output: web,pdf
-          title: CLI for inference using icevision models
-          url: engines.icevision.predict.html
-        title: icevision
     output: web
     title: Engines
   output: web

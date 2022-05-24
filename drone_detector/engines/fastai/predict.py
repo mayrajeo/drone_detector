@@ -20,6 +20,7 @@ from fastcore.transform import Pipeline
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
+
 # Cell
 
 @patch
@@ -91,23 +92,33 @@ def predict_segmentation(path_to_model:str,
             print('Rasterizing predictions')
             for f, p in tqdm(zip(test_files[chunk:chunk+300], preds)):
                 #if len(p.shape) == 3: p = p[0]
-                ds = gdal.Open(str(f))
-                out_raster = gdal.GetDriverByName('gtiff').Create(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}',
-                                                                  ds.RasterXSize,
-                                                                  ds.RasterYSize,
-                                                                  p.shape[0], gdal.GDT_Int16)
-                out_raster.SetProjection(ds.GetProjectionRef())
-                out_raster.SetGeoTransform(ds.GetGeoTransform())
-                np_pred = p.numpy()#.argmax(axis=0)
-                np_pred = np_pred.round(2)
-                np_pred *= 100
-                np_pred = np_pred.astype(np.int16)
-                for c in range(p.shape[0]):
-                    band = out_raster.GetRasterBand(c+1).WriteArray(np_pred[c])
-                    band = None
+
+                with rio.open(f) as src:
+                    prof = src.profile.copy()
+                prof.update(count=p.shape[0],
+                            compress='lzw',
+                            dtype='uint8')
+
+                with rio.open(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}','w',**prof) as dest:
+                #ds = gdal.Open(str(f))
+                #out_raster = gdal.GetDriverByName('gtiff').Create(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}',
+                #                                                  ds.RasterXSize,
+                #                                                  ds.RasterYSize,
+                #                                                  p.shape[0], gdal.GDT_Int16)
+                #out_raster.SetProjection(ds.GetProjectionRef())
+                #out_raster.SetGeoTransform(ds.GetGeoTransform())
+                    np_pred = p.numpy()#.argmax(axis=0)
+                    np_pred = np_pred.round(2)
+                    np_pred *= 100
+                    np_pred = np_pred.astype(np.int16)
+                    dest.write(np_pred)
+                    #for c in range(p.shape[0]):
+
+                        #band = out_raster.GetRasterBand(c+1).WriteArray(np_pred[c])
+                        #band = None
                 #band = out_raster.GetRasterBand(1).WriteArray(np_pred)
-                out_raster = None
-                ds = None
+                #out_raster = None
+                #ds = None
 
     print('Merging predictions')
     temp_full = f'{processing_dir}/full_raster.tif'
@@ -115,19 +126,27 @@ def predict_segmentation(path_to_model:str,
 
     print('Postprocessing predictions')
 
-    raw_raster = gdal.Open(temp_full)
-    processed_raster = gdal.GetDriverByName('gtiff').Create(outfile,
-                                                            raw_raster.RasterXSize,
-                                                            raw_raster.RasterYSize,
-                                                            1, gdal.GDT_Int16)
-    processed_raster.SetProjection(raw_raster.GetProjectionRef())
-    processed_raster.SetGeoTransform(raw_raster.GetGeoTransform())
-    raw_np = raw_raster.ReadAsArray()
-    pred_np = raw_np.argmax(axis=0)
-    band = processed_raster.GetRasterBand(1).WriteArray(pred_np)
-    raw_raster = None
-    band = None
-    processed_raster = None
+    with rio.open(temp_full, 'r') as src:
+        raw_raster = src.read()
+        prof = src.profile.copy()
+    prof.update(count=1,
+                compress='lzw',
+                dtype='uint8')
+    with rio.open(temp_full, 'w', **prof) as dest:
+        dest.write_band(1, raw_raster.argmax(axis=0))
+    #raw_raster = gdal.Open(temp_full)
+    #processed_raster = gdal.GetDriverByName('gtiff').Create(outfile,
+    #                                                        raw_raster.RasterXSize,
+    #                                                        raw_raster.RasterYSize,
+    #                                                        1, gdal.GDT_Int16)
+    #processed_raster.SetProjection(raw_raster.GetProjectionRef())
+    #processed_raster.SetGeoTransform(raw_raster.GetGeoTransform())
+    #raw_np = raw_raster.ReadAsArray()
+    #pred_np = raw_np.argmax(axis=0)
+    #band = processed_raster.GetRasterBand(1).WriteArray(pred_np)
+    #raw_raster = None
+    #band = None
+    #processed_raster = None
 
     print('Removing intermediate files')
     rmtree(processing_dir)

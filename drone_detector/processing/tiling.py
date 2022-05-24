@@ -8,6 +8,8 @@ from ..imports import *
 from ..utils import *
 from .postproc import *
 import rasterio.mask as rio_mask
+import rasterio.windows as rio_windows
+
 
 # Cell
 
@@ -15,6 +17,7 @@ def make_grid(path, gridsize_x:int=640, gridsize_y:int=480,
               overlap:Tuple[int, int]=(100,100)) -> gpd.GeoDataFrame:
     """Creates a grid template with `gridsize_x` times `gridsize_y` cells, with `overlap` pixels of overlap
     based on geotiff file in `path`. Returns a gpd.GeoDataFrame with `RyyCxx` identifier for each geometry
+    BUGGED and replaced with rio_windows in tile_raster
     """
     with rio.open(path) as src:
         tfm = src.transform
@@ -63,19 +66,46 @@ class Tiler():
 
     def tile_raster(self, path_to_raster:str) -> None:
         "Tiles specified raster to `self.gridsize_x` times `self.gridsize_y` grid, with `self.overlap` pixel overlap"
-        self.grid = make_grid(str(path_to_raster), gridsize_x=self.gridsize_x,
-                              gridsize_y=self.gridsize_y, overlap=self.overlap)
+        names = []
+        polys = []
+        col_id = 0
+        row_id = 0
+
+        #self.grid = make_grid(str(path_to_raster), gridsize_x=self.gridsize_x,
+        #                      gridsize_y=self.gridsize_y, overlap=self.overlap)
         if not os.path.exists(self.raster_path): os.makedirs(self.raster_path)
         with rio.open(path_to_raster) as src:
-            for row in tqdm(self.grid.itertuples()):
-                out_im, out_tfm = rio_mask.mask(src, [row.geometry], crop=True)
-                out_meta = src.meta
-                out_meta.update({'driver':'GTiff',
-                                 'height': out_im.shape[1],
-                                 'width': out_im.shape[2],
-                                 'transform': out_tfm})
-                with rio.open(f'{self.raster_path}/{row.cell}.tif', 'w', **out_meta) as dest:
-                    dest.write(out_im)
+            y, x = src.shape
+
+            for (iy, dy), (ix, dx) in tqdm(itertools.product(enumerate(range(0, y, self.gridsize_y-self.overlap[1])),
+                                                             enumerate(range(0, x, self.gridsize_x-self.overlap[0])))):
+                if dy+self.gridsize_y > y: continue
+                if dx+self.gridsize_x > x: continue
+                window = rio_windows.Window.from_slices((dy, dy+self.gridsize_y),
+                                                        (dx, dx+self.gridsize_x))
+                prof = src.profile.copy()
+                prof.update(
+                    height=window.height,
+                    width=window.width,
+                    transform= rio_windows.transform(window, src.transform),
+                    compress='lzw',
+                    predictor=2
+                )
+                fname = f'R{iy}C{ix}'
+                with rio.open(f'{self.raster_path}/{fname}.tif', 'w', **prof) as dest:
+                    dest.write(src.read(window=window))
+                    polys.append(box(*dest.bounds))
+                names.append(fname)
+            self.grid = gpd.GeoDataFrame({'cell': names, 'geometry':polys}, crs=src.crs)
+            #for row in tqdm(self.grid.itertuples()):
+            #    out_im, out_tfm = rio_mask.mask(src, [row.geometry], crop=True)
+            #    out_meta = src.meta
+            #    out_meta.update({'driver':'GTiff',
+            #                     'height': out_im.shape[1],
+            #                     'width': out_im.shape[2],
+            #                     'transform': out_tfm})
+            #    with rio.open(f'{self.raster_path}/{row.cell}.tif', 'w', **out_meta) as dest:
+            #        dest.write(out_im)
         return
 
 

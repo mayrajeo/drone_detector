@@ -260,7 +260,7 @@ def detectron2_bbox_preds_to_coco_anns(images:list, preds:list):
     outdict['annotations'] = []
     outdict['images'] = images
 
-    for i in rangeof(preds):
+    for i in tqdm(rangeof(preds)):
         p = preds[i]['instances']
         for j in rangeof(p.pred_classes):
             anns = []
@@ -294,7 +294,7 @@ def detectron2_mask_preds_to_coco_anns(images:list, preds:list):
     outdict['annotations'] = []
     outdict['images'] = images
 
-    for i in rangeof(preds):
+    for i in tqdm(rangeof(preds)):
         p = preds[i]['instances']
         for j in rangeof(p.pred_classes):
             anns = []

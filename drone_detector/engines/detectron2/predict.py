@@ -167,8 +167,8 @@ def predict_instance_masks(path_to_model_config:str,
                            tile_size:int=400,
                            tile_overlap:int=100,
                            coco_set:str=None,
-                           use_tta:bool=True,
-                           postproc_results:bool=True,
+                           use_tta:bool=False,
+                           postproc_results:bool=False,
                            smooth_preds:bool=False):
     "Segment instance masks from a new image using a pretrained model"
 
@@ -267,7 +267,7 @@ def predict_instance_masks(path_to_model_config:str,
 # Cell
 
 @call_parse
-def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretrained model folder",type=str),
+def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretrained model config file",type=str),
                                       path_to_image:Param("Path to image to annotate", type=str),
                                       outfile:Param('Path and filename for output raster', type=str),
                                       processing_dir:Param("Directory to save the intermediate tiles. Deleted after use",
@@ -276,17 +276,18 @@ def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretra
                                       tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=200),
                                       coco_set:Param("Path to json file for the coco dataset the model was trained on",
                                       type=str, default=None),
-                                      use_tta:Param("Use test-time augmentation", store_false),
+                                      use_tta:Param("Use test-time augmentation", store_true),
                                       postproc_results:Param('Filter predicted masks', store_true),
-                                      smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_false)
+                                      smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_true)
     ):
     "CLI for instance segmentation with detectron2"
-    predict_instance_maskss(path_to_model,
-                            path_to_image,
-                            outfile,
-                            processing_dir,
-                            tile_size,
-                            tile_overlap,
-                            use_tta,
-                            postproc_results,
-                            smooth_preds)
+    predict_instance_masks(path_to_model_config,
+                           path_to_image,
+                           outfile,
+                           processing_dir,
+                           tile_size,
+                           tile_overlap,
+                           coco_set,
+                           use_tta,
+                           postproc_results,
+                           smooth_preds)

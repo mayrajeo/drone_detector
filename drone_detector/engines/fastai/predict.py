@@ -132,7 +132,7 @@ def predict_segmentation(path_to_model:str,
     prof.update(count=1,
                 compress='lzw',
                 dtype='uint8')
-    with rio.open(temp_full, 'w', **prof) as dest:
+    with rio.open(outfile, 'w', **prof) as dest:
         dest.write_band(1, raw_raster.argmax(axis=0))
     #raw_raster = gdal.Open(temp_full)
     #processed_raster = gdal.GetDriverByName('gtiff').Create(outfile,

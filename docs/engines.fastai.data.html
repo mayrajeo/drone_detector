@@ -26,20 +26,6 @@ nb_path: "nbs/30_engines.fastai.data.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>ERROR 1: PROJ: proj_create_from_database: Open of /opt/conda/share/proj failed
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
     {% endraw %}
 
@@ -62,6 +48,14 @@ nb_path: "nbs/30_engines.fastai.data.ipynb"
 
 <div class="output_wrapper">
 <div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The history saving thread hit an unexpected error (OperationalError(&#39;disk I/O error&#39;)).History will not be written to the database.
+</pre>
+</div>
+</div>
 
 <div class="output_area">
 
@@ -407,9 +401,9 @@ with norm_min and norm_max either specified or within 0.01 and 0.99 quantiles of
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="using_attr" class="doc_header"><code>using_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/basics.py#L818" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>using_attr</code>(<strong><code>f</code></strong>, <strong><code>attr</code></strong>)</p>
+<h4 id="using_attr" class="doc_header"><code>using_attr</code><a href="https://github.com/fastai/fastcore/tree/master/fastcore/basics.py#L705" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>using_attr</code>(<strong><code>f</code></strong>, <strong><code>attr</code></strong>)</p>
 </blockquote>
-<p>Construct a function which applies <code>f</code> to the argument's attribute <code>attr</code></p>
+<p>Change function <code>f</code> to operate on <code>attr</code></p>
 
 </div>
 

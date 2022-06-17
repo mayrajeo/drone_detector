@@ -6,8 +6,8 @@ title: Custom TTA modifications for detectron2
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Implement only HFlip and VFlip as TTA transforms"
-description: "Implement only HFlip and VFlip as TTA transforms"
+summary: "Implement both HFlip and VFlip as TTA transforms, add support for RotatedBoxes"
+description: "Implement both HFlip and VFlip as TTA transforms, add support for RotatedBoxes"
 nb_path: "nbs/43_engines.detectron2.tta.ipynb"
 ---
 <!--
@@ -47,7 +47,7 @@ nb_path: "nbs/43_engines.detectron2.tta.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DatasetMapperTTAFlip" class="doc_header"><code>class</code> <code>DatasetMapperTTAFlip</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/engines/detectron2/tta.py#L20" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DatasetMapperTTAFlip</code>(<strong><code>min_sizes</code></strong>:<code>List</code>[<code>int</code>], <strong><code>max_size</code></strong>:<code>int</code>, <strong><code>flip</code></strong>:<code>bool</code>)</p>
+<h2 id="DatasetMapperTTAFlip" class="doc_header"><code>class</code> <code>DatasetMapperTTAFlip</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/engines/detectron2/tta.py#L22" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DatasetMapperTTAFlip</code>(<strong><code>min_sizes</code></strong>:<code>List</code>[<code>int</code>], <strong><code>max_size</code></strong>:<code>int</code>, <strong><code>flip</code></strong>:<code>bool</code>)</p>
 </blockquote>
 <p>Implement test-time augmentation for detection data.
 It is a callable which takes a dataset dict from a detection dataset,
@@ -91,7 +91,7 @@ Modified to implement both horizontal and vertical flip</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="TTAPredictor" class="doc_header"><code>class</code> <code>TTAPredictor</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/engines/detectron2/tta.py#L109" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>TTAPredictor</code>(<strong><code>cfg</code></strong>)</p>
+<h2 id="TTAPredictor" class="doc_header"><code>class</code> <code>TTAPredictor</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/engines/detectron2/tta.py#L185" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>TTAPredictor</code>(<strong><code>cfg</code></strong>)</p>
 </blockquote>
 <p>DefaultPredictor that implements TTA</p>
 
@@ -113,5 +113,5 @@ Modified to implement both horizontal and vertical flip</p>
     {% endraw %}
 
 </div>
- 
+
 

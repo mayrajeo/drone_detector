@@ -26,15 +26,76 @@ nb_path: "nbs/42_engines.detectron2.augmentations.ipynb"
     
 <div class="cell border-box-sizing code_cell rendered">
 
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fvcore.transforms</span> <span class="kn">import</span> <span class="n">HFlipTransform</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
 <div class="output_wrapper">
 <div class="output">
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>The history saving thread hit an unexpected error (OperationalError(&#39;disk I/O error&#39;)).History will not be written to the database.
-</pre>
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="VFlip_rotated_box" class="doc_header"><code>VFlip_rotated_box</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/engines/detectron2/augmentations.py#L16" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>VFlip_rotated_box</code>(<strong><code>transform</code></strong>, <strong><code>rotated_boxes</code></strong>)</p>
+</blockquote>
+<p>Apply the vertical flip transform on rotated boxes.</p>
+<p>Args:
+    rotated_boxes (ndarray): Nx5 floating point array of
+        (x_center, y_center, width, height, angle_degrees) format
+        in absolute coodinates</p>
+
 </div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="None" class="doc_header"><code>None</code><a href="" class="source_link" style="float:right">[source]</a></h4>
+</div>
+
 </div>
 
 </div>
@@ -61,7 +122,7 @@ nb_path: "nbs/42_engines.detectron2.augmentations.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="build_aug_transforms" class="doc_header"><code>build_aug_transforms</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/engines/detectron2/augmentations.py#L14" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_aug_transforms</code>(<strong><code>cfg</code></strong>:<code>CfgNode</code>, <strong><code>flip_horiz</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>flip_vert</code></strong>:<code>bool</code>=<em><code>False</code></em>, <strong><code>max_rotate</code></strong>:<code>int</code>=<em><code>10</code></em>, <strong><code>brightness_limits</code></strong>:<code>Tuple</code>[<code>int</code>, <code>int</code>]=<em><code>(0.8, 1.4)</code></em>, <strong><code>contrast_limits</code></strong>:<code>Tuple</code>[<code>int</code>, <code>int</code>]=<em><code>(0.8, 1.4)</code></em>, <strong><code>saturation_limits</code></strong>:<code>Tuple</code>[<code>int</code>, <code>int</code>]=<em><code>(0.8, 1.4)</code></em>, <strong><code>p_lighting</code></strong>:<code>float</code>=<em><code>0.75</code></em>)</p>
+<h4 id="build_aug_transforms" class="doc_header"><code>build_aug_transforms</code><a href="https://github.com/jaeeolma/drone_detector/tree/master/drone_detector/engines/detectron2/augmentations.py#L51" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>build_aug_transforms</code>(<strong><code>cfg</code></strong>:<code>CfgNode</code>, <strong><code>flip_horiz</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>flip_vert</code></strong>:<code>bool</code>=<em><code>False</code></em>, <strong><code>max_rotate</code></strong>:<code>int</code>=<em><code>10</code></em>, <strong><code>brightness_limits</code></strong>:<code>Tuple</code>[<code>int</code>, <code>int</code>]=<em><code>(0.8, 1.4)</code></em>, <strong><code>contrast_limits</code></strong>:<code>Tuple</code>[<code>int</code>, <code>int</code>]=<em><code>(0.8, 1.4)</code></em>, <strong><code>saturation_limits</code></strong>:<code>Tuple</code>[<code>int</code>, <code>int</code>]=<em><code>(0.8, 1.4)</code></em>, <strong><code>p_lighting</code></strong>:<code>float</code>=<em><code>0.75</code></em>)</p>
 </blockquote>
 <p>Build a list of detectron2 augmentations</p>
 
@@ -83,5 +144,5 @@ nb_path: "nbs/42_engines.detectron2.augmentations.ipynb"
     {% endraw %}
 
 </div>
- 
+
 

@@ -14,6 +14,8 @@ from detectron2.checkpoint import DetectionCheckpointer
 import torch
 from ...imports import *
 
+from detectron2.modeling.roi_heads.rotated_fast_rcnn import fast_rcnn_inference_single_image_rotated
+
 
 # Cell
 
@@ -104,6 +106,80 @@ def _reduce_pred_masks(self, outputs, tfms):
     avg_pred_masks = torch.mean(all_pred_masks, dim=0)
     return avg_pred_masks
 
+@patch_to(GeneralizedRCNNWithTTA)
+def _merge_detections(self, all_boxes, all_scores, all_classes, shape_hw):
+    # select from the union of all results
+    num_boxes = len(all_boxes)
+    num_classes = self.cfg.MODEL.ROI_HEADS.NUM_CLASSES
+    # +1 because fast_rcnn_inference expects background scores as well
+    all_scores_2d = torch.zeros(num_boxes, num_classes + 1, device=all_boxes.device)
+    for idx, cls, score in zip(count(), all_classes, all_scores):
+        all_scores_2d[idx, cls] = score
+
+    if all_boxes.size()[-1] == 5:
+        merged_instances, _ = fast_rcnn_inference_single_image_rotated(
+            all_boxes,
+            all_scores_2d,
+            shape_hw,
+            1e-8,
+            self.cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST,
+            self.cfg.TEST.DETECTIONS_PER_IMAGE,
+        )
+
+    else:
+        merged_instances, _ = fast_rcnn_inference_single_image(
+            all_boxes,
+            all_scores_2d,
+            shape_hw,
+            1e-8,
+            self.cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST,
+            self.cfg.TEST.DETECTIONS_PER_IMAGE,
+        )
+
+    return merged_instances
+
+@patch_to(GeneralizedRCNNWithTTA)
+def _rescale_detected_boxes(self, augmented_inputs, merged_instances, tfms):
+    augmented_instances = []
+    for input, tfm in zip(augmented_inputs, tfms):
+        # Transform the target box to the augmented image's coordinate space
+        pred_boxes = merged_instances.pred_boxes.tensor.cpu().numpy()
+        if pred_boxes.shape[-1] == 5:
+            pred_boxes = torch.from_numpy(tfm.apply_rotated_box(pred_boxes))
+        else:
+            pred_boxes = torch.from_numpy(tfm.apply_box(pred_boxes))
+
+        aug_instances = Instances(
+            image_size=input["image"].shape[1:3],
+            pred_boxes=Boxes(pred_boxes),
+            pred_classes=merged_instances.pred_classes,
+            scores=merged_instances.scores,
+        )
+        augmented_instances.append(aug_instances)
+    return augmented_instances
+
+@patch_to(GeneralizedRCNNWithTTA)
+def _get_augmented_boxes(self, augmented_inputs, tfms):
+    # 1: forward with all augmented images
+    outputs = self._batch_inference(augmented_inputs)
+    # 2: union the results
+    all_boxes = []
+    all_scores = []
+    all_classes = []
+    for output, tfm in zip(outputs, tfms):
+        # Need to inverse the transforms on boxes, to obtain results on original image
+        pred_boxes = output.pred_boxes.tensor
+        if pred_boxes.size()[-1] == 5:
+            original_pred_boxes = tfm.inverse.apply_rotated_box(pred_boxes.cpu().numpy())
+        else:
+            original_pred_boxes = tfm.inverse().apply_box(pred_boxes.cpu().numpy())
+        all_boxes.append(torch.from_numpy(original_pred_boxes).to(pred_boxes.device))
+
+        all_scores.extend(output.scores)
+        all_classes.extend(output.pred_classes)
+    all_boxes = torch.cat(all_boxes, dim=0)
+    return all_boxes, all_scores, all_classes
+
 # Cell
 
 class TTAPredictor:
@@ -115,7 +191,7 @@ class TTAPredictor:
         self.model = build_model(self.cfg)
         checkpointer = DetectionCheckpointer(self.model)
         checkpointer.load(cfg.MODEL.WEIGHTS)
-        self.model = GeneralizedRCNNWithTTA(cfg, self.model, tta_mapper=DatasetMapperTTAFlip(cfg))
+        self.model = GeneralizedRCNNWithTTA(cfg, self.model, tta_mapper=DatasetMapperTTA(cfg))
         self.model.eval()
         if len(cfg.DATASETS.TEST):
             self.metadata = MetadataCatalog.get(cfg.DATASETS.TEST[0])

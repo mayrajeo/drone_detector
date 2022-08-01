@@ -8,7 +8,7 @@ dependencies:
   - conda-forge::pip
   - pytorch::cpuonly
   - pytorch::pytorch==1.11
-  - fastchan::fastai==2.6.3
+  - fastchan::fastai==2.7.6
   - fastchan::nbdev
   - conda-forge::geopandas
   - conda-forge::rasterio

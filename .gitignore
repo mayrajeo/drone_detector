@@ -170,3 +170,5 @@ test_nbs/
 batch_jobs/
 nbs/temp_obsolete
 
+_docs/
+sidebar.yml

@@ -54,25 +54,20 @@ jobs:
       run: |
         pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
         pip install -e .
-    - name: Read all notebooks
-      shell: bash -l {0}
-      run: |
-        nbdev_read_nbs
     - name: Check if all notebooks are cleaned
-      shell: bash -l {0}
       run: |
         echo "Check we are starting with clean git checkout"
         if [ -n "$(git status -uno -s)" ]; then echo "git status is not clean"; false; fi
         echo "Trying to strip out notebooks"
-        nbdev_clean_nbs
+        nbdev_clean
         echo "Check that strip out was unnecessary"
         git status -s # display the status to see which nbs need cleaning up
-        if [ -n "$(git status -uno -s)" ]; then echo -e "!!! Detected unstripped out notebooks\n!!!Remember to run nbdev_install_git_hooks"; false; fi
-    - name: Check if there is no diff library/notebooks
-      shell: bash -l {0}
-      run: |
-        if [ -n "$(nbdev_diff_nbs)" ]; then echo -e "!!! Detected difference between the notebooks and the library"; false; fi
+        if [ -n "$(git status -uno -s)" ]; then echo -e "!!! Detected unstripped out notebooks\n!!!Remember to run nbdev_install_hooks"; false; fi
     - name: Run tests
       shell: bash -l {0}
       run: |
-        nbdev_test_nbs
+        nbdev_test
+    - name: Test Docs Creation
+      run: |
+        nbdev_install_quarto
+        nbdev_docs

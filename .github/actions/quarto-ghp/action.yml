@@ -18,8 +18,9 @@ runs:
         activate-environment: test
         use-mamba: true
 
-    - name: Install environment if needed
+    - name: Install environment
       run: mamba env update -n test -f ci/test_environment.yml
+      shell: bash -l {0}
 
     - name: install detectron2
       shell: bash -l {0}

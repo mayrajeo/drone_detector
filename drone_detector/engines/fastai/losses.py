@@ -89,7 +89,6 @@ def iou(preds, labels, C, EMPTY=1., ignore=None, per_image=False):
     return 100 * np.array(ious)
 
 
-# --------------------------- HELPER FUNCTIONS ---------------------------
 def isnan(x):
     return x != x
     

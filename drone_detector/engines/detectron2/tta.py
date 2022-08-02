@@ -20,12 +20,11 @@ from detectron2.modeling.roi_heads.rotated_fast_rcnn import fast_rcnn_inference_
 # %% ../nbs/43_engines.detectron2.tta.ipynb 3
 class DatasetMapperTTAFlip:
     """
-    Implement test-time augmentation for detection data.
+    Implement test-time augmentation for detection data. Modified to implement both horizontal and vertical flip
     It is a callable which takes a dataset dict from a detection dataset,
     and returns a list of dataset dicts where the images
     are augmented from the input image by the transformations defined in the config.
     This is used for test-time augmentation.
-    Modified to implement both horizontal and vertical flip
     """
 
     @configurable

@@ -35,9 +35,7 @@ VFlipTransform.register_type('rotated_box', VFlip_rotated_box)
 @patch_to(T.RotationTransform)
 def apply_rotated_box(self, rotated_boxes):
     """
-    rotated_boxes should be a N*5 array-like, containing N couples of
-    (x_center, y_center, width, height, angle) boxes
-    Most likely wont work with expand=True
+    rotated_boxes should be a N*5 array-like, containing N couples of(x_center, y_center, width, height, angle) boxes
     """
     if len(rotated_boxes) == 0 or self.angle % 360 == 0:
         return rotated_boxes

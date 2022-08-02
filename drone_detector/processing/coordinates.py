@@ -8,7 +8,6 @@ from ..imports import *
 from ..utils import *
 from shapely.geometry import mapping
 
-
 # %% ../nbs/11_processing.coordinates.ipynb 4
 def _reduce_geom_precision(geom, precision=2):
     "Grom solaris.utils.geo"

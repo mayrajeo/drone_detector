@@ -18,12 +18,14 @@ from matplotlib.cm import ScalarMappable
 
 # %% ../nbs/30_engines.fastai.data.ipynb 5
 def open_npy(fn, chans=None, max_val=None):
+    "Open npy-file"
     im = torch.from_numpy(np.load(str(fn)))
     if chans is not None: im = im[chans]
     if max_val is not None: im = np.clip(im, 0, max_val)
     return im
 
 def open_geotiff(fn, chans=None, max_val=None):
+    "Open geotiff and read as numpy array, then convert into tensor"
     with rio.open(str(fn)) as f:
         data = f.read()
         data = data.astype(np.float32)
@@ -53,6 +55,7 @@ def show_composite(img, channels, ax=None, figsize=(3,3), title=None, scale=True
 
 def show_single_channel(img, channel, ax=None, figsize=(3,3), ctx=None, 
                         title=None, **kwargs) -> plt.Axes:
+    "Visualize only `channel` band"
     ax = ifnone(ax, ctx)
     if ax is None: _, ax = plt.subplots(figsize=figsize)    
     tempim = img.data.cpu().numpy()
@@ -87,8 +90,7 @@ def show_mean_spectra(img, ax=None, figsize=(3,3), ctx=None, title=None, **kwarg
         
 def norm(vals, norm_min=None, norm_max=None, axis=(0,1)):
     """
-    For visualization purposes scale image with `(vals-norm_min)/(norm_max-norm_min), 
-    with norm_min and norm_max either specified or within 0.01 and 0.99 quantiles of all values
+    For visualization purposes scale image with `(vals-norm_min)/(norm_max-norm_min), with norm_min and norm_max either specified or within 0.01 and 0.99 quantiles of all values
     """
     norm_min = ifnone(norm_min, np.quantile(vals, 0.01, axis=axis))
     norm_max = ifnone(norm_max, np.quantile(vals, 0.99, axis=axis))
@@ -140,7 +142,7 @@ def show_batch(x:TensorImage, y:TensorMask, samples, ctxs=None, max_n=6, nrows=N
 
     return ctxs
 
-# %% ../nbs/30_engines.fastai.data.ipynb 11
+# %% ../nbs/30_engines.fastai.data.ipynb 12
 class RegressionMask(TensorMask):
     "Class for regression segmentation tasks"
     _show_args = ArrayImage._show_args
@@ -164,11 +166,11 @@ def RegressionMaskBlock(cls=RegressionMask, **kwargs):
     "Default behaviour: use all channels"
     return TransformBlock(partial(cls.create))
 
-# %% ../nbs/30_engines.fastai.data.ipynb 13
+# %% ../nbs/30_engines.fastai.data.ipynb 14
 class MultiChannelTensorImage(TensorImage):
     _show_args = ArrayImageBase._show_args
     def show(self, channels=[0], ctx=None, norm_min=None, norm_max=None, **kwargs):
-        "These need refactoring maybe"
+        "TensorImage subclass for multichannel images."
         if channels == 'spectra':
             return show_mean_spectra(self, ctx=ctx,  **kwargs)
         if len(channels) == 3: 
@@ -196,12 +198,12 @@ class MultiChannelTensorImage(TensorImage):
     
 MultiChannelTensorImage.create = Transform(MultiChannelTensorImage.create) 
 
-# %% ../nbs/30_engines.fastai.data.ipynb 14
+# %% ../nbs/30_engines.fastai.data.ipynb 15
 def MultiChannelImageBlock(cls=MultiChannelTensorImage, chans=None, max_val=None): 
     "Default behaviour: use all channels"
     return TransformBlock(partial(cls.create, chans=chans, maxval=max_val))
 
-# %% ../nbs/30_engines.fastai.data.ipynb 15
+# %% ../nbs/30_engines.fastai.data.ipynb 16
 def _using_attr(f, attr, x):
     return f(getattr(x,attr))
 
@@ -209,7 +211,7 @@ def using_attr(f, attr):
     "Change function `f` to operate on `attr`"
     return partial(_using_attr, f, attr)
 
-# %% ../nbs/30_engines.fastai.data.ipynb 17
+# %% ../nbs/30_engines.fastai.data.ipynb 18
 class MultiChannelTensorImageTuple(fastuple):
     _show_args = ArrayImageBase._show_args
     def show(self, channels=[0], ctx=None, norm_min=None, norm_max=None, **kwargs):
@@ -235,12 +237,12 @@ class MultiChannelTensorImageTuple(fastuple):
     
 MultiChannelTensorImageTuple.create = Transform(MultiChannelTensorImageTuple.create) 
 
-# %% ../nbs/30_engines.fastai.data.ipynb 18
+# %% ../nbs/30_engines.fastai.data.ipynb 19
 def MultiChannelImageTupleBlock(cls=MultiChannelTensorImageTuple, chans=None, max_val=None): 
     "Default behaviour: use all channels"
     return TransformBlock(partial(cls.create, chans=chans, max_val=max_val))
 
-# %% ../nbs/30_engines.fastai.data.ipynb 19
+# %% ../nbs/30_engines.fastai.data.ipynb 20
 @typedispatch
 def show_batch(x:MultiChannelTensorImageTuple, y:TensorMask, samples, ctxs=None, max_n=6, nrows=None, ncols=2, figsize=None, **kwargs):
     if figsize is None: figsize = (ncols*6, max_n//ncols * 3)
@@ -253,7 +255,7 @@ def show_batch(x:MultiChannelTensorImageTuple, y:TensorMask, samples, ctxs=None,
 
     return ctxs
 
-# %% ../nbs/30_engines.fastai.data.ipynb 32
+# %% ../nbs/30_engines.fastai.data.ipynb 33
 def get_image_timeseries(path, months, masks):
     months.append(masks)
     ls = [[path/m/f for m in months] for f in os.listdir(path/months[0]) if f.endswith('.tif')]
@@ -264,7 +266,7 @@ def get_all_but_last(t):
 def get_last(t): 
     return t[-1]
 
-# %% ../nbs/30_engines.fastai.data.ipynb 37
+# %% ../nbs/30_engines.fastai.data.ipynb 38
 class MultiChannelImageDataLoaders(DataLoaders):
     @classmethod
     @delegates(DataLoaders.from_dblock)
@@ -372,7 +374,7 @@ MultiChannelImageDataLoaders.from_name_func = delegates(to=MultiChannelImageData
 MultiChannelImageDataLoaders.from_path_re = delegates(to=MultiChannelImageDataLoaders.from_path_func)(MultiChannelImageDataLoaders.from_path_re)
 MultiChannelImageDataLoaders.from_name_re = delegates(to=MultiChannelImageDataLoaders.from_name_func)(MultiChannelImageDataLoaders.from_name_re)
 
-# %% ../nbs/30_engines.fastai.data.ipynb 44
+# %% ../nbs/30_engines.fastai.data.ipynb 45
 class TifSegmentationDataLoaders(DataLoaders):
     "Needs a better name"
     @classmethod
@@ -391,7 +393,7 @@ class TifSegmentationDataLoaders(DataLoaders):
         res = cls.from_dblock(dblock, fnames, path=path, **kwargs)
         return res
 
-# %% ../nbs/30_engines.fastai.data.ipynb 45
+# %% ../nbs/30_engines.fastai.data.ipynb 46
 def label_with_matching_fname(fn, path): 
     "Utility to match image and mask that have different folder but identical filename"
     return f'{path}/{fn.stem}{fn.suffix}'
@@ -399,7 +401,7 @@ def label_with_matching_fname(fn, path):
 def label_from_different_folder(fn, original_folder, new_folder):
     return str(fn).replace(original_folder, new_folder)
 
-# %% ../nbs/30_engines.fastai.data.ipynb 48
+# %% ../nbs/30_engines.fastai.data.ipynb 49
 class ScaleToFloatTensor(Transform):
     "Scale image values to interval 0-1"
     order = 10

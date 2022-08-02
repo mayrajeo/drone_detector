@@ -15,25 +15,25 @@ import sklearn.metrics as skm
 import torch
 import torch.nn.functional as F
 
-# %% ../nbs/01_metrics.ipynb 4
+# %% ../nbs/01_metrics.ipynb 5
 mk_class('ActivationType', **{o:o.lower() for o in ['No', 'Sigmoid', 'Softmax', 'BinarySoftmax']},
          doc="All possible activation classes for `AccumMetric")
 
-# %% ../nbs/01_metrics.ipynb 5
+# %% ../nbs/01_metrics.ipynb 6
 def adjusted_R2Score(r2_score, n, k):
     "Calculates adjusted_R2Score based on r2_score, number of observations (n) and number of predictor variables(k)"
     return 1 - (((n-1)/(n-k-1)) * (1 - r2_score))
 
 
-# %% ../nbs/01_metrics.ipynb 6
+# %% ../nbs/01_metrics.ipynb 8
 def _rrmse(inp, targ):
     "RMSE normalized with mean of the target"
     return torch.sqrt(F.mse_loss(inp, targ)) / targ.mean() * 100
 
 rrmse = AccumMetric(_rrmse)
-rrmse.__doc__ = "Target mean weighted rmse"
+rrmse.__doc__ = "Relative RMSE. Normalized with mean of the target"
 
-# %% ../nbs/01_metrics.ipynb 7
+# %% ../nbs/01_metrics.ipynb 10
 def _bias(inp, targ):
     "Average bias of predictions"
     inp, targ = flatten_check(inp, targ)
@@ -42,16 +42,16 @@ def _bias(inp, targ):
 bias = AccumMetric(_bias)
 bias.__doc__ = "Average bias of predictions"
 
-# %% ../nbs/01_metrics.ipynb 8
+# %% ../nbs/01_metrics.ipynb 12
 def _bias_pct(inp, targ):
     "Mean weighted bias"
     inp, targ = flatten_check(inp, targ)
     return 100 * ((inp-targ).sum()/len(targ)) / targ.mean()
 
 bias_pct = AccumMetric(_bias_pct)
-bias_pct.__doc__ = 'Mean weighted bias'
+bias_pct.__doc__ = 'Mean weighted bias, normalized with mean of the target'
 
-# %% ../nbs/01_metrics.ipynb 10
+# %% ../nbs/01_metrics.ipynb 15
 def label_ranking_average_precision_score(sigmoid=True, sample_weight=None):
     """Label ranking average precision (LRAP) is the average over each ground truth label assigned to each sample, 
     of the ratio of true vs. total labels with lower score."""
@@ -59,7 +59,7 @@ def label_ranking_average_precision_score(sigmoid=True, sample_weight=None):
     return skm_to_fastai(skm.label_ranking_average_precision_score, sample_weight=None, flatten=False, thresh=None, 
                          activation=activation)
 
-# %% ../nbs/01_metrics.ipynb 11
+# %% ../nbs/01_metrics.ipynb 20
 def label_ranking_loss(sigmoid=True, sample_weight=None):
     """Compute the average number of label pairs that are incorrectly ordered given y_score 
     weighted by the size of the label set and the number of labels not in the label set."""
@@ -67,7 +67,7 @@ def label_ranking_loss(sigmoid=True, sample_weight=None):
     return skm_to_fastai(skm.label_ranking_loss, sample_weight=None, flatten=False, thresh=None, 
                          activation=activation)
 
-# %% ../nbs/01_metrics.ipynb 12
+# %% ../nbs/01_metrics.ipynb 22
 def _one_error(inp, targ):
     max_ranks = inp.argmax(axis=1)
     faults = 0
@@ -78,7 +78,7 @@ def _one_error(inp, targ):
 one_error = AccumMetric(_one_error, flatten=False)
 one_error.__doc__ = "Rate for which the top ranked label is not among ground truth"
 
-# %% ../nbs/01_metrics.ipynb 13
+# %% ../nbs/01_metrics.ipynb 25
 def coverage_error(sigmoid=True, sample_weight=None):
     """Compute how far we need to go through the ranked scores to cover all true labels. 
     The best value is equal to the average number of labels in y_true per sample."""
@@ -86,7 +86,7 @@ def coverage_error(sigmoid=True, sample_weight=None):
     activation = ActivationType.Sigmoid if sigmoid else ActivationType.No
     return skm_to_fastai(skm.coverage_error, sample_weight=None, flatten=False, thresh=None, activation=activation)
 
-# %% ../nbs/01_metrics.ipynb 23
+# %% ../nbs/01_metrics.ipynb 28
 class JaccardCoeffMulti(DiceMulti):
     "Averaged Jaccard coefficient for multiclass target in segmentation. Excludes background class"
     @property
@@ -97,7 +97,7 @@ class JaccardCoeffMulti(DiceMulti):
                 binary_jaccard_scores = np.append(binary_jaccard_scores, self.inter[c]/(self.union[c] - self.inter[c]) if self.union[c] > 0 else np.nan)
         return np.nanmean(binary_jaccard_scores)
 
-# %% ../nbs/01_metrics.ipynb 29
+# %% ../nbs/01_metrics.ipynb 34
 def poly_IoU(poly_1:Polygon, poly_2:Polygon) -> float:
     "IoU for polygons"
     area_intersection = poly_1.intersection(poly_2).area
@@ -105,14 +105,14 @@ def poly_IoU(poly_1:Polygon, poly_2:Polygon) -> float:
     iou = area_intersection / area_union
     return iou
 
-# %% ../nbs/01_metrics.ipynb 30
+# %% ../nbs/01_metrics.ipynb 35
 def poly_dice(poly_1:Polygon, poly_2:Polygon):
     "Dice for polygons"
     area_intersection  = poly_1.intersection(poly_2).area
     area_union = poly_1.union(poly_2).area
     return (2 * area_intersection) / (poly_1.area + poly_2.area)
 
-# %% ../nbs/01_metrics.ipynb 31
+# %% ../nbs/01_metrics.ipynb 36
 def is_true_positive(row, results:gpd.GeoDataFrame, res_sindex:gpd.sindex):
     "Check if a single ground truth mask is TP or FN with 11 different IoU thresholds"
     iou_threshs = np.arange(0.5, 1.04, 0.05)
@@ -144,7 +144,7 @@ def is_true_positive(row, results:gpd.GeoDataFrame, res_sindex:gpd.sindex):
         retvals.append('TP')
     return retvals
 
-# %% ../nbs/01_metrics.ipynb 32
+# %% ../nbs/01_metrics.ipynb 37
 def is_false_positive(row, ground_truth:gpd.GeoDataFrame, gt_sindex:gpd.sindex, 
                       results:gpd.GeoDataFrame, res_sindex:gpd.sindex):
     "Check if prediction is FP or TP for 11 different IoU thresholds"
@@ -214,7 +214,7 @@ def is_false_positive(row, ground_truth:gpd.GeoDataFrame, gt_sindex:gpd.sindex,
     
     return retvals
 
-# %% ../nbs/01_metrics.ipynb 34
+# %% ../nbs/01_metrics.ipynb 39
 def average_precision(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame) -> dict:
     "Get 11-point AP score for each label separately and with all iou_thresholds"
     
@@ -255,7 +255,7 @@ def average_precision(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame) -> 
                 res_dict[f'{l}_pre_{iou_thresh}'].append(0 if not np.isfinite(pre) else pre)  
     return res_dict
 
-# %% ../nbs/01_metrics.ipynb 35
+# %% ../nbs/01_metrics.ipynb 40
 def average_recall(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame, max_detections:int=None) -> dict:
     """Get 11-point AR score for each label separately and with all iou_thresholds. 
     If `max_detections` is not `None` evaluate with only that most confident predictions
@@ -284,16 +284,17 @@ def average_recall(ground_truth:gpd.GeoDataFrame, preds:gpd.GeoDataFrame, max_de
             res_dict[f'{l}_rec'].append(len(temp_gt[temp_gt[f'TP_{iou_thresh}'] == 'TP']) / len(temp_gt))
     return res_dict
 
-# %% ../nbs/01_metrics.ipynb 38
+# %% ../nbs/01_metrics.ipynb 43
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 from pycocotools.mask import decode
 from .processing.coco import *
 
-# %% ../nbs/01_metrics.ipynb 39
+# %% ../nbs/01_metrics.ipynb 44
 class GisCOCOeval():
     
     def __init__(self, data_path:str, outpath:str, coco_info:dict, coco_licenses:list, coco_categories:list):
+        "Initialize evaluator with data path and coco information"
         store_attr()
         self.iou_threshs = [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95]
         self.coco_proc = COCOProcessor(data_path=self.data_path, outpath=self.outpath, coco_info=self.coco_info,
@@ -306,8 +307,7 @@ class GisCOCOeval():
     
     def prepare_eval(self, eval_type:str='segm'):
         """
-        Prepare COCOeval to evaluate predictions with 100 and 1000 detections. 
-        AP metrics are evaluated with 1000 detections and AR with 100
+        Prepare COCOeval to evaluate predictions with 100 and 1000 detections. AP metrics are evaluated with 1000 detections and AR with 100
         """
         self.coco = COCO(f'{self.outpath}/coco.json')
         self.coco_res = self.coco.loadRes(f'{self.outpath}/coco_res.json')
@@ -332,8 +332,7 @@ class GisCOCOeval():
         _summarize_coco(self.coco_eval)
     
     def save_results(self, outpath, iou_thresh:float=0.5):
-        """Saves correctly detected ground truths, correct detections missed ground truths 
-        and misclassifications with specified iou_threshold in separate files for each scene"""
+        """Saves correctly detected ground truths, correct detections missed ground truths and misclassifications with specified iou_threshold in separate files for each scene"""
         
         if not os.path.exists(f'{self.coco_proc.outpath}/{outpath}'):
             os.makedirs(f'{self.coco_proc.outpath}/{outpath}')

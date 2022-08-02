@@ -1,13 +1,13 @@
 name: test
 channels:
-  - defaults
-  - fastchan
   - conda-forge
+  - fastchan
+  - pytorch
 dependencies: 
-  - python==3.9
+  - conda-forge::python==3.9
   - conda-forge::pip
   - pytorch::cpuonly
-  - pytorch::pytorch==1.11
+  - pytorch::pytorch==1.10
   - fastchan::fastai==2.7.6
   - fastchan::nbdev
   - conda-forge::geopandas

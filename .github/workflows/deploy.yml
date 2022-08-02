@@ -12,57 +12,56 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: build-docs
-        description: 'create docs'
-        inputs:
-          ghtoken:
-            description: 'GitHub token'
-            default: ${{ github.token }}
-            required: false
-        runs:
-          using: "composite"
-          steps:
-            - uses: actions/checkout@v2
-            
-            - name: Setup Mambaforge
-              uses: conda-incubator/setup-miniconda@v2
-              with:
-                miniforge-variant: Mambaforge
-                miniforge-version: latest
-                activate-environment: test
-                use-mamba: true
+      name: build-docs
+      description: 'create docs'
+      inputs:
+        ghtoken:
+          description: 'GitHub token'
+          default: ${{ github.token }}
+          required: false
+      runs:
+        using: "composite"
+        steps:
+          - uses: actions/checkout@v2
+          
+          - name: Setup Mambaforge
+            uses: conda-incubator/setup-miniconda@v2
+            with:
+              miniforge-variant: Mambaforge
+              miniforge-version: latest
+              activate-environment: test
+              use-mamba: true
 
-            - name: Set cache date
-              run: echo "DATE=$(date +'%Y%m')" >> $GITHUB_ENV
+          - name: Set cache date
+            run: echo "DATE=$(date +'%Y%m')" >> $GITHUB_ENV
 
-            - uses: actions/cache@v2
-              with:
-                path: /usr/share/miniconda3/envs/test
-                key: linux-64-conda-${{ hashFiles('ci/test_environment.yml') }}-${{ env.DATE }}-${{ env.CACHE_NUMBER }}
-            
-            - name: Install environment if needed
-              run: mamba env update -n test -f ci/test_environment.yml
-              if: steps.cache.outputs.cache-hit != 'true'
+          - uses: actions/cache@v2
+            with:
+              path: /usr/share/miniconda3/envs/test
+              key: linux-64-conda-${{ hashFiles('ci/test_environment.yml') }}-${{ env.DATE }}-${{ env.CACHE_NUMBER }}
+          
+          - name: Install environment if needed
+            run: mamba env update -n test -f ci/test_environment.yml
+            if: steps.cache.outputs.cache-hit != 'true'
 
-            - name: install detectron2
-              shell: bash -l {0}
-              run: |
-                pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
-                pip install -e .
+          - name: install detectron2
+            shell: bash -l {0}
+            run: |
+              pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
+              pip install -e .
 
-            - name: make docs
-              shell: bash -l {0}
-              run: nbdev_docs
+          - name: make docs
+            shell: bash -l {0}
+            run: nbdev_docs
 
-            - name: Deploy to GitHub Pages
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                github_token: ${{ inputs.ghtoken }}
-                force_orphan: true
-                publish_dir: ./_docs
-                # The following lines assign commit authorship to the official
-                # GH-Actions bot for deploys to `gh-pages` branch.
-                # You can swap them out with your own user credentials.
-                user_name: github-actions[bot]
-                user_email: 41898282+github-actions[bot]@users.noreply.github.com
- 
+          - name: Deploy to GitHub Pages
+            uses: peaceiris/actions-gh-pages@v3
+            with:
+              github_token: ${{ inputs.ghtoken }}
+              force_orphan: true
+              publish_dir: ./_docs
+              # The following lines assign commit authorship to the official
+              # GH-Actions bot for deploys to `gh-pages` branch.
+              # You can swap them out with your own user credentials.
+              user_name: github-actions[bot]
+              user_email: 41898282+github-actions[bot]@users.noreply.github.com

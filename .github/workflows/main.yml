@@ -12,9 +12,6 @@ on:
   schedule:
     - cron: '0 0 1 * *'
 
-env:
-   CACHE_NUMBER: 0 # increase to reset cache manually
-
 jobs:
   build:
     strategy:
@@ -36,18 +33,9 @@ jobs:
         miniforge-version: latest
         activate-environment: test
         use-mamba: true
-        
-    - name: Set cache date
-      run: echo "DATE=$(date +'%Y%m')" >> $GITHUB_ENV
-      
-    - uses: actions/cache@v2
-      with:
-        path: ${{ matrix.prefix }}
-        key: ${{ matrix.label }}-conda-${{ hashFiles('ci/test_environment.yml') }}-${{ env.DATE }}-${{ env.CACHE_NUMBER }}
-    
+
     - name: Install environment
       run: mamba env update -n test -f ci/test_environment.yml
-      if: steps.cache.outputs.cache-hit != 'true'
     
     - name: install detectron2
       shell: bash -l {0}

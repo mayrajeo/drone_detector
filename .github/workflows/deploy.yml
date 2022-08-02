@@ -12,7 +12,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      name: 'build-docs'
+    - name: 'build-docs'
       description: 'create docs'
       inputs:
         ghtoken:

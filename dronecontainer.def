@@ -1,6 +1,6 @@
-# Singularity definition file for machine and deep learning analyses for remote sensing
+# Singularity definition file for machine and deep learning analyses and development for remote sensing
 BootStrap: docker
-From: nvidia/cuda:11.3.1-base-ubuntu20.04
+From: nvidia/cuda:11.1.1-base-ubuntu20.04
 
 # Define environment variables TODO exports
 %environment
@@ -42,29 +42,45 @@ From: nvidia/cuda:11.3.1-base-ubuntu20.04
     conda install pip
     
     conda install mamba -n base -c conda-forge
-     
-    pip --no-cache-dir install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
-    pip --no-cache-dir install fastai==2.6.3
+    
+    # pytorch and fastai
+    # pre-built detectron 2 requires precisely these versions of pytorch etc
+    pip --no-cache-dir install torch==1.10.1+cu111 torchvision==0.11.2+cu111 torchaudio==0.10.1 -f https://download.pytorch.org/whl/torch_stable.html
+    pip --no-cache-dir install fastai==2.7.7
 
-    # mamba install -c fastchan fastai 
+    # nbdev
     mamba install -c fastchan nbdev
 
+    # geospatial libraries
     mamba install -c conda-forge geopandas rasterio 
-    mamba install -c pyviz bokeh holoviews hvplot
+
+    # xarray
     mamba install -c conda-forge xarray 
-    # conda install -c conda-forge jupyter_contrib_nbextensions
+
+    # nbextensions and rise
     mamba install -c conda-forge jupyter_contrib_nbextensions rise
+
+    # fastai dev dependencies
     pip install opencv-python scikit-image pyarrow wandb tensorboard captum laspy
 
+    # other useful libraries
     pip install openpyxl
     pip install torchsummary
     pip install seaborn
     pip install owslib 
+
+    # optional icevision install, at the moment doesn't work with newest fastai
     # pip install icevision[all] 
-    pip install 'git+https://github.com/facebookresearch/detectron2.git'
-    pip install vit-pytorch
+
+    # detectron2 that matches cudatoolkit/pytorch
+    pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.10/index.html
+
+    # albumentations
     pip install albumentations
-            
+
+    # best CV library, period
+    pip install timm
+    
     # Test that libraries (read: gdal) work
     gdal_translate --version
     
@@ -78,11 +94,12 @@ From: nvidia/cuda:11.3.1-base-ubuntu20.04
     jupyter nbextension enable toggle_all_line_numbers/main
     jupyter nbextension enable --py widgetsnbextension
 
+    # install quarto
+    nbdev_install_quarto
 
 # Start script: what to run on startup
 #%startscript
     
-
 %labels
     ABOUT Singularity container for geospatial ml/dl analysis with jupyter notebooks
     AUTHOR Janne Mäyrä    

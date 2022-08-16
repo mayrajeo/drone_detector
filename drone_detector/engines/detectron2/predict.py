@@ -32,8 +32,7 @@ def predict_bboxes(path_to_model_config:str,
                    tile_overlap:int=100,
                    coco_set:str=None,
                    use_tta:bool=True,
-                   postproc_results:bool=True,
-                   smooth_preds:bool=False):
+                   postproc_results:bool=True):
     "Detect bounding boxes from a new image using a pretrained model"
     
     if os.path.exists(processing_dir): 
@@ -75,12 +74,6 @@ def predict_bboxes(path_to_model_config:str,
                        'height': img.shape[0],
                        'id': i+1})
         preds.append(pred)
-
-    # Mask postprocessing:
-    if smooth_preds:
-        print('Not yet implemented')
-        #preds = fill_holes(preds)
-        #preds = dilate_erode(preds)
         
     preds_coco = detectron2_bbox_preds_to_coco_anns(images, preds)
     try:
@@ -133,19 +126,16 @@ def predict_bboxes(path_to_model_config:str,
 
 # %% ../nbs/40_engines.detectron2.predict.ipynb 4
 @call_parse
-def predict_bboxes_detectron2(path_to_model_config:Param("Path to pretrained model folder",type=str),
-                              path_to_image:Param("Path to image to annotate", type=str),
-                              outfile:Param('Path and filename for output raster', type=str),
-                              processing_dir:Param("Directory to save the intermediate tiles. Deleted after use", 
-                                                   type=str, default='temp'),
-                              tile_size:Param("Tile size to use. Default 400x400px tiles", type=int, default=400),
-                              tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=200),
-                              coco_set:Param("Path to json file for the coco dataset the model was trained on", 
-                                             type=str, default=None),
-                              use_tta:Param("Use test-time augmentation", store_false),
-                              postproc_results:Param('Filter predicted masks', store_true),
-                              smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_false)
-    ):
+def predict_bboxes_detectron2(path_to_model_config:str, #Path to pretrained model config file
+                              path_to_image:str, #Path to image to annotate
+                              outfile:str, #Path and filename for output raster
+                              processing_dir:str='temp', #Directory to save the intermediate tiles. Deleted after use.
+                              tile_size:int=400, #Tile size to use. Default 400x400px tiles
+                              tile_overlap:int=100, #Tile overlap to use. Default 100px
+                              coco_set:str=None, #Path to json file for the coco dataset the model was trained on. None defaults to dummy classes
+                              use_tta:bool=False, #Use test-time augmentation? 
+                              postproc_results:bool=False): #Filter predicted masks
+                             
     "CLI for bbox prediction with detectron2"
     predict_bboxes(path_to_model,
                    path_to_image,
@@ -264,19 +254,17 @@ def predict_instance_masks(path_to_model_config:str,
 
 # %% ../nbs/40_engines.detectron2.predict.ipynb 6
 @call_parse
-def predict_instance_masks_detectron2(path_to_model_config:Param("Path to pretrained model config file",type=str),
-                                      path_to_image:Param("Path to image to annotate", type=str),
-                                      outfile:Param('Path and filename for output raster', type=str),
-                                      processing_dir:Param("Directory to save the intermediate tiles. Deleted after use", 
-                                                           type=str, default='temp'),
-                                      tile_size:Param("Tile size to use. Default 400x400px tiles", type=int, default=400),
-                                      tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=200),
-                                      coco_set:Param("Path to json file for the coco dataset the model was trained on", 
-                                      type=str, default=None),
-                                      use_tta:Param("Use test-time augmentation", store_true),
-                                      postproc_results:Param('Filter predicted masks', store_true),
-                                      smooth_preds:Param("Run fill_holes and dilate_erode to masks", store_true)
-    ):
+def predict_instance_masks_detectron2(path_to_model_config:str, #Path to pretrained model config file
+                                      path_to_image:str, #Path to image to annotate
+                                      outfile:str, #Path and filename for output raster
+                                      processing_dir:str='temp', #Directory to save the intermediate tiles. Deleted after use
+                                      tile_size:int=400, #Tile size to use. Default 400x400px tiles
+                                      tile_overlap:int=100, #Tile overlap to use. Default 100px
+                                      coco_set:str=None, #Path to json file for the coco dataset the model was trained on. None defaults to dummy classes
+                                      use_tta:bool=False, #Use test-time augmentation? 
+                                      postproc_results:bool=False, #Filter predicted masks
+                                      smooth_preds:bool=False): #Run fill_holes and dilate_erode to masks. Not implemented yet
+                                     
     "CLI for instance segmentation with detectron2"
     predict_instance_masks(path_to_model_config,
                            path_to_image,

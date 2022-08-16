@@ -85,7 +85,7 @@ def _corners2rotatedbbox(poly):
     return [centre[0][0], centre[1][0], np.abs(w), np.abs(h), -(theta*180)/np.pi] # Convert angle from radians to ccw degrees
 
     
-def _process_shp_to_coco(image_id, category_id, ann_id, poly:Polygon, rotated_bbox:bool):
+def _process_shp_to_coco(image_id, category_id, ann_id, poly:Polygon, rotated_bbox:bool=False):
     "TODO handle multipolygons"
     ann_dict = {
         'segmentation': [],
@@ -254,7 +254,7 @@ class COCOProcessor():
             tfmd_gdf.to_file(f'{self.outpath}/{outdir}/{i["file_name"][:-4]}.geojson', driver='GeoJSON')
         return
 
-    def results_to_coco_res(self, label_col:str='label_id', outfile:str='coco_res.json'):
+    def results_to_coco_res(self, label_col:str='label_id', outfile:str='coco_res.json', rotated_bbox=False):
         result_tiles = [f for f in os.listdir(self.prediction_path) if f.endswith(('.shp', '.geojson'))]
         # If no annotations are in found in raster tile then there is no shapefile for that
         raster_tiles = [f'{fname.split(".")[0]}.tif' for fname in result_tiles]
@@ -273,7 +273,7 @@ class COCOProcessor():
                        'category_id': getattr(row, label_col),
                        'segmentation': None,
                        'score': np.round(getattr(row, 'score'), 5)}
-                ann = _process_shp_to_coco(image_id, getattr(row, label_col), 0, row.geometry)
+                ann = _process_shp_to_coco(image_id, getattr(row, label_col), 0, row.geometry, rotated_bbox)
                 res['segmentation'] = frPyObjects(ann['segmentation'], h, w)[0]
                 res['segmentation']['counts'] = res['segmentation']['counts'].decode('ascii')
                 results.append(res)

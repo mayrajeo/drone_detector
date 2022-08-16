@@ -46,7 +46,7 @@ def predict_segmentation(path_to_model:str,
                          processing_dir:str='temp',
                          tile_size:int=400,
                          tile_overlap:int=100,
-                         use_tta:bool=True
+                         use_tta:bool=False
     ):
     """Segment image into land cover classes with a pretrained models
     TODO save also information about label and class
@@ -153,14 +153,14 @@ def predict_segmentation(path_to_model:str,
 
 # %% ../nbs/33_engines.fastai.predict.ipynb 6
 @call_parse
-def predict_segmentation_fastai(path_to_model:Param("Path to pretrained model file",type=str),
-                                path_to_image:Param("Path to image to annotate", type=str),
-                                outfile:Param('Path and filename for output raster', type=str),
-                                processing_dir:Param("Directory to save the intermediate tiles. Deleted after use", type=str, default='temp'),
-                                tile_size:Param("Tile size to use. Default 400x400px tiles", type=int, default=400),
-                                tile_overlap:Param("Tile overlap to use. Default 100px", type=int, default=100),
-                                use_tta:Param("Use test-time augmentation", store_true)
-    ):
+def predict_segmentation_fastai(path_to_model:str, #Path to pretrained model file
+                                path_to_image:str, #Path to image to annotate"
+                                outfile:str, #Path and filename for output raster
+                                processing_dir:str='temp', #Directory to save the intermediate tiles. Deleted after use
+                                tile_size:int=400, #Tile size to use. Default 400x400px tiles
+                                tile_overlap:int=100, #Tile overlap to use. Default 100px
+                                use_tta:bool=False): #Use test-time augmentation
+                               
     "CLI for semantic segmentation with fastai"
     predict_segmentation(path_to_model,
                          path_to_image,

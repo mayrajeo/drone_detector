@@ -15,7 +15,10 @@ import torch
 from ...imports import *
 
 from detectron2.modeling.roi_heads.rotated_fast_rcnn import fast_rcnn_inference_single_image_rotated
+from detectron2.modeling.roi_heads.fast_rcnn import fast_rcnn_inference_single_image
+from detectron2.structures import Boxes, Instances
 
+from itertools import count
 
 # %% ../nbs/43_engines.detectron2.tta.ipynb 3
 class DatasetMapperTTAFlip:
@@ -187,7 +190,7 @@ class TTAPredictor:
         self.model = build_model(self.cfg)
         checkpointer = DetectionCheckpointer(self.model)
         checkpointer.load(cfg.MODEL.WEIGHTS)
-        self.model = GeneralizedRCNNWithTTA(cfg, self.model, tta_mapper=DatasetMapperTTA(cfg))
+        self.model = GeneralizedRCNNWithTTA(cfg, self.model, tta_mapper=DatasetMapperTTAFlip(cfg))
         self.model.eval()
         if len(cfg.DATASETS.TEST):
             self.metadata = MetadataCatalog.get(cfg.DATASETS.TEST[0])

@@ -154,7 +154,7 @@ def predict_segmentation(path_to_model:str,
 # %% ../nbs/33_engines.fastai.predict.ipynb 6
 @call_parse
 def predict_segmentation_fastai(path_to_model:str, #Path to pretrained model file
-                                path_to_image:str, #Path to image to annotate"
+                                path_to_image:str, #Path to image to annotate
                                 outfile:str, #Path and filename for output raster
                                 processing_dir:str='temp', #Directory to save the intermediate tiles. Deleted after use
                                 tile_size:int=400, #Tile size to use. Default 400x400px tiles

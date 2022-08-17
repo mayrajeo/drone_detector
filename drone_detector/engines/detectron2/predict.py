@@ -24,7 +24,7 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 # %% ../nbs/40_engines.detectron2.predict.ipynb 3
-def predict_bboxes(path_to_model_config:str,
+def predict_bboxes(path_to_model_files:str,
                    path_to_image:str,
                    outfile:str,
                    processing_dir:str='temp',
@@ -51,14 +51,14 @@ def predict_bboxes(path_to_model_config:str,
     print('Loading model')
     
     cfg = get_cfg()
-    cfg.merge_from_file(path_to_model_config)
+    cfg.merge_from_file(f'{path_to_model_files}/config.yaml')
     cfg.DEVICE = device
     
     print('Starting predictions')
     image_files = os.listdir(f'{processing_dir}/raster_tiles')
     #else:
     
-    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, 'model_final.pth')
+    cfg.MODEL.WEIGHTS = os.path.join(path_to_model_files, 'model_final.pth')
     predictor = DefaultPredictor(cfg)    
     if use_tta:
         cfg.TEST.AUG.MIN_SIZES = (cfg.INPUT.MIN_SIZE_TEST-200, cfg.INPUT.MIN_SIZE_TEST, cfg.INPUT.MIN_SIZE_TEST+200,)
@@ -126,7 +126,7 @@ def predict_bboxes(path_to_model_config:str,
 
 # %% ../nbs/40_engines.detectron2.predict.ipynb 4
 @call_parse
-def predict_bboxes_detectron2(path_to_model_config:str, #Path to pretrained model config file
+def predict_bboxes_detectron2(path_to_model_files:str, #Path to the folder containing config and weights
                               path_to_image:str, #Path to image to annotate
                               outfile:str, #Path and filename for output raster
                               processing_dir:str='temp', #Directory to save the intermediate tiles. Deleted after use.
@@ -137,7 +137,7 @@ def predict_bboxes_detectron2(path_to_model_config:str, #Path to pretrained mode
                               postproc_results:bool=False): #Filter predicted masks
                              
     "CLI for bbox prediction with detectron2"
-    predict_bboxes(path_to_model,
+    predict_bboxes(path_to_model_files,
                    path_to_image,
                    outfile,
                    processing_dir,
@@ -148,7 +148,7 @@ def predict_bboxes_detectron2(path_to_model_config:str, #Path to pretrained mode
                    smooth_preds)
 
 # %% ../nbs/40_engines.detectron2.predict.ipynb 5
-def predict_instance_masks(path_to_model_config:str,
+def predict_instance_masks(path_to_model_files:str,
                            path_to_image:str,
                            outfile:str,
                            processing_dir:str='temp',
@@ -176,13 +176,13 @@ def predict_instance_masks(path_to_model_config:str,
     print('Loading model')
     
     cfg = get_cfg()
-    cfg.merge_from_file(path_to_model_config)
+    cfg.merge_from_file(f'{path_to_model_files}/config.yaml')
     cfg.DEVICE = device
     
     print('Starting predictions')
     image_files = os.listdir(f'{processing_dir}/raster_tiles')
     
-    cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, 'model_final.pth')
+    cfg.MODEL.WEIGHTS = os.path.join(path_to_model_files, 'model_final.pth')
     predictor = DefaultPredictor(cfg)    
     if use_tta:
         cfg.TEST.AUG.MIN_SIZES = (cfg.INPUT.MIN_SIZE_TEST-200, cfg.INPUT.MIN_SIZE_TEST, cfg.INPUT.MIN_SIZE_TEST+200,)
@@ -254,7 +254,7 @@ def predict_instance_masks(path_to_model_config:str,
 
 # %% ../nbs/40_engines.detectron2.predict.ipynb 6
 @call_parse
-def predict_instance_masks_detectron2(path_to_model_config:str, #Path to pretrained model config file
+def predict_instance_masks_detectron2(path_to_model_files:str, #Path to the folder containing config and weights
                                       path_to_image:str, #Path to image to annotate
                                       outfile:str, #Path and filename for output raster
                                       processing_dir:str='temp', #Directory to save the intermediate tiles. Deleted after use
@@ -266,7 +266,7 @@ def predict_instance_masks_detectron2(path_to_model_config:str, #Path to pretrai
                                       smooth_preds:bool=False): #Run fill_holes and dilate_erode to masks. Not implemented yet
                                      
     "CLI for instance segmentation with detectron2"
-    predict_instance_masks(path_to_model_config,
+    predict_instance_masks(path_to_model_files,
                            path_to_image,
                            outfile,
                            processing_dir,

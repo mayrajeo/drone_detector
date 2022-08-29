@@ -19,7 +19,7 @@ jobs:
         include:
           - os: ubuntu-latest
             label: linux-64
-            prefix: /usr/share/miniconda3/envs/test
+            prefix: /usr/share/miniconda3/envs/testenv
   
     name: ${{ matrix.label }}
     runs-on: ${{ matrix.os }}
@@ -31,11 +31,11 @@ jobs:
       with:
         miniforge-variant: Mambaforge
         miniforge-version: latest
-        activate-environment: test
+        activate-environment: testenv
         use-mamba: true
 
     - name: Install environment
-      run: mamba env update -n test -f ci/test_environment.yml
+      run: mamba env update -n testenv -f ci/test_environment.yml
     
     - name: install detectron2
       shell: bash -l {0}

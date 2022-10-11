@@ -18,6 +18,8 @@ from shutil import rmtree
 from fastai.data.load import DataLoader
 from fastcore.transform import Pipeline
 
+from rasterio.windows import Window
+
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -58,7 +60,7 @@ def predict_segmentation(path_to_model:str,
     print(f'Reading and tiling {path_to_image} to {tile_size}x{tile_size} tiles with overlap of {tile_overlap}px')
     tiler = Tiler(outpath=processing_dir, gridsize_x=int(tile_size), gridsize_y=int(tile_size), 
                   overlap=(int(tile_overlap), int(tile_overlap)))
-    tiler.tile_raster(path_to_image)
+    tiler.tile_raster(path_to_image, allow_partial_data=True)
     
     # Check whether is possible to use gpu
     cpu = True if not torch.cuda.is_available() else False
@@ -82,9 +84,10 @@ def predict_segmentation(path_to_model:str,
             test_dl = learn.dls.test_dl(test_files[chunk:chunk+300], num_workers=0, bs=1)
             test_dl.set_base_transforms()
             if use_tta:
-                batch_tfms = [Dihedral()]
-                item_tfms = [ToTensor(), IntToFloatTensor()]
-                preds = learn.tta(dl=test_dl, batch_tfms=batch_tfms)[0]
+                print('not yet supported')
+                #batch_tfms = [Dihedral()]
+                #item_tfms = [ToTensor(), IntToFloatTensor()]
+                #preds = learn.tta(dl=test_dl, batch_tfms=batch_tfms)[0]
             else:
                 preds = learn.get_preds(dl=test_dl, with_input=False, with_decoded=False)[0]
 
@@ -99,25 +102,14 @@ def predict_segmentation(path_to_model:str,
                             dtype='uint8')
                 
                 with rio.open(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}','w',**prof) as dest:
-                #ds = gdal.Open(str(f))
-                #out_raster = gdal.GetDriverByName('gtiff').Create(f'{processing_dir}/predicted_rasters/{f.stem}.{f.suffix}',
-                #                                                  ds.RasterXSize,
-                #                                                  ds.RasterYSize,
-                #                                                  p.shape[0], gdal.GDT_Int16)
-                #out_raster.SetProjection(ds.GetProjectionRef())
-                #out_raster.SetGeoTransform(ds.GetGeoTransform())
                     np_pred = p.numpy()#.argmax(axis=0)
                     np_pred = np_pred.round(2)
                     np_pred *= 100
                     np_pred = np_pred.astype(np.int16)
-                    dest.write(np_pred)
-                    #for c in range(p.shape[0]): 
-                        
-                        #band = out_raster.GetRasterBand(c+1).WriteArray(np_pred[c])
-                        #band = None
-                #band = out_raster.GetRasterBand(1).WriteArray(np_pred)
-                #out_raster = None
-                #ds = None
+                    dest.write(np_pred[:, tile_overlap//4:(tile_size-tile_overlap//4), 
+                                       tile_overlap//4:(tile_size-tile_overlap//4)],
+                               window=Window.from_slices((tile_overlap//4,tile_size-tile_overlap//4),
+                                                         (tile_overlap//4,tile_size-tile_overlap//4)))
             
     print('Merging predictions')
     temp_full = f'{processing_dir}/full_raster.tif'
@@ -133,19 +125,6 @@ def predict_segmentation(path_to_model:str,
                 dtype='uint8')
     with rio.open(outfile, 'w', **prof) as dest:
         dest.write_band(1, raw_raster.argmax(axis=0))
-    #raw_raster = gdal.Open(temp_full)
-    #processed_raster = gdal.GetDriverByName('gtiff').Create(outfile,
-    #                                                        raw_raster.RasterXSize,
-    #                                                        raw_raster.RasterYSize,
-    #                                                        1, gdal.GDT_Int16)
-    #processed_raster.SetProjection(raw_raster.GetProjectionRef())
-    #processed_raster.SetGeoTransform(raw_raster.GetGeoTransform())
-    #raw_np = raw_raster.ReadAsArray()
-    #pred_np = raw_np.argmax(axis=0)
-    #band = processed_raster.GetRasterBand(1).WriteArray(pred_np)
-    #raw_raster = None
-    #band = None
-    #processed_raster = None
     
     print('Removing intermediate files')
     rmtree(processing_dir)

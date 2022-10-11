@@ -26,23 +26,22 @@ class Tiler():
         self.vector_path = f'{self.outpath}/vector_tiles'
         self.rasterized_vector_path = f'{self.outpath}/rasterized_vector_tiles'
         
-    def tile_raster(self, path_to_raster:str) -> None:
+    def tile_raster(self, path_to_raster:str, allow_partial_data:bool=False) -> None:
         "Tiles specified raster to `self.gridsize_x` times `self.gridsize_y` grid, with `self.overlap` pixel overlap"
         names = []
         polys = []
         col_id = 0
         row_id = 0
         
-        #self.grid = make_grid(str(path_to_raster), gridsize_x=self.gridsize_x,
-        #                      gridsize_y=self.gridsize_y, overlap=self.overlap)
         if not os.path.exists(self.raster_path): os.makedirs(self.raster_path)
         with rio.open(path_to_raster) as src:
             y, x = src.shape
             
             for (iy, dy), (ix, dx) in tqdm(itertools.product(enumerate(range(0, y, self.gridsize_y-self.overlap[1])), 
                                                              enumerate(range(0, x, self.gridsize_x-self.overlap[0])))):
-                if dy+self.gridsize_y > y: continue
-                if dx+self.gridsize_x > x: continue
+                
+                if dy+self.gridsize_y > y and not allow_partial_data: continue
+                if dx+self.gridsize_x > x and not allow_partial_data: continue
                 window = rio_windows.Window.from_slices((dy, dy+self.gridsize_y),
                                                         (dx, dx+self.gridsize_x))
                 prof = src.profile.copy()
@@ -54,20 +53,16 @@ class Tiler():
                     predictor=2
                 )
                 fname = f'R{iy}C{ix}'
+                data = src.read(window=window)
+                if data.shape[1] < window.height or data.shape[2] < window.width:
+                    newdata = np.zeros((data.shape[0], window.height, window.width))
+                    newdata[:, :data.shape[1], :data.shape[2]] = data
+                    data = newdata
                 with rio.open(f'{self.raster_path}/{fname}.tif', 'w', **prof) as dest:
-                    dest.write(src.read(window=window))
+                    dest.write(data)
                     polys.append(box(*dest.bounds))
                 names.append(fname)
-            self.grid = gpd.GeoDataFrame({'cell': names, 'geometry':polys}, crs=src.crs)
-            #for row in tqdm(self.grid.itertuples()):
-            #    out_im, out_tfm = rio_mask.mask(src, [row.geometry], crop=True)
-            #    out_meta = src.meta
-            #    out_meta.update({'driver':'GTiff',
-            #                     'height': out_im.shape[1],
-            #                     'width': out_im.shape[2],
-            #                     'transform': out_tfm})
-            #    with rio.open(f'{self.raster_path}/{row.cell}.tif', 'w', **out_meta) as dest:
-            #        dest.write(out_im)   
+            self.grid = gpd.GeoDataFrame({'cell': names, 'geometry':polys}, crs=src.crs)  
         return
     
     

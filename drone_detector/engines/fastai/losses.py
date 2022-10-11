@@ -20,13 +20,13 @@ __all__ = ['lovasz_grad', 'iou_binary', 'iou', 'isnan', 'mean', 'lovasz_hinge', 
            'lovasz_softmax', 'lovasz_softmax_flat', 'flatten_probas', 'xloss', 'LovaszHingeLossFlat', 'LovaszHingeLoss',
            'LovaszSigmoidLossFlat', 'LovaszSigmoidLoss', 'LovaszSoftmaxLossFlat', 'LovaszSoftmaxLoss', 'FocalDice']
 
-# %% ../../../nbs/31_engines.fastai.losses.ipynb 5
+# %% ../../../nbs/31_engines.fastai.losses.ipynb 4
 try:
     from itertools import  ifilterfalse
 except ImportError: # py3k
     from itertools import  filterfalse as ifilterfalse
 
-# %% ../../../nbs/31_engines.fastai.losses.ipynb 6
+# %% ../../../nbs/31_engines.fastai.losses.ipynb 5
 """
 Lovasz-Softmax and Jaccard hinge loss in PyTorch
 Maxim Berman 2018 ESAT-PSI KU Leuven (MIT License)
@@ -236,7 +236,7 @@ def xloss(logits, labels, ignore=None):
     """
     return F.cross_entropy(logits, Variable(labels), ignore_index=255)
 
-# %% ../../../nbs/31_engines.fastai.losses.ipynb 7
+# %% ../../../nbs/31_engines.fastai.losses.ipynb 6
 class LovaszHingeLossFlat(BaseLoss):
     "Same as `LovaszHingeLoss` but flattens input and target"
     y_int = True
@@ -281,7 +281,7 @@ class LovaszHingeLoss(Module):
     def decodes(self, x): x>0
     def activation(self,x): return x
 
-# %% ../../../nbs/31_engines.fastai.losses.ipynb 11
+# %% ../../../nbs/31_engines.fastai.losses.ipynb 10
 class LovaszSigmoidLossFlat(BaseLoss):
     "Same as `LovaszSigmoidLoss` but flattens input and target"
     y_int = True
@@ -324,7 +324,7 @@ class LovaszSigmoidLoss(Module):
     def decodes(self, x): return x>0.5
     def activation(self, x): return torch.sigmoid(x)
 
-# %% ../../../nbs/31_engines.fastai.losses.ipynb 15
+# %% ../../../nbs/31_engines.fastai.losses.ipynb 14
 class LovaszSoftmaxLossFlat(BaseLoss):
     "Same as `LovaszSigmoidLoss` but flattens input and target"
     y_int = True
@@ -375,7 +375,7 @@ class LovaszSoftmaxLoss(Module):
     def activation(self, out): return F.softmax(out, dim=-1)
     def decodes(self, out): return out.argmax(dim=-1)
 
-# %% ../../../nbs/31_engines.fastai.losses.ipynb 20
+# %% ../../../nbs/31_engines.fastai.losses.ipynb 19
 class FocalDice:
     "Combines Focal loss with dice loss"
     def __init__(self, axis=1, smooth=1., alpha=1.):

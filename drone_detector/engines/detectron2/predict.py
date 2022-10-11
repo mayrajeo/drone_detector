@@ -42,7 +42,7 @@ def predict_bboxes(path_to_model_files:str,
     print(f'Reading and tiling {path_to_image} to {tile_size}x{tile_size} tiles with overlap of {tile_overlap}px')
     tiler = Tiler(outpath=processing_dir, gridsize_x=int(tile_size), gridsize_y=int(tile_size), 
                   overlap=(int(tile_overlap), int(tile_overlap)))
-    tiler.tile_raster(path_to_image)
+    tiler.tile_raster(path_to_image, allow_partial_data=True)
     
     # Check whether is possible to use gpu
     device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device()}'
@@ -167,7 +167,7 @@ def predict_instance_masks(path_to_model_files:str,
     print(f'Reading and tiling {path_to_image} to {tile_size}x{tile_size} tiles with overlap of {tile_overlap}px')
     tiler = Tiler(outpath=processing_dir, gridsize_x=int(tile_size), gridsize_y=int(tile_size), 
                   overlap=(int(tile_overlap), int(tile_overlap)))
-    tiler.tile_raster(path_to_image)
+    tiler.tile_raster(path_to_image, allow_partial_data=True)
     
     # Check whether is possible to use gpu
     device = 'cpu' if not torch.cuda.is_available() else f'cuda:{torch.cuda.current_device()}'

@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "drone_detector"
+  site-url: "https://mayrajeo.github.io/drone_detector/"
+  description: "Automated deadwood detection from UAV RGB imagery"
+  repo-branch: master
+  repo-url: "https://github.com/mayrajeo/drone_detector/tree/master/"

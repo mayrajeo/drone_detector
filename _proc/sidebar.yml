@@ -1,0 +1,33 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - section: Examples
+        contents: 
+        - examples.tiling.ipynb
+        - examples.fastai.segmentation.ipynb
+      - section: Processing
+        contents:
+        - 10_processing.tiling.ipynb
+        - 11_processing.coordinates.ipynb
+        - 12_processing.coco.ipynb
+        - 13_processing.postprocessing.ipynb
+      - section: Common
+        contents:
+        - 00_utils.ipynb
+        - 01_metrics.ipynb
+      - section: Engines
+        contents:
+        - overview.engines.ipynb
+        - section: fastai
+          contents: 
+          - 30_engines.fastai.data.ipynb
+          - 31_engines.fastai.losses.ipynb
+          - 32_engines.fastai.augmentations.ipynb
+          - 33_engines.fastai.predict.ipynb
+        - section: detectron2
+          contents:
+          - 40_engines.detectron2.predict.ipynb
+          - 41_engines.detectron2.training.ipynb
+          - 42_engines.detectron2.augmentations.ipynb
+          - 43_engines.detectron2.tta.ipynb

@@ -22,9 +22,9 @@ class Tiler():
         self.grid = None
         if not os.path.exists(outpath): os.makedirs(outpath)
             
-        self.raster_path = f'{self.outpath}/raster_tiles'
-        self.vector_path = f'{self.outpath}/vector_tiles'
-        self.rasterized_vector_path = f'{self.outpath}/rasterized_vector_tiles'
+        self.raster_path = f'{self.outpath}/images'
+        self.vector_path = f'{self.outpath}/vectors'
+        self.rasterized_vector_path = f'{self.outpath}/rasterized_vectors'
         
     def tile_raster(self, path_to_raster:str, allow_partial_data:bool=False) -> None:
         "Tiles specified raster to `self.gridsize_x` times `self.gridsize_y` grid, with `self.overlap` pixel overlap"

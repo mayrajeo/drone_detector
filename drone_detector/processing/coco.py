@@ -97,7 +97,7 @@ def _process_shp_to_coco(image_id, category_id, ann_id, poly:Polygon, rotated_bb
         'iscrowd': 0,
     }
 
-    if poly.type == 'Polygon':
+    if poly.geom_type == 'Polygon':
         ann_dict['segmentation'] = [list(sum(poly.exterior.coords[:-1], ()))]
         if not rotated_bbox:
             ann_dict['bbox'] = [(poly.bounds[0]), 
@@ -107,7 +107,7 @@ def _process_shp_to_coco(image_id, category_id, ann_id, poly:Polygon, rotated_bb
         else: # XYWHA is the requirement for rotated bounding boxes
             ann_dict['bbox'] = _corners2rotatedbbox(poly.minimum_rotated_rectangle)
         ann_dict['area'] = poly.area
-    elif poly.type == 'MultiPolygon':
+    elif poly.geom_type == 'MultiPolygon':
         temp_poly = None
         max_area = 0
         # Take only the largest polygon
@@ -135,9 +135,9 @@ class COCOProcessor():
     def __init__(self, data_path:str, outpath:str, coco_info:dict, coco_licenses:list,
                  coco_categories:list):
         store_attr()
-        self.raster_path = f'{self.data_path}/raster_tiles'
-        self.vector_path = f'{self.data_path}/vector_tiles'
-        self.prediction_path = f'{self.data_path}/predicted_vectors'
+        self.raster_path = f'{self.data_path}/images'
+        self.vector_path = f'{self.data_path}/vectors'
+        self.prediction_path = f'{self.data_path}/predictions'
         
         self.coco_dict = {
             'info': coco_info,
@@ -150,8 +150,8 @@ class COCOProcessor():
         self.categories = {c['name']:c['id'] for c in self.coco_dict['categories']}
         
         
-    def shp_to_coco(self, label_col:str='label', outfile:str='coco.json', min_bbox_area:int=16, 
-                    rotated_bbox:bool=False):
+    def from_shp(self, label_col:str='label', outfile:str='coco.json', min_bbox_area:int=16, 
+                 rotated_bbox:bool=False):
         "Process shapefiles from self.vector_path to coco-format and save to self.outpath/outfile"
         vector_tiles = [f for f in os.listdir(self.vector_path) if f.endswith(('.shp', '.geojson'))]
         # If no annotations are in found in raster tile then there is no shapefile for that
@@ -176,7 +176,7 @@ class COCOProcessor():
 
         return
     
-    def coco_to_shp(self, coco_data:dict=None, outdir:str='predicted_vectors', downsample_factor:int=1):
+    def to_shp(self, coco_data:dict=None, outdir:str='predicted_vectors', downsample_factor:int=1):
         """Generates shapefiles from a dictionary with coco annotations.
         TODO handle multipolygons better"""
         
@@ -254,7 +254,7 @@ class COCOProcessor():
             tfmd_gdf.to_file(f'{self.outpath}/{outdir}/{i["file_name"][:-4]}.geojson', driver='GeoJSON')
         return
 
-    def results_to_coco_res(self, label_col:str='label_id', outfile:str='coco_res.json', rotated_bbox=False):
+    def to_coco_results(self, label_col:str='label_id', outfile:str='coco_res.json', rotated_bbox=False):
         result_tiles = [f for f in os.listdir(self.prediction_path) if f.endswith(('.shp', '.geojson'))]
         # If no annotations are in found in raster tile then there is no shapefile for that
         raster_tiles = [f'{fname.split(".")[0]}.tif' for fname in result_tiles]

@@ -1,0 +1,28 @@
+name: ml-env
+channels:
+  - conda-forge
+  - fastchan
+  - pytorch
+dependencies:
+  - conda-forge::python==3.9
+  - conda-forge::pip
+  - fastchan::fastai==2.7.10
+  - fastchan::nbdev
+  - conda-forge::geopandas
+  - conda-forge::rasterio
+  - conda-forge::jupyter_contrib_nbextensions
+  - pip:
+    - opencv-python
+    - scikit-image
+    - pyarrow
+    - wandb
+    - tensorboard
+    - captum
+    - "git+https://github.com/facebookresearch/detectron2.git"
+    - ultralytics
+    - timm
+    - owslib
+    - openpyxl
+    - seaborn
+    - torchsummary
+    - albumentations

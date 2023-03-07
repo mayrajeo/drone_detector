@@ -92,7 +92,7 @@ def predict_bboxes(path_to_model_files:str,
                               coco_categories=cats)
     preds_coco['categories'] = cats
     
-    coco_proc.coco_to_shp(preds_coco, downsample_factor=1)
+    coco_proc.to_shp(preds_coco, downsample_factor=1)
     
     if postproc_results:
         # Drop all polygons whose centroid is not within thresholded cell.
@@ -221,7 +221,7 @@ def predict_instance_masks(path_to_model_files:str,
                               coco_categories=cats)
     
     preds_coco['categories'] = cats
-    coco_proc.coco_to_shp(preds_coco, downsample_factor=1)
+    coco_proc.to_shp(preds_coco, downsample_factor=1)
     
     if postproc_results:
         # Drop all polygons whose centroid is not within thresholded cell.

@@ -23,18 +23,16 @@ class YOLOProcessor():
         self.names = {n: i for i, n in enumerate(names)}
         
     def from_shp(self, label_col:str='label', outfile:str='yolo.yaml', min_bbox_area:int=16,
-                 rotated_bbox:bool=False, ann_format:str='polygon'):
+                 ann_format:str='polygon'):
         "Processes GIS-polygon data to YOLOv8-format"
         if ann_format not in ['polygon', 'box']:
-            print('Annotation format must be either "polygon" or "box", defaulting to "polygon"')
+            print('Annotation format must be either "polygon", "box" or "rotated box", defaulting to "polygon"')
         vectors = [f for f in os.listdir(self.vector_path) if f.endswith(('.shp', 'geojson'))]
         rasters = [f'{fname.split(".")[0]}.tif' for fname in vectors]
-        
-        if rotated_bbox: ann_format = 'polygon'
-        
+               
         for i, r in tqdm(enumerate(rasters)):
             gdf = gpd.read_file(f'{self.vector_path}/{vectors[i]}')
-            if rotated_bbox:
+            if ann_format == 'rotated_bbox':
                 gdf['geometry'] = gdf.geometry.apply(lambda row: row.minimum_rotated_rectangle)
             tfmd_gdf = gdf_to_px(gdf, f'{self.raster_path}/{r}', precision=3) # to pixel coordinates
             with rio.open(f'{self.raster_path}/{r}') as im:
@@ -50,7 +48,7 @@ class YOLOProcessor():
                     b_h = (row.geometry.bounds[3]-row.geometry.bounds[1])/h
                     anns.append(f'{cat_id} {x_c} {y_c} {b_w} {b_h}')
                     
-                elif ann_format == 'polygon': #classid x y x y ...
+                else: #classid x y x y ...
                     coords = ' '.join(list(sum([(str(x/w), str(y/h))for x, y in row.geometry.exterior.coords[:-1]], ())))
                     anns.append(str(cat_id) + ' ' + coords)
                     

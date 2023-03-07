@@ -90,7 +90,7 @@ class Tiler():
             # No annotations -> no shapefile
             if len(tempvector) == 0: continue            
             tempvector['geometry'] = tempvector.apply(lambda row: fix_multipolys(row.geometry) 
-                                                      if row.geometry.type == 'MultiPolygon'
+                                                      if row.geometry.geom_type == 'MultiPolygon'
                                                       else shapely.geometry.Polygon(row.geometry.exterior), axis=1)
             
 

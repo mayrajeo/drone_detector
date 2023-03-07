@@ -303,7 +303,7 @@ class GisCOCOeval():
     def prepare_data(self, gt_label_col:str='label', res_label_col:str='label', rotated_bbox:bool=False):
         "Convert GIS-data predictions to COCO-format for evaluation, and save resulting files to self.outpath"
         self.coco_proc.shp_to_coco(label_col=gt_label_col, rotated_bbox=rotated_bbox)
-        self.coco_proc.results_to_coco_res(label_col=res_label_col, rotated_bbox=rotated_bbox)
+        self.coco_proc.to_coco_results(label_col=res_label_col, rotated_bbox=rotated_bbox)
     
     def prepare_eval(self, eval_type:str='segm'):
         """

@@ -314,15 +314,16 @@ class GisCOCOeval():
         self.coco_eval = COCOeval(self.coco, self.coco_res, eval_type)
         self.coco_eval.params.maxDets = [100, 1000]
         
-    def evaluate(self):
+    def evaluate(self, classes_separately:bool=True):
         "Run evaluation and print metrics"
         
-        for cat in self.coco_categories:
-            print(f'\nEvaluating for category {cat["name"]}')
-            self.coco_eval.params.catIds = [cat['id']]
-            self.coco_eval.evaluate()
-            self.coco_eval.accumulate()
-            _summarize_coco(self.coco_eval)
+        if classes_separately:
+            for cat in self.coco_categories:
+                print(f'\nEvaluating for category {cat["name"]}')
+                self.coco_eval.params.catIds = [cat['id']]
+                self.coco_eval.evaluate()
+                self.coco_eval.accumulate()
+                _summarize_coco(self.coco_eval)
         
         self.coco_eval.params.catIds = self.coco.getCatIds()
         print('\nEvaluating for full data...')

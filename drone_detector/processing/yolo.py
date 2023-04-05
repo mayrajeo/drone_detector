@@ -22,7 +22,7 @@ class YOLOProcessor():
         os.makedirs(self.annotation_path, exist_ok=True)
         self.names = {n: i for i, n in enumerate(names)}
         
-    def from_shp(self, label_col:str='label', outfile:str='yolo.yaml', min_bbox_area:int=16,
+    def from_shp(self, label_col:str='label', outfile:str='yolo.yaml', min_bbox_area:int=0,
                  ann_format:str='polygon'):
         "Processes GIS-polygon data to YOLOv8-format"
         if ann_format not in ['polygon', 'box']:

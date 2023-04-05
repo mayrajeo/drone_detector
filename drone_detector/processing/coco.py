@@ -150,7 +150,7 @@ class COCOProcessor():
         self.categories = {c['name']:c['id'] for c in self.coco_dict['categories']}
         
         
-    def from_shp(self, label_col:str='label', outfile:str='coco.json', min_bbox_area:int=16, 
+    def from_shp(self, label_col:str='label', outfile:str='coco.json', min_bbox_area:int=0, 
                  rotated_bbox:bool=False):
         "Process shapefiles from self.vector_path to coco-format and save to self.outpath/outfile"
         vector_tiles = [f for f in os.listdir(self.vector_path) if f.endswith(('.shp', '.geojson'))]

@@ -22,6 +22,11 @@ runs:
       run: mamba env update -n test -f ci/test_environment.yml
       shell: bash -l {0}
 
+    - name: install package
+      shell: bash -l {0}
+      run: |
+        pip install -e .
+
     - name: make docs
       shell: bash -l {0}
       run: nbdev_docs

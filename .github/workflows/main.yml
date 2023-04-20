@@ -37,11 +37,6 @@ jobs:
     - name: Install environment
       run: mamba env update -n testenv -f ci/test_environment.yml
     
-    - name: install detectron2
-      shell: bash -l {0}
-      run: |
-        pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
-        pip install -e .
     - name: Check if all notebooks are cleaned
       shell: bash -l {0}
       run: |

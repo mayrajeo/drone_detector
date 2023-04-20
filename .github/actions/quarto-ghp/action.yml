@@ -22,12 +22,6 @@ runs:
       run: mamba env update -n test -f ci/test_environment.yml
       shell: bash -l {0}
 
-    - name: install detectron2
-      shell: bash -l {0}
-      run: |
-        pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
-        pip install -e .
-
     - name: make docs
       shell: bash -l {0}
       run: nbdev_docs

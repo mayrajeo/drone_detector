@@ -11,6 +11,7 @@ website:
         - 10_processing.tiling.ipynb
         - 11_processing.coordinates.ipynb
         - 12_processing.coco.ipynb
+        - 14_processing.yolo.ipynb
         - 13_processing.postprocessing.ipynb
       - section: Common
         contents:

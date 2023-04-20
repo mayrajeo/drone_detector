@@ -25,14 +25,14 @@ class YOLOProcessor():
     def from_shp(self, label_col:str='label', outfile:str='yolo.yaml', min_bbox_area:int=0,
                  ann_format:str='polygon'):
         "Processes GIS-polygon data to YOLOv8-format"
-        if ann_format not in ['polygon', 'box']:
+        if ann_format not in ['polygon', 'box', 'rotated box']:
             print('Annotation format must be either "polygon", "box" or "rotated box", defaulting to "polygon"')
         vectors = [f for f in os.listdir(self.vector_path) if f.endswith(('.shp', 'geojson'))]
         rasters = [f'{fname.split(".")[0]}.tif' for fname in vectors]
                
         for i, r in tqdm(enumerate(rasters)):
             gdf = gpd.read_file(f'{self.vector_path}/{vectors[i]}')
-            if ann_format == 'rotated_bbox':
+            if ann_format == 'rotated box':
                 gdf['geometry'] = gdf.geometry.apply(lambda row: row.minimum_rotated_rectangle)
             tfmd_gdf = gdf_to_px(gdf, f'{self.raster_path}/{r}', precision=3) # to pixel coordinates
             with rio.open(f'{self.raster_path}/{r}') as im:

@@ -163,7 +163,7 @@ def untile_vector(path_to_targets:str, outpath:str, non_max_suppression_thresh:f
     for p in tqdm(pred_files):
         temp_gdf = gpd.read_file(f'{path_to_targets}/{p}')
         if gdf is None: gdf = temp_gdf
-        else: gdf = gdf.append(temp_gdf)
+        else: gdf = pd.concat((gdf,temp_gdf))
     print(f'{len(gdf)} polygons before non-max suppression')
     if non_max_suppression_thresh != 0:
         np_bounding_boxes = np.array([b.bounds for b in gdf.geometry])
